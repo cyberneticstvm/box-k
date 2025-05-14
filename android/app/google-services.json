@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1002478051668",
+    "project_id": "boxk-9c1fe",
+    "storage_bucket": "boxk-9c1fe.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1002478051668:android:14e889d1c9170865f7a8c1",
+        "android_client_info": {
+          "package_name": "com.example.boxk"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAx-Vype1y9NX373xZ4UrfVSMvBMsda62U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
