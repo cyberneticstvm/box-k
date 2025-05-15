@@ -1,4 +1,5 @@
 import 'package:boxk/colors/color.dart';
+import 'package:boxk/models/item.dart';
 import 'package:boxk/providers/item.dart';
 import 'package:boxk/providers/order.dart';
 import 'package:boxk/providers/page.dart';
@@ -77,6 +78,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
     if (ref.watch(isPlayBlocked)) {
       _message('Play has been locked', Colors.white,
           Theme.of(context).myRedColorDark);
+      return;
     }
     if (ref.watch(selectedNumberSet) == 0 ||
         ref.watch(selectedNumberSet) == 1) {
@@ -167,6 +169,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
         return snapshot.docs.toList();
       },
     );
+    number.sort((b, a) => a.compareTo(b)); // Sorting descending
     for (var item in rate) {
       /*double ticketRate = double.parse(item['user_rate']);
       if (ref.watch(selectedUserProvider)['role'] == 'Admin') {
@@ -194,6 +197,72 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
       }
     }
     _clearForm();
+  }
+
+  Future<void> _save() async {
+    final items = ref.watch(itemAddProvider);
+    if (items.isEmpty) {
+      _message(
+          'Items are empty.', Colors.white, Theme.of(context).myRedColorDark);
+      return;
+    }
+    try {
+      final result = await showDialog(
+        context: (mounted) ? context : context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Proceed?'),
+            content: const Text('Are you sure want to proceed?'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(
+                    color: Theme.of(context).myRedColorDark,
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: Text(
+                  'Save',
+                  style: TextStyle(color: Theme.of(context).myGreenColorDark),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+      if (result) {
+        //Orderd().addItemToDB(items);
+        for (var item in items) {
+          final Map<String, dynamic> itemMap = {
+            "ticket": item.ticket,
+            "user_id": item.userId,
+            "play": item.play,
+            "number": item.number,
+            "count": item.count,
+            "rate": item.rate,
+            "total": item.total,
+            "play_date": item.playDate,
+            "created_at": item.createdAt,
+          };
+          FirebaseFirestore.instance.collection('orders').add(itemMap);
+        }
+        _message("Order saved successfully", Colors.white, Colors.green);
+        _clearForm();
+        ref.invalidate(itemListCountProvider);
+        ref.invalidate(itemListAmountProvider);
+        ref.invalidate(itemAddProvider);
+      }
+    } catch (err) {
+      _message(
+        err.toString(),
+        Colors.white,
+        Color(0xFFEA4335),
+      );
+    }
   }
 
   void _clearForm() {
@@ -224,7 +293,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
         permutations.add(firstChar + subPermutation);
       }
     }
-    return permutations.toSet().toList();
+    return permutations.toList();
   }
 
   @override
@@ -916,7 +985,8 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
                           },
                         );
                         if (result) {
-                          //
+                          ref.invalidate(itemAddProvider);
+                          _clearForm();
                         }
                       },
                       child: const Text(
@@ -1105,7 +1175,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
                     height: MediaQuery.of(context).size.height * 0.06,
                     child: ElevatedButton(
                       onPressed: () {
-                        //
+                        _save();
                       },
                       style: ElevatedButton.styleFrom(
                         shape: const RoundedRectangleBorder(

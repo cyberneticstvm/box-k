@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Item {
   Item({
     required this.ticket,
@@ -31,4 +33,14 @@ class Item {
         'playDate': playDate.toString(),
         'createdAt': createdAt.toString()
       };
+}
+
+class Orderd {
+  Future<void> addItemToDB(List<Item> list) async {
+    List<Map<String, dynamic>> listOfMaps =
+        list.map((item) => item.toJson()).toList();
+    await FirebaseFirestore.instance
+        .collection('orders')
+        .add({'my_list': listOfMaps});
+  }
 }
