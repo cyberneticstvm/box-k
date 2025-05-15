@@ -105,107 +105,147 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
           Theme.of(context).myRedColorDark);
       return;
     }
-    List ticketList;
-    var number = [];
-    int count = int.parse(countController.text);
-    if (ref.watch(selectedNumberSet) == 0) {
-      number.add(numberController.text);
-    }
-    if (ref.watch(selectedNumberSet) == 1) {
-      number = _getPermutation(numberController.text);
-    }
-    if (ref.watch(selectedNumberSet) == 2 ||
-        ref.watch(selectedNumberSet) == 3 ||
-        ref.watch(selectedNumberSet) == 4) {
-      var start = int.parse(fromNumberController.text);
-      var end = int.parse(toNumberController.text);
-      if (start < end || start == end) {
-        if (ref.watch(selectedNumberSet) == 2) {
-          for (int i = start; i <= end; i++) {
-            number.add(i.toString());
-          }
-        } else {
-          if (ref.watch(selectedNumberSet) == 3) {
-            for (int i = start; i <= end; i += 100) {
+    try {
+      List ticketList;
+      var number = [];
+      int count = int.parse(countController.text);
+      if (ref.watch(selectedNumberSet) == 0) {
+        number.add(numberController.text);
+      }
+      if (ref.watch(selectedNumberSet) == 1) {
+        number = _getPermutation(numberController.text);
+      }
+      if (ref.watch(selectedNumberSet) == 2 ||
+          ref.watch(selectedNumberSet) == 3 ||
+          ref.watch(selectedNumberSet) == 4) {
+        var start = int.parse(fromNumberController.text);
+        var end = int.parse(toNumberController.text);
+        if (start < end || start == end) {
+          if (ref.watch(selectedNumberSet) == 2) {
+            for (int i = start; i <= end; i++) {
               number.add(i.toString());
             }
           } else {
-            for (int i = start; i <= end; i += 111) {
-              number.add(i.toString());
+            if (ref.watch(selectedNumberSet) == 3) {
+              for (int i = start; i <= end; i += 100) {
+                number.add(i.toString());
+              }
+            } else {
+              for (int i = start; i <= end; i += 111) {
+                number.add(i.toString());
+              }
             }
           }
+        } else {
+          _message('Please Enter Valid Start and End Number', Colors.white,
+              Theme.of(context).myRedColorDark);
+          return;
         }
-      } else {
-        _message('Please Enter Valid Start and End Number', Colors.white,
-            Theme.of(context).myRedColorDark);
-        return;
       }
-    }
-    if (ref.watch(selectedNumberGroup) == 3 &&
-        ref.watch(selectedTicket) == 'all') {
-      ticketList = ['king', 'box-k'];
-    } else if (ref.watch(selectedNumberGroup) == 2 &&
-        ref.watch(selectedTicket) == 'all') {
-      ticketList = ['ab', 'bc', 'ac'];
-    } else if (ref.watch(selectedNumberGroup) == 1 &&
-        ref.watch(selectedTicket) == 'all') {
-      ticketList = ['a', 'b', 'c'];
-    } else {
-      ticketList = [ref.watch(selectedTicket)];
-    }
-    final btc = await FirebaseFirestore.instance
-        .collection('blocked_numbers')
-        .where('number', whereIn: number)
-        .aggregate(sum("count"))
-        .get()
-        .then((res) {
-      return res.getSum('count');
-    }); // Blocked Ticket Count
-    final btco = await FirebaseFirestore.instance
-        .collection('orders')
-        .where('number', whereIn: number)
-        .where('play', isEqualTo: ref.watch(selectedPlayCode))
-        .where('play_date', isEqualTo: ref.watch(playDate))
-        .aggregate(sum("count"))
-        .get()
-        .then((res) {
-      return res.getSum('count');
-    }); // Blocked Ticket Count Ordered
+      if (ref.watch(selectedNumberGroup) == 3 &&
+          ref.watch(selectedTicket) == 'all') {
+        ticketList = ['king', 'box-k'];
+      } else if (ref.watch(selectedNumberGroup) == 2 &&
+          ref.watch(selectedTicket) == 'all') {
+        ticketList = ['ab', 'bc', 'ac'];
+      } else if (ref.watch(selectedNumberGroup) == 1 &&
+          ref.watch(selectedTicket) == 'all') {
+        ticketList = ['a', 'b', 'c'];
+      } else {
+        ticketList = [ref.watch(selectedTicket)];
+      }
+      final btc = FirebaseFirestore.instance.collection('blocked_numbers');
+      // Blocked Ticket Count
+      final btco = FirebaseFirestore.instance
+          .collection('orders')
+          .where('play', isEqualTo: ref.watch(selectedPlayCode))
+          .where('play_date', isEqualTo: ref.watch(playDate));
+      // Blocked Ticket Count Ordered
 
-    final tickets = FirebaseFirestore.instance.collection('tickets');
-    final rate = await tickets.where('name', whereIn: ticketList).get().then(
-      (snapshot) {
-        return snapshot.docs.toList();
-      },
-    );
-    /*double ticketRate = double.parse(item['user_rate']);
+      final tickets = FirebaseFirestore.instance.collection('tickets');
+      final rate = await tickets.where('name', whereIn: ticketList).get().then(
+        (snapshot) {
+          return snapshot.docs.toList();
+        },
+      );
+      for (var item in rate) {
+        var tname = (ref.watch(selectedNumberGroup) == 3 &&
+                    ref.watch(selectedTicket) != 'box-k' &&
+                    ref.watch(selectedTicket) != 'all' ||
+                item['name'] == 'king')
+            ? ref.watch(selectedPlayCode)
+            : item['name'];
+        var tkt =
+            (tname == 'd1' || tname == 'd6' || tname == 'd8') ? 'king' : tname;
+        final maxcount =
+            await tickets.where('name', isEqualTo: tkt).get().then((snapshot) {
+          return snapshot.docs[0].data()['max_count'];
+        });
+        final orderedCount = await btco
+            .where('ticket', isEqualTo: tname)
+            .aggregate(sum("count"))
+            .get()
+            .then((res) {
+          return res.getSum('count');
+        });
+        if (count + orderedCount! >= maxcount) {
+          throw Exception("Limit exceeds for ticket $tname");
+        }
+      }
+      for (var n in number) {
+        final bcount = await btc
+            .where('number', isEqualTo: n)
+            .aggregate(sum("count"))
+            .get()
+            .then((res) {
+          return res.getSum('count');
+        }); // Blocked Ticket Count
+
+        final ocount = await btco
+            .where('number', isEqualTo: n)
+            .aggregate(sum("count"))
+            .get()
+            .then((res) {
+          return res.getSum('count');
+        }); // Ordered Ticket Count
+
+        if (count + ocount! >= bcount! && bcount != 0) {
+          throw Exception("Limit exceeds for number $n");
+        }
+      }
+      /*double ticketRate = double.parse(item['user_rate']);
       if (ref.watch(selectedUserProvider)['role'] == 'Admin') {
         ticketRate = double.parse(item['admin_rate']);
       }
       if (ref.watch(selectedUserProvider)['role'] == 'Leader') {
         ticketRate = double.parse(item['leader_rate']);
       }*/
-    number.sort((b, a) => a.compareTo(b)); // Sorting descending
-    for (var item in rate) {
-      for (var n in number) {
-        ref.read(itemAddProvider.notifier).addItem(
-              (ref.watch(selectedNumberGroup) == 3 &&
-                          ref.watch(selectedTicket) != 'box-k' &&
-                          ref.watch(selectedTicket) != 'all' ||
-                      item['name'] == 'king')
-                  ? ref.watch(selectedPlayCode)
-                  : item['name'],
-              ref.watch(selectedUser).toString(),
-              ref.watch(selectedPlayCode),
-              n,
-              count,
-              double.parse(item['user_rate'].toString()),
-              double.parse((count * item['user_rate']).toStringAsFixed(2)),
-              ref.watch(playDate),
-              DateTime.now(),
-            );
+      number.sort((b, a) => a.compareTo(b)); // Sorting descending
+      for (var item in rate) {
+        var tname = (ref.watch(selectedNumberGroup) == 3 &&
+                    ref.watch(selectedTicket) != 'box-k' &&
+                    ref.watch(selectedTicket) != 'all' ||
+                item['name'] == 'king')
+            ? ref.watch(selectedPlayCode)
+            : item['name'];
+        for (var n in number) {
+          ref.read(itemAddProvider.notifier).addItem(
+                tname,
+                ref.watch(selectedUser).toString(),
+                ref.watch(selectedPlayCode),
+                n,
+                count,
+                double.parse(item['user_rate'].toString()),
+                double.parse((count * item['user_rate']).toStringAsFixed(2)),
+                ref.watch(playDate),
+                DateTime.now(),
+              );
+        }
       }
+    } catch (err) {
+      _message(err.toString(), Colors.white, Colors.red);
     }
+
     _clearForm();
   }
 
