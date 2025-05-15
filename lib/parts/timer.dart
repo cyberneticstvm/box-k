@@ -48,8 +48,8 @@ class _CountdownTimerState extends ConsumerState<CountdownTimer> {
         DateTime.now().month,
         DateTime.now().day,
         DateTime.now().hour,
-        DateTime.now().minute + 1,
-        DateTime.now().second,
+        DateTime.now().minute,
+        DateTime.now().second + 1,
       );
     }
   }
