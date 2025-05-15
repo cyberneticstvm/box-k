@@ -98,7 +98,11 @@ class _PlayScreenState extends ConsumerState<PlayEditScreen> {
   void _pickedTime(String type) async {
     await showTimePicker(
       context: context,
-      initialTime: TimeOfDay.now(),
+      initialTime: (type == 'from')
+          ? TimeOfDay.fromDateTime(
+              DateFormat('HH:mm:ss').parse(play?['locked_from']))
+          : TimeOfDay.fromDateTime(
+              DateFormat('HH:mm:ss').parse(play?['locked_to'])),
     ).then((pickedtime) {
       if (pickedtime == null) {
         return;
