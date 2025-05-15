@@ -62,16 +62,19 @@ class _PlayDropdownState extends ConsumerState<PlayDropdownList> {
               itemCount: plays.length,
               shrinkWrap: true,
               itemBuilder: (context, index) {
-                return ListTile(
-                  tileColor: colors[index] ?? Colors.black,
-                  textColor: Colors.white,
-                  title: Text(plays[index]['name']),
-                  onTap: () {
-                    ref.read(selectedPlayCode.notifier).update(
-                          (state) => plays[index]['code'].toString(),
-                        );
-                    Navigator.pop(context);
-                  },
+                return Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: ListTile(
+                    tileColor: colors[index] ?? Colors.black,
+                    textColor: Colors.white,
+                    title: Text(plays[index]['name']),
+                    onTap: () {
+                      ref.read(selectedPlayCode.notifier).update(
+                            (state) => plays[index]['code'].toString(),
+                          );
+                      Navigator.pop(context);
+                    },
+                  ),
                 );
               },
             ),
@@ -102,6 +105,14 @@ class _PlayDropdownState extends ConsumerState<PlayDropdownList> {
       _message('Play has been locked', Colors.white, const Color(0xFFEA4335));
     } else {
       ref.read(isPlayBlocked.notifier).update((state) => false);
+      DateTime date = DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day);
+      if ((now.hour == stime.hour && now.minute >= stime.minute) ||
+          now.hour >= stime.hour) {
+        date = DateTime.now().add(const Duration(days: 1));
+        date = DateTime(date.year, date.month, date.day);
+        ref.read(playDate.notifier).update((state) => date);
+      }
     }
   }
 

@@ -39,7 +39,7 @@ class _NumberListWidgetState extends ConsumerState<NumberListWidget> {
             ),
             Expanded(
               child: Text(
-                items[index].ticket.toUpperCase(),
+                items[index].ticket,
                 style: const TextStyle(
                   fontSize: 15,
                 ),

@@ -23,3 +23,12 @@ final selectedTicket = StateProvider<String>((ref) {
 final isPlayBlocked = StateProvider<bool>((ref) {
   return false;
 });
+
+final playDate = StateProvider<DateTime>((ref) {
+  return DateTime(
+      DateTime.now().year, DateTime.now().month, DateTime.now().day);
+});
+
+final nextPlayName = StateProvider<String>((ref) {
+  return '';
+});

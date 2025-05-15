@@ -1,4 +1,5 @@
 import 'package:boxk/colors/color.dart';
+import 'package:boxk/parts/timer.dart';
 import 'package:boxk/providers/order.dart';
 import 'package:boxk/providers/page.dart';
 import 'package:boxk/providers/user.dart';
@@ -80,6 +81,19 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             ),
           ],
         ),
+        actions: [
+          SizedBox(
+            child: Column(
+              children: [
+                Text(
+                  ref.watch(nextPlayName),
+                  style: const TextStyle(fontSize: 15, color: Colors.white),
+                ),
+                const CountdownTimer(),
+              ],
+            ),
+          ),
+        ],
       ),
       drawer: DrawerWidget(),
       body: activePage,

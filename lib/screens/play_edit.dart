@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 
 class PlayEditScreen extends ConsumerStatefulWidget {
   const PlayEditScreen({super.key, required this.playId});
@@ -58,8 +59,10 @@ class _PlayScreenState extends ConsumerState<PlayEditScreen> {
             .collection('plays')
             .doc(snaphot.docs[0].id)
             .update({
-          'locked_from': _lockedFrom,
-          'locked_to': _lockedTo,
+          'locked_from': DateFormat('HH:mm:ss')
+              .format(DateFormat('h:mm a').parse(_lockedFrom)),
+          'locked_to': DateFormat('HH:mm:ss')
+              .format(DateFormat('h:mm a').parse(_lockedTo)),
         });
       });
       setState(() {
@@ -82,8 +85,12 @@ class _PlayScreenState extends ConsumerState<PlayEditScreen> {
         play = snapshot.docs[0].data();
         _playNameController.text = play?['name'];
         _playCodeController.text = play?['code'];
-        _lockedFromTimeController.text = play?['locked_from'];
-        _lockedToTimeController.text = play?['locked_to'];
+        _lockedFromTimeController.text = TimeOfDay.fromDateTime(
+                DateFormat('HH:mm:ss').parse(play?['locked_from']))
+            .format(context);
+        _lockedToTimeController.text = TimeOfDay.fromDateTime(
+                DateFormat('HH:mm:ss').parse(play?['locked_to']))
+            .format(context);
       });
     });
   }

@@ -1,5 +1,4 @@
 import 'package:boxk/colors/color.dart';
-import 'package:boxk/models/item.dart';
 import 'package:boxk/providers/item.dart';
 import 'package:boxk/providers/order.dart';
 import 'package:boxk/providers/page.dart';
@@ -47,9 +46,11 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
 
     if (activeController == numberController &&
         activeController.text.length == selNumGrp &&
-        selNumSet == 0) {
-      FocusScope.of(context).requestFocus(countFieldFocusNode);
-      activeController = countController;
+        (selNumSet == 0 || selNumSet == 1)) {
+      setState(() {
+        FocusScope.of(context).requestFocus(countFieldFocusNode);
+        activeController = countController;
+      });
     }
     if (activeController == fromNumberController &&
         activeController.text.length == selNumGrp &&
@@ -152,37 +153,46 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
     } else {
       ticketList = [ref.watch(selectedTicket)];
     }
-    /*final blockedTicketCount = await FirebaseFirestore.instance
+    final btc = await FirebaseFirestore.instance
         .collection('blocked_numbers')
         .where('number', whereIn: number)
         .aggregate(sum("count"))
         .get()
         .then((res) {
       return res.getSum('count');
-    });*/
-    final rate = await FirebaseFirestore.instance
-        .collection('tickets')
-        .where('name', whereIn: ticketList)
+    }); // Blocked Ticket Count
+    final btco = await FirebaseFirestore.instance
+        .collection('orders')
+        .where('number', whereIn: number)
+        .where('play', isEqualTo: ref.watch(selectedPlayCode))
+        .where('play_date', isEqualTo: ref.watch(playDate))
+        .aggregate(sum("count"))
         .get()
-        .then(
+        .then((res) {
+      return res.getSum('count');
+    }); // Blocked Ticket Count Ordered
+
+    final tickets = FirebaseFirestore.instance.collection('tickets');
+    final rate = await tickets.where('name', whereIn: ticketList).get().then(
       (snapshot) {
         return snapshot.docs.toList();
       },
     );
-    number.sort((b, a) => a.compareTo(b)); // Sorting descending
-    for (var item in rate) {
-      /*double ticketRate = double.parse(item['user_rate']);
+    /*double ticketRate = double.parse(item['user_rate']);
       if (ref.watch(selectedUserProvider)['role'] == 'Admin') {
         ticketRate = double.parse(item['admin_rate']);
       }
       if (ref.watch(selectedUserProvider)['role'] == 'Leader') {
         ticketRate = double.parse(item['leader_rate']);
       }*/
+    number.sort((b, a) => a.compareTo(b)); // Sorting descending
+    for (var item in rate) {
       for (var n in number) {
         ref.read(itemAddProvider.notifier).addItem(
               (ref.watch(selectedNumberGroup) == 3 &&
-                      ref.watch(selectedTicket) != 'box-k' &&
-                      ref.watch(selectedTicket) != 'all')
+                          ref.watch(selectedTicket) != 'box-k' &&
+                          ref.watch(selectedTicket) != 'all' ||
+                      item['name'] == 'king')
                   ? ref.watch(selectedPlayCode)
                   : item['name'],
               ref.watch(selectedUser).toString(),
@@ -191,7 +201,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
               count,
               double.parse(item['user_rate'].toString()),
               double.parse((count * item['user_rate']).toStringAsFixed(2)),
-              DateTime.now(),
+              ref.watch(playDate),
               DateTime.now(),
             );
       }

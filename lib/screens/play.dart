@@ -3,6 +3,7 @@ import 'package:boxk/screens/play_edit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 class PlayScreen extends ConsumerStatefulWidget {
   const PlayScreen({super.key});
@@ -60,8 +61,13 @@ class _PlayScreenState extends ConsumerState<PlayScreen> {
                         DataCell(Text(item['id'].toString())),
                         DataCell(Text(item['name'])),
                         DataCell(Text(item['code'])),
-                        DataCell(Text(item['locked_from'].toString())),
-                        DataCell(Text(item['locked_to'].toString())),
+                        DataCell(Text(TimeOfDay.fromDateTime(
+                                DateFormat('HH:mm:ss')
+                                    .parse(item['locked_from']))
+                            .format(context))),
+                        DataCell(Text(TimeOfDay.fromDateTime(
+                                DateFormat('HH:mm:ss').parse(item['locked_to']))
+                            .format(context))),
                         DataCell(
                           Icon(
                             Icons.edit,

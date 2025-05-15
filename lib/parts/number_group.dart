@@ -1,4 +1,5 @@
 import 'package:boxk/colors/color.dart';
+import 'package:boxk/providers/item.dart';
 import 'package:boxk/providers/order.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,7 +27,7 @@ class _NumberGroupState extends ConsumerState<NumberGroup> {
                 Column(
                   children: [
                     Text(
-                      'COUNT: 0 | ',
+                      'COUNT: ${ref.watch(itemCountProvider).toString()} | ',
                       style: const TextStyle(
                         color: Colors.black,
                       ),
@@ -35,7 +36,7 @@ class _NumberGroupState extends ConsumerState<NumberGroup> {
                 ),
                 Expanded(
                   child: Text(
-                    '₹0.00',
+                    ('₹${ref.watch(itemAmountProvider).toString()}'),
                     style: const TextStyle(
                       color: Colors.black,
                       fontSize: 14,
