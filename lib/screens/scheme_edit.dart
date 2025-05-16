@@ -1,31 +1,32 @@
 import 'package:boxk/colors/color.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart';
 
-class PlayEditScreen extends ConsumerStatefulWidget {
-  const PlayEditScreen({super.key, required this.playId});
+class SchemeEditScreen extends ConsumerStatefulWidget {
+  const SchemeEditScreen({super.key, required this.docId});
 
-  final int playId;
+  final String docId;
 
   @override
-  ConsumerState<PlayEditScreen> createState() {
-    return _PlayScreenState();
+  ConsumerState<SchemeEditScreen> createState() {
+    return _SchemeScreenState();
   }
 }
 
-class _PlayScreenState extends ConsumerState<PlayEditScreen> {
-  final _playFormKey = GlobalKey<FormState>();
-  var _lockedFrom = '';
-  var _lockedTo = '';
+class _SchemeScreenState extends ConsumerState<SchemeEditScreen> {
+  final _schemeFormKey = GlobalKey<FormState>();
   bool _isUpdating = false;
-  final _playNameController = TextEditingController();
-  final _playCodeController = TextEditingController();
-  final _lockedFromTimeController = TextEditingController();
-  final _lockedToTimeController = TextEditingController();
-  Map<String, dynamic>? play;
+  final _amountController = TextEditingController();
+  final _superController = TextEditingController();
+  final _countController = TextEditingController();
+  final _nameController = TextEditingController();
+  int amount = 0;
+  int superr = 0;
+  int count = 0;
+  DocumentSnapshot<Map<String, dynamic>>? ticket;
 
   void _message(
     String msg,
@@ -41,96 +42,58 @@ class _PlayScreenState extends ConsumerState<PlayEditScreen> {
   }
 
   void _update() async {
-    final isValid = _playFormKey.currentState!.validate();
+    final isValid = _schemeFormKey.currentState!.validate();
     if (!isValid) {
       return;
     }
-    _playFormKey.currentState!.save();
+    _schemeFormKey.currentState!.save();
     try {
       setState(() {
         _isUpdating = true;
       });
-      await FirebaseFirestore.instance
-          .collection('plays')
-          .where('id', isEqualTo: widget.playId)
-          .get()
-          .then((snaphot) async {
-        await FirebaseFirestore.instance
-            .collection('plays')
-            .doc(snaphot.docs[0].id)
-            .update({
-          'locked_from': DateFormat('HH:mm:ss')
-              .format(DateFormat('h:mm a').parse(_lockedFrom)),
-          'locked_to': DateFormat('HH:mm:ss')
-              .format(DateFormat('h:mm a').parse(_lockedTo)),
-        });
-      });
+      FirebaseFirestore.instance.collection('schemes').doc(widget.docId).update(
+        {
+          'count': count,
+          'amount': amount,
+          'super': superr,
+        },
+      );
       setState(() {
         _isUpdating = false;
       });
       if (mounted) Navigator.pop(context);
-      _message('Play updated successfully', Colors.green, Colors.white);
+      _message('Scheme updated successfully',
+          Theme.of(context).myGreenColorDark, Colors.white);
     } on FirebaseException catch (err) {
       _message(err.message.toString(), Colors.red, Colors.white);
     }
   }
 
-  getPlay() async {
-    await FirebaseFirestore.instance
-        .collection('plays')
-        .where('id', isEqualTo: widget.playId)
-        .get()
-        .then((snapshot) {
-      setState(() {
-        play = snapshot.docs[0].data();
-        _playNameController.text = play?['name'];
-        _playCodeController.text = play?['code'];
-        _lockedFromTimeController.text = TimeOfDay.fromDateTime(
-                DateFormat('HH:mm:ss').parse(play?['locked_from']))
-            .format(context);
-        _lockedToTimeController.text = TimeOfDay.fromDateTime(
-                DateFormat('HH:mm:ss').parse(play?['locked_to']))
-            .format(context);
-      });
-    });
-  }
-
-  void _pickedTime(String type) async {
-    await showTimePicker(
-      context: context,
-      initialTime: (type == 'from')
-          ? TimeOfDay.fromDateTime(
-              DateFormat('HH:mm:ss').parse(play?['locked_from']))
-          : TimeOfDay.fromDateTime(
-              DateFormat('HH:mm:ss').parse(play?['locked_to'])),
-    ).then((pickedtime) {
-      if (pickedtime == null) {
-        return;
-      }
-      setState(() {
-        if (type == 'from') {
-          _lockedFrom = pickedtime.format(context);
-          _lockedFromTimeController.text = pickedtime.format(context);
-        } else {
-          _lockedTo = pickedtime.format(context);
-          _lockedToTimeController.text = pickedtime.format(context);
-        }
-      });
+  void getTicket() async {
+    ticket = await FirebaseFirestore.instance
+        .collection('schemes')
+        .doc(widget.docId)
+        .get();
+    setState(() {
+      _amountController.text = ticket!['amount'].toString();
+      _superController.text = ticket!['super'].toString();
+      _countController.text = ticket!['count'].toString();
+      _nameController.text = ticket?['ticket'];
     });
   }
 
   @override
   void initState() {
-    getPlay();
+    getTicket();
     super.initState();
   }
 
   @override
   void dispose() {
-    _playNameController.dispose();
-    _playCodeController.dispose();
-    _lockedFromTimeController.dispose();
-    _lockedToTimeController.dispose();
+    _amountController.dispose();
+    _superController.dispose();
+    _countController.dispose();
+    _nameController.dispose();
     super.dispose();
   }
 
@@ -139,7 +102,7 @@ class _PlayScreenState extends ConsumerState<PlayEditScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Update Play',
+          'Update Scheme',
           style:
               TextStyle(fontSize: 18, color: Theme.of(context).myBlueColorDark),
         ),
@@ -149,11 +112,11 @@ class _PlayScreenState extends ConsumerState<PlayEditScreen> {
         child: Column(
           children: [
             Form(
-              key: _playFormKey,
+              key: _schemeFormKey,
               child: Column(
                 children: [
                   TextFormField(
-                    controller: _playNameController,
+                    controller: _nameController,
                     readOnly: true,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
@@ -169,49 +132,15 @@ class _PlayScreenState extends ConsumerState<PlayEditScreen> {
                           width: 1,
                         ),
                       ),
-                      labelText: 'Play Name',
+                      labelText: 'Ticket Name',
                       labelStyle: TextStyle(
                         color: Colors.black,
                       ),
                     ),
                     keyboardType: TextInputType.text,
-                    autocorrect: false,
-                    textCapitalization: TextCapitalization.none,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
-                        return 'Please enter a valid Play Name.';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  TextFormField(
-                    readOnly: true,
-                    controller: _playCodeController,
-                    decoration: InputDecoration(
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Theme.of(context).myBlueColorDark,
-                          width: 1,
-                        ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Theme.of(context).myBlueColorDark,
-                          width: 1,
-                        ),
-                      ),
-                      border: const OutlineInputBorder(),
-                      labelText: 'Play Code',
-                      labelStyle: const TextStyle(
-                        color: Colors.black,
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'Please enter a valid Play Code.';
+                        return 'Please enter a valid Ticket Name.';
                       }
                       return null;
                     },
@@ -223,8 +152,9 @@ class _PlayScreenState extends ConsumerState<PlayEditScreen> {
                     children: [
                       Expanded(
                         child: TextFormField(
-                          controller: _lockedFromTimeController,
+                          controller: _amountController,
                           decoration: InputDecoration(
+                            border: OutlineInputBorder(),
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
                                 color: Theme.of(context).myBlueColorDark,
@@ -237,56 +167,104 @@ class _PlayScreenState extends ConsumerState<PlayEditScreen> {
                                 width: 1,
                               ),
                             ),
-                            labelText: 'Locked From',
+                            labelText: 'Amount',
                             labelStyle: TextStyle(
                               color: Colors.black,
                             ),
                           ),
-                          keyboardType: TextInputType.none,
+                          keyboardType: TextInputType.number,
                           validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Enter valid time.';
+                            if (value == null || value.trim().isEmpty) {
+                              return 'Please enter Amount.';
                             }
                             return null;
                           },
                           onSaved: (value) {
-                            _lockedFrom = value!;
-                          },
-                          onTap: () {
-                            _pickedTime('from');
+                            amount = int.parse(value!);
                           },
                         ),
                       ),
-                      const SizedBox(
+                      SizedBox(
                         width: 10,
                       ),
                       Expanded(
                         child: TextFormField(
-                          controller: _lockedToTimeController,
-                          decoration: const InputDecoration(
-                            labelText: 'Locked To',
+                          controller: _superController,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Theme.of(context).myBlueColorDark,
+                                width: 1,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Theme.of(context).myBlueColorDark,
+                                width: 1,
+                              ),
+                            ),
+                            labelText: 'Super',
                             labelStyle: TextStyle(
                               color: Colors.black,
                             ),
                           ),
-                          keyboardType: TextInputType.none,
+                          keyboardType: TextInputType.number,
                           validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Enter valid time.';
+                            if (value == null || value.trim().isEmpty) {
+                              return 'Please enter Super.';
                             }
                             return null;
                           },
                           onSaved: (value) {
-                            _lockedTo = value!;
-                          },
-                          onTap: () {
-                            _pickedTime('to');
+                            superr = int.parse(value!);
                           },
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextFormField(
+                          controller: _countController,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Theme.of(context).myBlueColorDark,
+                                width: 1,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Theme.of(context).myBlueColorDark,
+                                width: 1,
+                              ),
+                            ),
+                            labelText: 'Maximum Count',
+                            labelStyle: TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
+                          keyboardType: TextInputType.number,
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return 'Please enter Count.';
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            count = int.parse(value!);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
                     height: 15,
                   ),
                   ElevatedButton(

@@ -72,6 +72,7 @@ class _UserManagementScreenState extends ConsumerState<UserManagementScreen> {
             'password': _password,
             'parent': parent,
             'role': role,
+            'status': 'Active'
           });
         });
         //ref.invalidate(currentUserProvider);
@@ -87,6 +88,43 @@ class _UserManagementScreenState extends ConsumerState<UserManagementScreen> {
         _isSaving = false;
       });
       _message(err.toString(), Colors.white, Colors.red);
+    }
+  }
+
+  void _delete(String uid) async {
+    final result = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Proceed?'),
+          content: const Text('Are you sure want to delete this user?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text(
+                'Cancel',
+                style: TextStyle(
+                  color: Color(0xFFEA4335),
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: const Text(
+                'Yes',
+                style: TextStyle(color: Colors.green),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+    if (result) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .update({'status': "Inactive"});
+      _message("User deleted successfully!", Colors.white, Colors.green);
     }
   }
 
@@ -237,8 +275,10 @@ class _UserManagementScreenState extends ConsumerState<UserManagementScreen> {
                     height: 25,
                   ),
                   FutureBuilder(
-                    future:
-                        FirebaseFirestore.instance.collection('users').get(),
+                    future: FirebaseFirestore.instance
+                        .collection('users')
+                        .where('status', isEqualTo: 'Active')
+                        .get(),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                         return const Center(
@@ -251,31 +291,41 @@ class _UserManagementScreenState extends ConsumerState<UserManagementScreen> {
                               color: Theme.of(context).myBlueColorDark),
                         );
                       }
-                      return DataTable(
-                        columns: const [
-                          DataColumn(label: Text('User Name')),
-                          DataColumn(label: Text('User Role')),
-                          DataColumn(label: Text('Edit')),
-                          DataColumn(label: Text('Delete')),
-                        ],
-                        rows: snapshot.data!.docs
-                            .map(
-                              (item) => DataRow(
-                                cells: [
-                                  DataCell(Text(item['name'])),
-                                  DataCell(Text(item['role'])),
-                                  DataCell(Icon(
-                                    Icons.edit,
-                                    color: Theme.of(context).myAmberColorDark,
-                                  )),
-                                  DataCell(Icon(
-                                    Icons.delete,
-                                    color: Theme.of(context).myRedColorDark,
-                                  )),
-                                ],
-                              ),
-                            )
-                            .toList(),
+                      return SizedBox(
+                        width: double.infinity,
+                        child: DataTable(
+                          columnSpacing: 25,
+                          columns: const [
+                            DataColumn(label: Text('User Name')),
+                            DataColumn(label: Text('User Role')),
+                            DataColumn(label: Text('Delete')),
+                          ],
+                          rows: snapshot.data!.docs
+                              .map(
+                                (item) => DataRow(
+                                  cells: [
+                                    DataCell(Text(item['name'])),
+                                    DataCell(Text(item['role'])),
+                                    DataCell(
+                                      IconButton(
+                                        icon: Icon(
+                                          Icons.delete,
+                                          color:
+                                              Theme.of(context).myRedColorDark,
+                                        ),
+                                        onPressed: () {
+                                          _delete(item.id);
+                                          setState(() {
+                                            snapshot.data!.docs.remove(item);
+                                          });
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                              .toList(),
+                        ),
                       );
                     },
                   ),

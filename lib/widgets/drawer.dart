@@ -6,6 +6,7 @@ import 'package:boxk/screens/play.dart';
 import 'package:boxk/screens/scheme.dart';
 import 'package:boxk/screens/ticket.dart';
 import 'package:boxk/screens/user.dart';
+import 'package:boxk/screens/user_edit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -96,6 +97,26 @@ class _DrawerWidgetState extends ConsumerState<DrawerWidget> {
                           context,
                           MaterialPageRoute(
                             builder: (ctx) => const UserManagementScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.radio_button_checked,
+                        color: Theme.of(context).myAmberColorDark,
+                      ),
+                      title: const Text(
+                        'Update Password',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (ctx) => UserEditScreen(
+                              userId: _firebase.currentUser!.uid,
+                            ),
                           ),
                         );
                       },
@@ -208,6 +229,44 @@ class _DrawerWidgetState extends ConsumerState<DrawerWidget> {
                           context,
                           MaterialPageRoute(
                             builder: (ctx) => const SchemeScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+                ExpansionTile(
+                  trailing: const Icon(
+                    Icons.keyboard_arrow_down,
+                    color: Colors.white,
+                  ),
+                  leading: const Icon(
+                    Icons.insert_drive_file_outlined,
+                    color: Colors.white,
+                  ),
+                  shape: const Border(),
+                  title: const Text(
+                    'Bill',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 17,
+                    ),
+                  ),
+                  children: [
+                    ListTile(
+                      leading: Icon(
+                        Icons.radio_button_checked,
+                        color: Theme.of(context).myAmberColorDark,
+                      ),
+                      title: const Text(
+                        'Delete Bill',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (ctx) => const PlayScreen(),
                           ),
                         );
                       },

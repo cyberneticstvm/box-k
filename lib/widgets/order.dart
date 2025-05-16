@@ -2,6 +2,7 @@ import 'package:boxk/parts/number_Set.dart';
 import 'package:boxk/parts/number_group.dart';
 import 'package:boxk/parts/play.dart';
 import 'package:boxk/parts/user.dart';
+import 'package:boxk/providers/user.dart';
 import 'package:boxk/widgets/keyboard.dart';
 import 'package:boxk/widgets/number_list.dart';
 import 'package:flutter/material.dart';
@@ -31,12 +32,14 @@ class _OrderWidgetState extends ConsumerState<OrderWidget> {
                   isBlockedCheck: true,
                 ),
               ),
-              const SizedBox(
-                width: 10,
-              ),
-              const Expanded(
-                child: UserDropdownList(),
-              ),
+              if (ref.watch(currentUserProvider)['role'] != 'User')
+                const SizedBox(
+                  width: 10,
+                ),
+              if (ref.watch(currentUserProvider)['role'] != 'User')
+                const Expanded(
+                  child: UserDropdownList(),
+                ),
             ],
           ),
           const NumberSet(),

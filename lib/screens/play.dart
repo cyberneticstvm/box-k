@@ -44,56 +44,53 @@ class _PlayScreenState extends ConsumerState<PlayScreen> {
                     color: Theme.of(context).myBlueColorDark),
               );
             }
-            return DataTable(
-              columns: const [
-                DataColumn(label: Text('Id')),
-                DataColumn(label: Text('Name')),
-                DataColumn(label: Text('Code')),
-                DataColumn(label: Text('L.From')),
-                DataColumn(label: Text('L.To')),
-                DataColumn(label: Text('Edit')),
-                DataColumn(label: Text('Delete')),
-              ],
-              rows: snapshot.data!.docs
-                  .map(
-                    (item) => DataRow(
-                      cells: [
-                        DataCell(Text(item['id'].toString())),
-                        DataCell(Text(item['name'])),
-                        DataCell(Text(item['code'])),
-                        DataCell(Text(TimeOfDay.fromDateTime(
-                                DateFormat('HH:mm:ss')
-                                    .parse(item['locked_from']))
-                            .format(context))),
-                        DataCell(Text(TimeOfDay.fromDateTime(
-                                DateFormat('HH:mm:ss').parse(item['locked_to']))
-                            .format(context))),
-                        DataCell(
-                          Icon(
-                            Icons.edit,
-                            color: Theme.of(context).myAmberColorDark,
-                          ),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (ctx) => PlayEditScreen(
-                                  playId: item['id'],
+            return SizedBox(
+              child: DataTable(
+                columnSpacing: MediaQuery.of(context).size.height * .03,
+                columns: const [
+                  DataColumn(label: Text('Id')),
+                  DataColumn(label: Text('Name')),
+                  DataColumn(label: Text('Code')),
+                  DataColumn(label: Text('L.From')),
+                  DataColumn(label: Text('L.To')),
+                  DataColumn(label: Text('Edit')),
+                ],
+                rows: snapshot.data!.docs
+                    .map(
+                      (item) => DataRow(
+                        cells: [
+                          DataCell(Text(item['id'].toString())),
+                          DataCell(Text(item['name'])),
+                          DataCell(Text(item['code'])),
+                          DataCell(Text(TimeOfDay.fromDateTime(
+                                  DateFormat('HH:mm:ss')
+                                      .parse(item['locked_from']))
+                              .format(context))),
+                          DataCell(Text(TimeOfDay.fromDateTime(
+                                  DateFormat('HH:mm:ss')
+                                      .parse(item['locked_to']))
+                              .format(context))),
+                          DataCell(
+                            Icon(
+                              Icons.edit,
+                              color: Theme.of(context).myAmberColorDark,
+                            ),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (ctx) => PlayEditScreen(
+                                    playId: item['id'],
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
-                        ),
-                        DataCell(
-                          Icon(
-                            Icons.delete,
-                            color: Theme.of(context).myRedColorDark,
+                              );
+                            },
                           ),
-                        ),
-                      ],
-                    ),
-                  )
-                  .toList(),
+                        ],
+                      ),
+                    )
+                    .toList(),
+              ),
             );
           },
         ),

@@ -1,4 +1,5 @@
 import 'package:boxk/colors/color.dart';
+import 'package:boxk/screens/ticket_edit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -43,6 +44,7 @@ class _TicketScreenState extends ConsumerState<TicketScreen> {
               );
             }
             return DataTable(
+              columnSpacing: MediaQuery.of(context).size.height * .025,
               columns: const [
                 DataColumn(label: Text('Id')),
                 DataColumn(label: Text('Name')),
@@ -51,7 +53,6 @@ class _TicketScreenState extends ConsumerState<TicketScreen> {
                 DataColumn(label: Text('U.Rate')),
                 DataColumn(label: Text('Count')),
                 DataColumn(label: Text('Edit')),
-                DataColumn(label: Text('Delete')),
               ],
               rows: snapshot.data!.docs
                   .map(
@@ -63,14 +64,22 @@ class _TicketScreenState extends ConsumerState<TicketScreen> {
                         DataCell(Text(item['leader_rate'].toString())),
                         DataCell(Text(item['user_rate'].toString())),
                         DataCell(Text(item['max_count'].toString())),
-                        DataCell(Icon(
-                          Icons.edit,
-                          color: Theme.of(context).myAmberColorDark,
-                        )),
-                        DataCell(Icon(
-                          Icons.delete,
-                          color: Theme.of(context).myRedColorDark,
-                        )),
+                        DataCell(
+                          Icon(
+                            Icons.edit,
+                            color: Theme.of(context).myAmberColorDark,
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (ctx) => TicketEditScreen(
+                                  docId: item.id,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                       ],
                     ),
                   )

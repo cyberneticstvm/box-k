@@ -209,7 +209,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
           return res.getSum('count');
         }); // Ordered Ticket Count
 
-        if (count + ocount! >= bcount! && bcount != 0) {
+        if (count + ocount! >= bcount! && bcount > 0) {
           throw Exception("Limit exceeds for number $n");
         }
       }
@@ -286,6 +286,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
       );
       if (result) {
         //Orderd().addItemToDB(items);
+        final collection = FirebaseFirestore.instance.collection('orders');
         for (var item in items) {
           final Map<String, dynamic> itemMap = {
             "ticket": item.ticket,
@@ -298,7 +299,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
             "play_date": item.playDate,
             "created_at": item.createdAt,
           };
-          FirebaseFirestore.instance.collection('orders').add(itemMap);
+          collection.add(itemMap);
         }
         _message("Order saved successfully", Colors.white, Colors.green);
         _clearForm();

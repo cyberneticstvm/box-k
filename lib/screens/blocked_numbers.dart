@@ -69,6 +69,43 @@ class _BlockedNumberScreenState extends ConsumerState<BlockedNumberScreen> {
     }
   }
 
+  void _delete(String docId) async {
+    final result = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Proceed?'),
+          content: const Text('Are you sure want to delete this number?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text(
+                'Cancel',
+                style: TextStyle(
+                  color: Color(0xFFEA4335),
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: const Text(
+                'Yes',
+                style: TextStyle(color: Colors.green),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+    if (result) {
+      await FirebaseFirestore.instance
+          .collection('blocked_numbers')
+          .doc(docId)
+          .delete();
+      _message("Number released successfully!", Colors.white, Colors.green);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -228,9 +265,17 @@ class _BlockedNumberScreenState extends ConsumerState<BlockedNumberScreen> {
                                   DataCell(Text(item['number'])),
                                   DataCell(Text(item['count'].toString())),
                                   DataCell(
-                                    Icon(
-                                      Icons.delete,
-                                      color: Theme.of(context).myRedColorDark,
+                                    IconButton(
+                                      icon: Icon(
+                                        Icons.delete,
+                                        color: Theme.of(context).myRedColorDark,
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          snapshot.data!.docs.remove(item);
+                                        });
+                                        _delete(item.id);
+                                      },
                                     ),
                                   ),
                                 ],

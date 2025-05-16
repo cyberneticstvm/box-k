@@ -1,4 +1,5 @@
 import 'package:boxk/colors/color.dart';
+import 'package:boxk/screens/scheme_edit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -43,6 +44,7 @@ class _SchemeScreenState extends ConsumerState<SchemeScreen> {
               );
             }
             return DataTable(
+              columnSpacing: MediaQuery.of(context).size.height * .025,
               columns: const [
                 DataColumn(label: Text('Ticket')),
                 DataColumn(label: Text('Position')),
@@ -50,7 +52,6 @@ class _SchemeScreenState extends ConsumerState<SchemeScreen> {
                 DataColumn(label: Text('Amount')),
                 DataColumn(label: Text('Super')),
                 DataColumn(label: Text('Edit')),
-                DataColumn(label: Text('Delete')),
               ],
               rows: snapshot.data!.docs
                   .map(
@@ -61,14 +62,22 @@ class _SchemeScreenState extends ConsumerState<SchemeScreen> {
                         DataCell(Text(item['count'].toString())),
                         DataCell(Text(item['amount'].toString())),
                         DataCell(Text(item['super'].toString())),
-                        DataCell(Icon(
-                          Icons.edit,
-                          color: Theme.of(context).myAmberColorDark,
-                        )),
-                        DataCell(Icon(
-                          Icons.delete,
-                          color: Theme.of(context).myRedColorDark,
-                        )),
+                        DataCell(
+                          Icon(
+                            Icons.edit,
+                            color: Theme.of(context).myAmberColorDark,
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (ctx) => SchemeEditScreen(
+                                  docId: item.id,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                       ],
                     ),
                   )

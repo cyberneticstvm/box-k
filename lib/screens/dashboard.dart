@@ -24,6 +24,18 @@ class DashboardScreen extends ConsumerStatefulWidget {
 }
 
 class _DashboardScreenState extends ConsumerState<DashboardScreen> {
+  void _message(String msg, Color color) {
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: color,
+        content: Text(
+          msg,
+        ),
+      ),
+    );
+  }
+
   @override
   void initState() {
     FirebaseFirestore.instance
@@ -31,13 +43,18 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         .doc(_firebase.currentUser!.uid)
         .get()
         .then((DocumentSnapshot snapshot) {
-      ref
-          .read(currentUserProvider.notifier)
-          .update((state) => snapshot.data() as Map<String, dynamic>);
-      ref
-          .read(selectedUserProvider.notifier)
-          .update((state) => snapshot.data() as Map<String, dynamic>);
-      ref.read(selectedUser.notifier).update((state) => snapshot['uid']);
+      if (snapshot['status'] == 'Active') {
+        ref
+            .read(currentUserProvider.notifier)
+            .update((state) => snapshot.data() as Map<String, dynamic>);
+        ref
+            .read(selectedUserProvider.notifier)
+            .update((state) => snapshot.data() as Map<String, dynamic>);
+        ref.read(selectedUser.notifier).update((state) => snapshot['uid']);
+      } else {
+        _firebase.signOut();
+        _message("Invalid or Blocked User", Colors.red);
+      }
     });
     super.initState();
   }

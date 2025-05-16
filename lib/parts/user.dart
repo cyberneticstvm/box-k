@@ -33,14 +33,35 @@ class _UserDropdownState extends ConsumerState<UserDropdownList> {
     });
   }
 
+  Future<QuerySnapshot<Map<String, dynamic>>>? _getUsers() async {
+    final collection = FirebaseFirestore.instance
+        .collection('users')
+        .where('status', isEqualTo: 'Active');
+    var users = await collection.where('role', isEqualTo: 'User').get();
+    if (ref.watch(currentUserProvider)['role'] == 'Leader') {
+      users = await collection
+          .where('role', isEqualTo: 'User')
+          .where('parent', isEqualTo: ref.watch(currentUserProvider)['uid'])
+          .get();
+    }
+    if (ref.watch(currentUserProvider)['role'] == 'User') {
+      users = await collection
+          .where('uid', isEqualTo: ref.watch(currentUserProvider)['uid'])
+          .get();
+    }
+    return users;
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: FirebaseFirestore.instance.collection('users').get(),
+      future: _getUsers(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return Container();
         return DropdownButtonFormField(
-          value: ref.watch(selectedUser),
+          value: (ref.watch(currentUserProvider)['role'] == 'User')
+              ? ref.watch(currentUserProvider)['uid']
+              : null,
           isExpanded: true,
           items: snapshot.data!.docs.map((value) {
             return DropdownMenuItem(
