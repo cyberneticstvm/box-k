@@ -1,6 +1,7 @@
 import 'package:boxk/colors/color.dart';
 import 'package:boxk/providers/order.dart';
 import 'package:boxk/providers/user.dart';
+import 'package:boxk/screens/bill_delete.dart';
 import 'package:boxk/screens/blocked_numbers.dart';
 import 'package:boxk/screens/play.dart';
 import 'package:boxk/screens/scheme.dart';
@@ -266,7 +267,7 @@ class _DrawerWidgetState extends ConsumerState<DrawerWidget> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (ctx) => const PlayScreen(),
+                            builder: (ctx) => const BillDeleteScreen(),
                           ),
                         );
                       },

@@ -51,8 +51,7 @@ class _UserScreenState extends ConsumerState<UserEditScreen> {
         _isUpdating = false;
       });
       if (mounted) Navigator.pop(context);
-      _message('User updated successfully',
-          const Color.fromARGB(255, 35, 41, 36), Colors.white);
+      _message('Password updated successfully', Colors.green, Colors.white);
     } on FirebaseException catch (err) {
       _message(err.message.toString(), Colors.red, Colors.white);
     }

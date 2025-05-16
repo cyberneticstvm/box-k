@@ -287,8 +287,11 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
       if (result) {
         //Orderd().addItemToDB(items);
         final collection = FirebaseFirestore.instance.collection('orders');
+        final billNo =
+            DateTime.now().millisecondsSinceEpoch.remainder(100000).toString();
         for (var item in items) {
           final Map<String, dynamic> itemMap = {
+            "bill_number": billNo,
             "ticket": item.ticket,
             "user_id": item.userId,
             "play": item.play,
