@@ -28,7 +28,6 @@ class _BillScreenState extends ConsumerState<BillDeleteScreen> {
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>>? _getBills() async {
-    var now = DateFormat("HH:mm:ss").format(DateTime.now());
     final collection = FirebaseFirestore.instance.collection('orders').where(
         'play_date',
         isGreaterThanOrEqualTo: DateTime(
