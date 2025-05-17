@@ -120,13 +120,13 @@ class _PlayDropdownState extends ConsumerState<PlayDropdownList> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      openDropDown();
+      if (widget.isBlockedCheck) openDropDown();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    isPlayLocked();
+    if (widget.isBlockedCheck) isPlayLocked();
     return FutureBuilder(
       future:
           FirebaseFirestore.instance.collection('plays').orderBy('id').get(),

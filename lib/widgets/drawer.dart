@@ -4,6 +4,7 @@ import 'package:boxk/providers/user.dart';
 import 'package:boxk/screens/bill_delete.dart';
 import 'package:boxk/screens/blocked_numbers.dart';
 import 'package:boxk/screens/play.dart';
+import 'package:boxk/screens/result.dart';
 import 'package:boxk/screens/scheme.dart';
 import 'package:boxk/screens/ticket.dart';
 import 'package:boxk/screens/user.dart';
@@ -273,6 +274,47 @@ class _DrawerWidgetState extends ConsumerState<DrawerWidget> {
                       },
                     ),
                   ],
+                ),
+                ExpansionTile(
+                  trailing: const Icon(
+                    Icons.keyboard_arrow_down,
+                    color: Colors.white,
+                  ),
+                  leading: const Icon(
+                    Icons.numbers,
+                    color: Colors.white,
+                  ),
+                  shape: const Border(),
+                  title: const Text(
+                    'Result',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 17,
+                    ),
+                  ),
+                  children: [
+                    ListTile(
+                      leading: Icon(
+                        Icons.radio_button_checked,
+                        color: Theme.of(context).myAmberColorDark,
+                      ),
+                      title: const Text(
+                        'Upadate Result',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (ctx) => const ResultScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 15,
                 ),
                 TextButton(
                   onPressed: () {
