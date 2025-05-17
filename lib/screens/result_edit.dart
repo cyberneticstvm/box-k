@@ -16,8 +16,6 @@ class ResultEditScreen extends ConsumerStatefulWidget {
 }
 
 class _ResultEditScreenState extends ConsumerState<ResultEditScreen> {
-  final playDate =
-      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
   final _resultFormKey = GlobalKey<FormState>();
   String? p1,
       p2,
@@ -153,6 +151,7 @@ class _ResultEditScreenState extends ConsumerState<ResultEditScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final focus = FocusScope.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -173,6 +172,11 @@ class _ResultEditScreenState extends ConsumerState<ResultEditScreen> {
                     children: [
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           controller:
                               TextEditingController(text: result?['p1']),
                           decoration: InputDecoration(
@@ -192,6 +196,11 @@ class _ResultEditScreenState extends ConsumerState<ResultEditScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           controller:
                               TextEditingController(text: result?['p2']),
                           decoration: InputDecoration(
@@ -211,6 +220,11 @@ class _ResultEditScreenState extends ConsumerState<ResultEditScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           controller:
                               TextEditingController(text: result?['p3']),
                           decoration: InputDecoration(
@@ -230,6 +244,11 @@ class _ResultEditScreenState extends ConsumerState<ResultEditScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           controller:
                               TextEditingController(text: result?['p4']),
                           decoration: InputDecoration(
@@ -253,6 +272,11 @@ class _ResultEditScreenState extends ConsumerState<ResultEditScreen> {
                     children: [
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           controller:
                               TextEditingController(text: result?['p5']),
                           decoration: InputDecoration(
@@ -272,6 +296,11 @@ class _ResultEditScreenState extends ConsumerState<ResultEditScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           controller:
                               TextEditingController(text: result?['p6']),
                           decoration: InputDecoration(
@@ -291,6 +320,11 @@ class _ResultEditScreenState extends ConsumerState<ResultEditScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           controller:
                               TextEditingController(text: result?['p7']),
                           decoration: InputDecoration(
@@ -310,6 +344,11 @@ class _ResultEditScreenState extends ConsumerState<ResultEditScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           controller:
                               TextEditingController(text: result?['p8']),
                           decoration: InputDecoration(
@@ -333,6 +372,11 @@ class _ResultEditScreenState extends ConsumerState<ResultEditScreen> {
                     children: [
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           controller:
                               TextEditingController(text: result?['p9']),
                           decoration: InputDecoration(
@@ -352,6 +396,11 @@ class _ResultEditScreenState extends ConsumerState<ResultEditScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           controller:
                               TextEditingController(text: result?['p10']),
                           decoration: InputDecoration(
@@ -371,6 +420,11 @@ class _ResultEditScreenState extends ConsumerState<ResultEditScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           controller:
                               TextEditingController(text: result?['p11']),
                           decoration: InputDecoration(
@@ -390,6 +444,11 @@ class _ResultEditScreenState extends ConsumerState<ResultEditScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           controller:
                               TextEditingController(text: result?['p12']),
                           decoration: InputDecoration(
@@ -413,6 +472,11 @@ class _ResultEditScreenState extends ConsumerState<ResultEditScreen> {
                     children: [
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           controller:
                               TextEditingController(text: result?['p13']),
                           decoration: InputDecoration(
@@ -432,6 +496,11 @@ class _ResultEditScreenState extends ConsumerState<ResultEditScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           controller:
                               TextEditingController(text: result?['p14']),
                           decoration: InputDecoration(
@@ -451,6 +520,11 @@ class _ResultEditScreenState extends ConsumerState<ResultEditScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           controller:
                               TextEditingController(text: result?['p15']),
                           decoration: InputDecoration(
@@ -470,6 +544,11 @@ class _ResultEditScreenState extends ConsumerState<ResultEditScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           controller:
                               TextEditingController(text: result?['p16']),
                           decoration: InputDecoration(
@@ -493,6 +572,11 @@ class _ResultEditScreenState extends ConsumerState<ResultEditScreen> {
                     children: [
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           controller:
                               TextEditingController(text: result?['p17']),
                           decoration: InputDecoration(
@@ -512,6 +596,11 @@ class _ResultEditScreenState extends ConsumerState<ResultEditScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           controller:
                               TextEditingController(text: result?['p18']),
                           decoration: InputDecoration(
@@ -531,6 +620,11 @@ class _ResultEditScreenState extends ConsumerState<ResultEditScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           controller:
                               TextEditingController(text: result?['p19']),
                           decoration: InputDecoration(
@@ -550,6 +644,11 @@ class _ResultEditScreenState extends ConsumerState<ResultEditScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           controller:
                               TextEditingController(text: result?['p20']),
                           decoration: InputDecoration(
@@ -573,6 +672,11 @@ class _ResultEditScreenState extends ConsumerState<ResultEditScreen> {
                     children: [
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           controller:
                               TextEditingController(text: result?['p21']),
                           decoration: InputDecoration(
@@ -592,6 +696,11 @@ class _ResultEditScreenState extends ConsumerState<ResultEditScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           controller:
                               TextEditingController(text: result?['p22']),
                           decoration: InputDecoration(
@@ -611,6 +720,11 @@ class _ResultEditScreenState extends ConsumerState<ResultEditScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           controller:
                               TextEditingController(text: result?['p23']),
                           decoration: InputDecoration(
@@ -630,6 +744,11 @@ class _ResultEditScreenState extends ConsumerState<ResultEditScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           controller:
                               TextEditingController(text: result?['p24']),
                           decoration: InputDecoration(
@@ -653,6 +772,11 @@ class _ResultEditScreenState extends ConsumerState<ResultEditScreen> {
                     children: [
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           controller:
                               TextEditingController(text: result?['p25']),
                           decoration: InputDecoration(
@@ -672,6 +796,11 @@ class _ResultEditScreenState extends ConsumerState<ResultEditScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           controller:
                               TextEditingController(text: result?['p26']),
                           decoration: InputDecoration(
@@ -691,6 +820,11 @@ class _ResultEditScreenState extends ConsumerState<ResultEditScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           controller:
                               TextEditingController(text: result?['p27']),
                           decoration: InputDecoration(
@@ -710,6 +844,11 @@ class _ResultEditScreenState extends ConsumerState<ResultEditScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           controller:
                               TextEditingController(text: result?['p28']),
                           decoration: InputDecoration(
@@ -733,6 +872,11 @@ class _ResultEditScreenState extends ConsumerState<ResultEditScreen> {
                     children: [
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           controller:
                               TextEditingController(text: result?['p29']),
                           decoration: InputDecoration(
@@ -752,6 +896,11 @@ class _ResultEditScreenState extends ConsumerState<ResultEditScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           controller:
                               TextEditingController(text: result?['p30']),
                           decoration: InputDecoration(
@@ -771,6 +920,11 @@ class _ResultEditScreenState extends ConsumerState<ResultEditScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           controller:
                               TextEditingController(text: result?['p31']),
                           decoration: InputDecoration(
@@ -790,6 +944,11 @@ class _ResultEditScreenState extends ConsumerState<ResultEditScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           controller:
                               TextEditingController(text: result?['p32']),
                           decoration: InputDecoration(
@@ -813,6 +972,11 @@ class _ResultEditScreenState extends ConsumerState<ResultEditScreen> {
                     children: [
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           controller:
                               TextEditingController(text: result?['p33']),
                           decoration: InputDecoration(
@@ -832,6 +996,11 @@ class _ResultEditScreenState extends ConsumerState<ResultEditScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           controller:
                               TextEditingController(text: result?['p34']),
                           decoration: InputDecoration(
@@ -851,6 +1020,7 @@ class _ResultEditScreenState extends ConsumerState<ResultEditScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          textInputAction: TextInputAction.done,
                           controller:
                               TextEditingController(text: result?['p35']),
                           decoration: InputDecoration(

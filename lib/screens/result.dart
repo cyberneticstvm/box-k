@@ -147,6 +147,7 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final focus = FocusScope.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -173,6 +174,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                     children: [
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           decoration: InputDecoration(
                             labelText: 'P1',
                             labelStyle: TextStyle(
@@ -190,6 +196,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           decoration: InputDecoration(
                             labelText: 'P2',
                             labelStyle: TextStyle(
@@ -207,6 +218,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           decoration: InputDecoration(
                             labelText: 'P3',
                             labelStyle: TextStyle(
@@ -224,6 +240,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           decoration: InputDecoration(
                             labelText: 'P4',
                             labelStyle: TextStyle(
@@ -245,6 +266,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                     children: [
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           decoration: InputDecoration(
                             labelText: 'P5',
                             labelStyle: TextStyle(
@@ -262,6 +288,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           decoration: InputDecoration(
                             labelText: 'P6',
                             labelStyle: TextStyle(
@@ -279,6 +310,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           decoration: InputDecoration(
                             labelText: 'P7',
                             labelStyle: TextStyle(
@@ -296,6 +332,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           decoration: InputDecoration(
                             labelText: 'P8',
                             labelStyle: TextStyle(
@@ -317,6 +358,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                     children: [
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           decoration: InputDecoration(
                             labelText: 'P9',
                             labelStyle: TextStyle(
@@ -334,6 +380,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           decoration: InputDecoration(
                             labelText: 'P10',
                             labelStyle: TextStyle(
@@ -351,6 +402,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           decoration: InputDecoration(
                             labelText: 'P11',
                             labelStyle: TextStyle(
@@ -368,6 +424,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           decoration: InputDecoration(
                             labelText: 'P12',
                             labelStyle: TextStyle(
@@ -389,6 +450,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                     children: [
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           decoration: InputDecoration(
                             labelText: 'P13',
                             labelStyle: TextStyle(
@@ -406,6 +472,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           decoration: InputDecoration(
                             labelText: 'P14',
                             labelStyle: TextStyle(
@@ -423,6 +494,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           decoration: InputDecoration(
                             labelText: 'P15',
                             labelStyle: TextStyle(
@@ -440,6 +516,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           decoration: InputDecoration(
                             labelText: 'P16',
                             labelStyle: TextStyle(
@@ -461,6 +542,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                     children: [
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           decoration: InputDecoration(
                             labelText: 'P17',
                             labelStyle: TextStyle(
@@ -478,6 +564,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           decoration: InputDecoration(
                             labelText: 'P18',
                             labelStyle: TextStyle(
@@ -495,6 +586,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           decoration: InputDecoration(
                             labelText: 'P19',
                             labelStyle: TextStyle(
@@ -512,6 +608,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           decoration: InputDecoration(
                             labelText: 'P20',
                             labelStyle: TextStyle(
@@ -533,6 +634,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                     children: [
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           decoration: InputDecoration(
                             labelText: 'P21',
                             labelStyle: TextStyle(
@@ -550,6 +656,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           decoration: InputDecoration(
                             labelText: 'P22',
                             labelStyle: TextStyle(
@@ -567,6 +678,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           decoration: InputDecoration(
                             labelText: 'P23',
                             labelStyle: TextStyle(
@@ -584,6 +700,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           decoration: InputDecoration(
                             labelText: 'P24',
                             labelStyle: TextStyle(
@@ -605,6 +726,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                     children: [
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           decoration: InputDecoration(
                             labelText: 'P25',
                             labelStyle: TextStyle(
@@ -622,6 +748,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           decoration: InputDecoration(
                             labelText: 'P26',
                             labelStyle: TextStyle(
@@ -639,6 +770,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           decoration: InputDecoration(
                             labelText: 'P27',
                             labelStyle: TextStyle(
@@ -656,6 +792,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           decoration: InputDecoration(
                             labelText: 'P28',
                             labelStyle: TextStyle(
@@ -677,6 +818,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                     children: [
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           decoration: InputDecoration(
                             labelText: 'P29',
                             labelStyle: TextStyle(
@@ -694,6 +840,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           decoration: InputDecoration(
                             labelText: 'P30',
                             labelStyle: TextStyle(
@@ -711,6 +862,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           decoration: InputDecoration(
                             labelText: 'P31',
                             labelStyle: TextStyle(
@@ -728,6 +884,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           decoration: InputDecoration(
                             labelText: 'P32',
                             labelStyle: TextStyle(
@@ -749,6 +910,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                     children: [
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           decoration: InputDecoration(
                             labelText: 'P33',
                             labelStyle: TextStyle(
@@ -766,6 +932,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          onChanged: (val) {
+                            if (val.length == 3) {
+                              focus.nextFocus();
+                            }
+                          },
                           decoration: InputDecoration(
                             labelText: 'P34',
                             labelStyle: TextStyle(
@@ -783,6 +954,7 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
+                          textInputAction: TextInputAction.done,
                           decoration: InputDecoration(
                             labelText: 'P35',
                             labelStyle: TextStyle(
@@ -852,8 +1024,11 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                   .get(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                  return const Center(
-                    child: Text('No resultd found.'),
+                  return Center(
+                    child: Text(
+                      'No result found.',
+                      style: TextStyle(color: Theme.of(context).myRedColorDark),
+                    ),
                   );
                 }
                 if (snapshot.connectionState == ConnectionState.waiting) {
