@@ -286,9 +286,21 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
       );
       if (result) {
         //Orderd().addItemToDB(items);
+        final billNo = await FirebaseFirestore.instance
+            .collection('orders')
+            .orderBy('bill_number', descending: true)
+            .limit(1)
+            .get()
+            .then((snapshot) {
+          if (snapshot.docs.isNotEmpty) {
+            return snapshot.docs[0]['bill_number'] + 1;
+          } else {
+            return 1;
+          }
+        });
+        //DateTime.now().millisecondsSinceEpoch.remainder(100000).toString();
         final collection = FirebaseFirestore.instance.collection('orders');
-        final billNo =
-            DateTime.now().millisecondsSinceEpoch.remainder(100000).toString();
+
         for (var item in items) {
           final Map<String, dynamic> itemMap = {
             "bill_number": billNo,
