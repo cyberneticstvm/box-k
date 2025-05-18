@@ -3,10 +3,13 @@ import 'package:boxk/parts/timer.dart';
 import 'package:boxk/providers/order.dart';
 import 'package:boxk/providers/page.dart';
 import 'package:boxk/providers/user.dart';
+import 'package:boxk/widgets/chat.dart';
 import 'package:boxk/widgets/dashboard.dart';
 import 'package:boxk/widgets/drawer.dart';
 import 'package:boxk/widgets/home.dart';
 import 'package:boxk/widgets/order.dart';
+import 'package:boxk/widgets/report.dart';
+import 'package:boxk/widgets/sales.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -64,13 +67,13 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     int selectedPageIndex = ref.watch(selectedPage);
     Widget activePage = DashboardWidget();
     if (selectedPageIndex == 1) {
-      activePage = const DashboardWidget();
+      activePage = const SalesWidget();
     }
     if (selectedPageIndex == 2) {
-      activePage = const DashboardWidget();
+      activePage = const ReportWidget();
     }
     if (selectedPageIndex == 3) {
-      activePage = const DashboardWidget();
+      activePage = const ChatWidget();
     }
     if (selectedPageIndex == 4) {
       activePage = const HomeWidget();
