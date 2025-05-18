@@ -154,7 +154,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
       } else {
         ticketList = [ref.watch(selectedTicket)];
       }
-      final btc = FirebaseFirestore.instance.collection('blocked_numbers');
+      //final btc = FirebaseFirestore.instance.collection('blocked_numbers');
       // Blocked Ticket Count
       final btco = FirebaseFirestore.instance
           .collection('orders')
@@ -192,7 +192,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
           throw Exception("Limit exceeds for ticket $tname");
         }
       }
-      for (var n in number) {
+      /*for (var n in number) {
         final bcount = await btc
             .where('number', isEqualTo: n)
             .aggregate(sum("count"))
@@ -212,7 +212,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
         if (count + ocount! >= bcount! && bcount > 0) {
           throw Exception("Limit exceeds for number $n");
         }
-      }
+      }*/
       /*double ticketRate = double.parse(item['user_rate']);
       if (ref.watch(selectedUserProvider)['role'] == 'Admin') {
         ticketRate = double.parse(item['admin_rate']);
