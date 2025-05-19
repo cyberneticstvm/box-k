@@ -29,6 +29,7 @@ class _TicketScreenState extends ConsumerState<TicketScreen> {
         child: FutureBuilder(
           future: FirebaseFirestore.instance
               .collection('tickets')
+              .where('name', isNotEqualTo: 'All')
               .orderBy('id')
               .get(),
           builder: (context, snapshot) {

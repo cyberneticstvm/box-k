@@ -1,4 +1,5 @@
 import 'package:boxk/colors/color.dart';
+import 'package:boxk/reports/sales.dart';
 import 'package:boxk/screens/scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -53,7 +54,12 @@ class _ReportWidgetState extends ConsumerState<ReportWidget> {
                     ),
                   ),
                   onTap: () {
-                    //
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (ctx) => const SalesReportScreen(),
+                      ),
+                    );
                   }),
             ),
             const SizedBox(

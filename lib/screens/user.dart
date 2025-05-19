@@ -277,6 +277,7 @@ class _UserManagementScreenState extends ConsumerState<UserManagementScreen> {
                   FutureBuilder(
                     future: FirebaseFirestore.instance
                         .collection('users')
+                        .where('name', isNotEqualTo: 'All')
                         .where('status', isEqualTo: 'Active')
                         .get(),
                     builder: (context, snapshot) {

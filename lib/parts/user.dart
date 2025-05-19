@@ -36,6 +36,7 @@ class _UserDropdownState extends ConsumerState<UserDropdownList> {
   Future<QuerySnapshot<Map<String, dynamic>>>? _getUsers() async {
     final collection = FirebaseFirestore.instance
         .collection('users')
+        .where('name', isNotEqualTo: 'All')
         .where('status', isEqualTo: 'Active');
     var users = await collection.where('role', isEqualTo: 'User').get();
     if (ref.watch(currentUserProvider)['role'] == 'Leader') {

@@ -40,6 +40,7 @@ class _PlayDropdownState extends ConsumerState<PlayDropdownList> {
     ];
     final plays = await FirebaseFirestore.instance
         .collection('plays')
+        .where('name', isNotEqualTo: 'All')
         .orderBy('id')
         .get()
         .then((snapshot) {
@@ -87,6 +88,7 @@ class _PlayDropdownState extends ConsumerState<PlayDropdownList> {
   void isPlayLocked() async {
     final play = await FirebaseFirestore.instance
         .collection('plays')
+        .where('name', isNotEqualTo: 'All')
         .where('code', isEqualTo: ref.watch(selectedPlayCode))
         .get()
         .then((snapshot) {
@@ -109,10 +111,13 @@ class _PlayDropdownState extends ConsumerState<PlayDropdownList> {
           DateTime.now().year, DateTime.now().month, DateTime.now().day);
       if ((now.hour == stime.hour && now.minute >= stime.minute) ||
           now.hour >= stime.hour) {
-        date = DateTime.now().add(const Duration(days: 1));
+        date = DateTime.now().add(Duration(days: 1));
         date = DateTime(date.year, date.month, date.day);
         ref.read(playDate.notifier).update((state) => date);
+      } else {
+        ref.invalidate(playDate);
       }
+      print(ref.watch(playDate));
     }
   }
 
@@ -128,8 +133,11 @@ class _PlayDropdownState extends ConsumerState<PlayDropdownList> {
   Widget build(BuildContext context) {
     if (widget.isBlockedCheck) isPlayLocked();
     return FutureBuilder(
-      future:
-          FirebaseFirestore.instance.collection('plays').orderBy('id').get(),
+      future: FirebaseFirestore.instance
+          .collection('plays')
+          .where('name', isNotEqualTo: 'All')
+          .orderBy('id')
+          .get(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return Container();
         return DropdownButtonFormField(

@@ -30,6 +30,7 @@ class _PlayScreenState extends ConsumerState<PlayScreen> {
         child: FutureBuilder(
           future: FirebaseFirestore.instance
               .collection('plays')
+              .where('name', isNotEqualTo: 'All')
               .orderBy('id')
               .get(),
           builder: (context, snapshot) {
