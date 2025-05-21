@@ -17,6 +17,8 @@ class ItemAddNotifier extends StateNotifier<List<Item>> {
       int count,
       double rate,
       num total,
+      num superr,
+      num position,
       DateTime playDate,
       DateTime createdAt) async {
     final newItem = Item(
@@ -27,6 +29,8 @@ class ItemAddNotifier extends StateNotifier<List<Item>> {
       count: count,
       rate: rate,
       total: total,
+      superr: superr,
+      position: position,
       playDate: playDate,
       createdAt: createdAt,
     );

@@ -109,15 +109,22 @@ class _PlayDropdownState extends ConsumerState<PlayDropdownList> {
       ref.read(isPlayBlocked.notifier).update((state) => false);
       DateTime date = DateTime(
           DateTime.now().year, DateTime.now().month, DateTime.now().day);
-      if ((now.hour == stime.hour && now.minute >= stime.minute) ||
-          now.hour >= stime.hour) {
+      if ((now.hour == stime.hour && stime.minute <= now.minute) ||
+          (now.hour > stime.hour)) {
         date = DateTime.now().add(Duration(days: 1));
         date = DateTime(date.year, date.month, date.day);
         ref.read(playDate.notifier).update((state) => date);
       } else {
-        ref.invalidate(playDate);
+        ref.read(playDate.notifier).update((state) => DateTime(
+            DateTime.now().year, DateTime.now().month, DateTime.now().day));
       }
-      //print(ref.watch(playDate));
+      /*print([
+        now.hour,
+        now.minute,
+        stime.hour,
+        stime.minute,
+        ref.watch(playDate)
+      ]);*/
     }
   }
 

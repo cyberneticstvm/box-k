@@ -238,6 +238,8 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
                 count,
                 double.parse(item['user_rate'].toString()),
                 double.parse((count * item['user_rate']).toStringAsFixed(2)),
+                0,
+                0,
                 ref.watch(playDate),
                 DateTime.now(),
               );
@@ -309,12 +311,24 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
             return 0;
           }
         });
-        final collection = FirebaseFirestore.instance.collection('orders');
 
+        final collection = FirebaseFirestore.instance.collection('orders');
+        var schemes = FirebaseFirestore.instance.collection('schemes');
         for (var item in items) {
+          var tkt = (item.ticket == 'd1' ||
+                  item.ticket == 'd6' ||
+                  item.ticket == 'd8')
+              ? 'king'
+              : item.ticket;
+          var scheme = await schemes
+              .where('ticket', isEqualTo: tkt)
+              .get()
+              .then((snapshot) {
+            return snapshot.docs[0];
+          });
           final Map<String, dynamic> itemMap = {
             "bill_number": billNo,
-            "ticket": item.ticket,
+            "ticket": tkt,
             "user_id": int.parse(item.userId),
             "parent": parent,
             "play": item.play,
@@ -322,6 +336,8 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
             "count": item.count,
             "rate": item.rate,
             "total": item.total,
+            "super": scheme['super'],
+            "position": scheme['position'],
             "play_date": item.playDate,
             "created_at": item.createdAt,
           };

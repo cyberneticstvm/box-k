@@ -9,6 +9,8 @@ class Item {
     required this.count,
     required this.rate,
     required this.total,
+    required this.superr,
+    required this.position,
     required this.playDate,
     required this.createdAt,
   });
@@ -19,6 +21,8 @@ class Item {
   final int count;
   final double rate;
   final num total;
+  final num superr;
+  final num position;
   final DateTime playDate;
   final DateTime createdAt;
 
@@ -30,6 +34,8 @@ class Item {
         'count': count,
         'userPrice': rate,
         'total': total,
+        'super': superr,
+        'position': position,
         'playDate': playDate.toString(),
         'createdAt': createdAt.toString()
       };

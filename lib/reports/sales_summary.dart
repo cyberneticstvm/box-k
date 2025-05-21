@@ -1,5 +1,6 @@
 import 'package:boxk/colors/color.dart';
 import 'package:boxk/providers/report.dart';
+import 'package:boxk/reports/sales_detail.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -120,6 +121,39 @@ class _SalesSummaryReportState extends ConsumerState<SalesSummaryReport> {
                       ),
                     ],
                   ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(
+                        child: Center(
+                          child: OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                                side: BorderSide(
+                              width: 1.0,
+                              color: Colors.white,
+                            )),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (ctx) => const SalesDetailReport(),
+                                ),
+                              );
+                            },
+                            child: Text(
+                              'VIEW DETAILS',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  )
                 ],
               ),
             ),
