@@ -2,6 +2,7 @@ import 'package:boxk/colors/color.dart';
 import 'package:boxk/providers/item.dart';
 import 'package:boxk/providers/order.dart';
 import 'package:boxk/providers/page.dart';
+import 'package:boxk/providers/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -245,7 +246,6 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
     } catch (err) {
       _message(err.toString(), Colors.white, Colors.red);
     }
-
     _clearForm();
   }
 
@@ -298,14 +298,25 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
             return 1;
           }
         });
-        //DateTime.now().millisecondsSinceEpoch.remainder(100000).toString();
+        final parent = await FirebaseFirestore.instance
+            .collection('users')
+            .where('uid', isEqualTo: ref.watch(selectedUserProvider)['uid'])
+            .get()
+            .then((snapshot) {
+          if (snapshot.docs.isNotEmpty) {
+            return snapshot.docs[0]['parent'];
+          } else {
+            return 0;
+          }
+        });
         final collection = FirebaseFirestore.instance.collection('orders');
 
         for (var item in items) {
           final Map<String, dynamic> itemMap = {
             "bill_number": billNo,
             "ticket": item.ticket,
-            "user_id": item.userId,
+            "user_id": int.parse(item.userId),
+            "parent": parent,
             "play": item.play,
             "number": item.number,
             "count": item.count,

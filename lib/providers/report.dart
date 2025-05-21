@@ -1,3 +1,4 @@
+import 'package:boxk/providers/user.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final selectedNumberGroupReport = StateProvider<int>((ref) {
@@ -5,7 +6,7 @@ final selectedNumberGroupReport = StateProvider<int>((ref) {
 });
 
 final selectedPlayCodeReport = StateProvider<String>((ref) {
-  return 'king'; // Always selected 3:00 PM as default play
+  return 'All';
 });
 
 final selectedTicketReport = StateProvider<String>((ref) {
@@ -22,10 +23,14 @@ final selectedDateTo = StateProvider<DateTime>((ref) {
       DateTime.now().year, DateTime.now().month, DateTime.now().day);
 });
 
-final enteredBillNumber = StateProvider<String>((ref) {
-  return '';
+final enteredBillNumber = StateProvider<int>((ref) {
+  return 0;
 });
 
 final enteredTicketNumber = StateProvider<String>((ref) {
   return '';
+});
+
+final selectedUserProviderReport = StateProvider<Map<String, dynamic>>((ref) {
+  return ref.watch(currentUserProvider);
 });

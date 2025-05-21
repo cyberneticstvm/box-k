@@ -15,15 +15,46 @@ class SalesSummaryReport extends ConsumerStatefulWidget {
 }
 
 class _SalesSummaryReportState extends ConsumerState<SalesSummaryReport> {
-  double total = 0.0;
-  int? count = 0;
+  double? total = 0.0;
+  double? count = 0.0;
   Future<void> getData() async {
-    final collection = FirebaseFirestore.instance.collection('orders').where(
+    var collection = FirebaseFirestore.instance.collection('orders').where(
         'play_date',
         isGreaterThanOrEqualTo: ref.watch(selectedDateFrom),
         isLessThanOrEqualTo: ref.watch(selectedDateTo));
+    if (ref.watch(enteredTicketNumber) != '') {
+      collection =
+          collection.where('number', isEqualTo: ref.watch(enteredTicketNumber));
+    }
+    if (ref.watch(enteredBillNumber) > 0) {
+      collection = collection.where('bill_number',
+          isEqualTo: ref.watch(enteredBillNumber));
+    }
+    if (ref.watch(selectedPlayCodeReport) != 'All') {
+      collection = collection.where('play',
+          isEqualTo: ref.watch(selectedPlayCodeReport));
+    }
+    if (ref.watch(selectedTicketReport) != 'All') {
+      collection = collection.where('ticket',
+          isEqualTo: ref.watch(selectedTicketReport));
+    }
+    if (ref.watch(selectedUserProviderReport)['role'] == 'Leader') {
+      collection = collection.where('parent',
+          isEqualTo: ref.watch(selectedUserProviderReport)['uid']);
+    }
+    if (ref.watch(selectedUserProviderReport)['role'] == 'User') {
+      collection = collection.where('user_id',
+          isEqualTo: ref.watch(selectedUserProviderReport)['uid']);
+    }
     final c = await collection.aggregate(sum('count')).get().then((res) {
       return res.getSum('count');
+    });
+    final s = await collection.aggregate(sum('total')).get().then((res) {
+      return res.getSum('total');
+    });
+    setState(() {
+      count = double.parse(c.toString());
+      total = double.parse(s.toString());
     });
   }
 
@@ -46,7 +77,7 @@ class _SalesSummaryReportState extends ConsumerState<SalesSummaryReport> {
       body: Column(
         children: [
           Card(
-            color: const Color(0xff2c73e7),
+            color: Theme.of(context).myBlueColorLight,
             child: Padding(
               padding: const EdgeInsets.all(25.0),
               child: Column(

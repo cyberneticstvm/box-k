@@ -1,6 +1,4 @@
 import 'package:boxk/colors/color.dart';
-import 'package:boxk/parts/user.dart';
-import 'package:boxk/providers/order.dart';
 import 'package:boxk/providers/report.dart';
 import 'package:boxk/providers/user.dart';
 import 'package:boxk/reports/sales_summary.dart';
@@ -45,7 +43,7 @@ class _SalesReportScreenState extends ConsumerState<SalesReportScreen> {
           ref.invalidate(selectedDateTo);
           ref.invalidate(enteredBillNumber);
           ref.invalidate(enteredTicketNumber);
-          ref.invalidate(selectedUser);
+          ref.invalidate(selectedUserProviderReport);
         }
       },
       child: Scaffold(
@@ -96,9 +94,12 @@ class _SalesReportScreenState extends ConsumerState<SalesReportScreen> {
                         ),
                         keyboardType: TextInputType.number,
                         onSaved: (value) {
+                          if (value!.isEmpty) {
+                            value = int.parse('0').toString();
+                          }
                           ref
                               .read(enteredBillNumber.notifier)
-                              .update((state) => value!);
+                              .update((state) => int.parse(value!));
                         },
                       ),
                     ),
@@ -153,7 +154,7 @@ class _SalesReportScreenState extends ConsumerState<SalesReportScreen> {
                     height: 10,
                   ),
                 if (ref.watch(currentUserProvider)['role'] != 'User')
-                  UserDropdownList(),
+                  UserDropdownListReport(),
                 SizedBox(
                   height: 15,
                 ),

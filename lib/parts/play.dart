@@ -117,7 +117,7 @@ class _PlayDropdownState extends ConsumerState<PlayDropdownList> {
       } else {
         ref.invalidate(playDate);
       }
-      print(ref.watch(playDate));
+      //print(ref.watch(playDate));
     }
   }
 
