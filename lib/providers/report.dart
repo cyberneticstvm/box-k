@@ -34,3 +34,11 @@ final enteredTicketNumber = StateProvider<String>((ref) {
 final selectedUserProviderReport = StateProvider<Map<String, dynamic>>((ref) {
   return ref.watch(currentUserProvider);
 });
+
+final reportSalesCount = StateProvider<double>((ref) {
+  return 0;
+});
+
+final reportSalesTotal = StateProvider<double>((ref) {
+  return 0;
+});

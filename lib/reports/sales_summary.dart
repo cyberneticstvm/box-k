@@ -16,9 +16,33 @@ class SalesSummaryReport extends ConsumerStatefulWidget {
 }
 
 class _SalesSummaryReportState extends ConsumerState<SalesSummaryReport> {
-  double? total = 0.0;
-  double? count = 0.0;
+  void showLoadingIndicator() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Center(
+          heightFactor: 1,
+          widthFactor: 1,
+          child: SizedBox(
+            height: 25,
+            width: 25,
+            child: CircularProgressIndicator(
+              strokeWidth: 5,
+              color: Theme.of(context).myAmberColorDark,
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void hideLoadingIndicator() {
+    Navigator.of(context).pop();
+  }
+
   Future<void> getData() async {
+    showLoadingIndicator();
     var collection = FirebaseFirestore.instance.collection('orders').where(
         'play_date',
         isGreaterThanOrEqualTo: ref.watch(selectedDateFrom),
@@ -53,10 +77,13 @@ class _SalesSummaryReportState extends ConsumerState<SalesSummaryReport> {
     final s = await collection.aggregate(sum('total')).get().then((res) {
       return res.getSum('total');
     });
-    setState(() {
-      count = double.parse(c.toString());
-      total = double.parse(s.toString());
-    });
+    ref
+        .read(reportSalesCount.notifier)
+        .update((state) => double.parse(c.toString()));
+    ref
+        .read(reportSalesTotal.notifier)
+        .update((state) => double.parse(s.toString()));
+    hideLoadingIndicator();
   }
 
   @override
@@ -104,7 +131,7 @@ class _SalesSummaryReportState extends ConsumerState<SalesSummaryReport> {
                     children: [
                       Expanded(
                         child: Text(
-                          'Count: ${count.toString()}',
+                          'Count: ${ref.watch(reportSalesCount).toString()}',
                           style: const TextStyle(
                               color: Colors.white, fontSize: 17),
                         ),
@@ -113,7 +140,7 @@ class _SalesSummaryReportState extends ConsumerState<SalesSummaryReport> {
                         child: Container(
                           alignment: Alignment.centerRight,
                           child: Text(
-                            'Amount: ${double.parse(total.toString()).toStringAsFixed(2)}',
+                            'Amount: ${double.parse(ref.watch(reportSalesTotal).toString()).toStringAsFixed(2)}',
                             style: const TextStyle(
                                 color: Colors.white, fontSize: 17),
                           ),

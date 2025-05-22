@@ -28,6 +28,31 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
   final FocusNode fromNumberFocusNode = FocusNode();
   late FocusNode numberFocusNode;
 
+  void showLoadingIndicator() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Center(
+          heightFactor: 1,
+          widthFactor: 1,
+          child: SizedBox(
+            height: 25,
+            width: 25,
+            child: CircularProgressIndicator(
+              strokeWidth: 5,
+              color: Theme.of(context).myAmberColorDark,
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void hideLoadingIndicator() {
+    Navigator.of(context).pop();
+  }
+
   void _message(
     String msg,
     Color color,
@@ -288,6 +313,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
       );
       if (result) {
         //Orderd().addItemToDB(items);
+        showLoadingIndicator();
         final billNo = await FirebaseFirestore.instance
             .collection('orders')
             .orderBy('bill_number', descending: true)
@@ -343,6 +369,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
           };
           collection.add(itemMap);
         }
+        hideLoadingIndicator();
         _message("Order saved successfully", Colors.white, Colors.green);
         _clearForm();
         ref.invalidate(itemListCountProvider);

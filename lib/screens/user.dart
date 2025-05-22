@@ -1,5 +1,6 @@
 import 'package:boxk/app_config.dart';
 import 'package:boxk/colors/color.dart';
+import 'package:boxk/providers/order.dart';
 import 'package:boxk/providers/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -75,14 +76,18 @@ class _UserManagementScreenState extends ConsumerState<UserManagementScreen> {
             'status': 'Active'
           });
         });
-        //ref.invalidate(currentUserProvider);
-        //_firebase.signOut();
+        setState(() {
+          _isSaving = false;
+        });
+        _userFormKey.currentState!.reset();
+        ref.invalidate(currentUserProvider);
+        ref.invalidate(selectedUserProvider);
+        ref.invalidate(selectedNumberSet);
+        ref.invalidate(selectedNumberGroup);
+        _firebase.signOut();
       });
-      setState(() {
-        _isSaving = false;
-      });
-      _userFormKey.currentState!.reset();
-      _message('User created successfully!', Colors.white, Colors.green);
+      /*     
+      _message('User created successfully!', Colors.white, Colors.green);*/
     } catch (err) {
       setState(() {
         _isSaving = false;
