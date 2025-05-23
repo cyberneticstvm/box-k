@@ -1,5 +1,6 @@
 import 'package:boxk/colors/color.dart';
 import 'package:boxk/reports/number.dart';
+import 'package:boxk/reports/prize.dart';
 import 'package:boxk/reports/sales.dart';
 import 'package:boxk/screens/scheme.dart';
 import 'package:flutter/material.dart';
@@ -251,9 +252,12 @@ class _ReportWidgetState extends ConsumerState<ReportWidget> {
                     ),
                   ),
                 ),
-                onTap: () {
-                  //
-                },
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (ctxx) => PrizeResultReport(),
+                  ),
+                ),
               ),
             ),
             const SizedBox(
