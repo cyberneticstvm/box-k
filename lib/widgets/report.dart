@@ -1,4 +1,5 @@
 import 'package:boxk/colors/color.dart';
+import 'package:boxk/reports/number.dart';
 import 'package:boxk/reports/sales.dart';
 import 'package:boxk/screens/scheme.dart';
 import 'package:flutter/material.dart';
@@ -37,30 +38,31 @@ class _ReportWidgetState extends ConsumerState<ReportWidget> {
                 borderRadius: BorderRadius.circular(15),
               ),
               child: ListTile(
-                  leading: const Icon(
-                    Icons.article,
-                    color: Colors.white,
-                    size: 35,
-                  ),
-                  title: const Padding(
-                    padding: EdgeInsets.all(15.0),
-                    child: Text(
-                      'Sales Report',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                leading: const Icon(
+                  Icons.article,
+                  color: Colors.white,
+                  size: 35,
+                ),
+                title: const Padding(
+                  padding: EdgeInsets.all(15.0),
+                  child: Text(
+                    'Sales Report',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (ctx) => const SalesReportScreen(),
-                      ),
-                    );
-                  }),
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (ctx) => const SalesReportScreen(),
+                    ),
+                  );
+                },
+              ),
             ),
             const SizedBox(
               height: 15,
@@ -116,25 +118,29 @@ class _ReportWidgetState extends ConsumerState<ReportWidget> {
                 borderRadius: BorderRadius.circular(15),
               ),
               child: ListTile(
-                  leading: const Icon(
-                    Icons.article,
-                    color: Colors.white,
-                    size: 35,
-                  ),
-                  title: const Padding(
-                    padding: EdgeInsets.all(15.0),
-                    child: Text(
-                      'Number Wise',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                leading: const Icon(
+                  Icons.article,
+                  color: Colors.white,
+                  size: 35,
+                ),
+                title: const Padding(
+                  padding: EdgeInsets.all(15.0),
+                  child: Text(
+                    'Number Wise',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  onTap: () {
-                    //
-                  }),
+                ),
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (ctx) => NumberWiseReport(),
+                  ),
+                ),
+              ),
             ),
             const SizedBox(
               height: 15,
