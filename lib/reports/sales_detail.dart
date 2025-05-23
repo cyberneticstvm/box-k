@@ -1,6 +1,5 @@
 import 'package:boxk/colors/color.dart';
 import 'package:boxk/providers/report.dart';
-import 'package:boxk/providers/user.dart';
 import 'package:boxk/reports/sales_detail_bill.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -51,18 +50,20 @@ class _SalesDetailReportState extends ConsumerState<SalesDetailReport> {
         .where('name', isNotEqualTo: 'All')
         .where('status', isEqualTo: 'Active');
     var users = await collection.where('role', isEqualTo: 'User').get();
-    if (ref.watch(currentUserProvider)['role'] == 'Leader') {
+    if (ref.watch(selectedUserProviderReport)['role'] == 'Leader') {
       users = await collection
           .where('role', isEqualTo: 'User')
-          .where('parent', isEqualTo: ref.watch(currentUserProvider)['uid'])
+          .where('parent',
+              isEqualTo: ref.watch(selectedUserProviderReport)['uid'])
           .get();
     }
-    if (ref.watch(currentUserProvider)['role'] == 'User') {
+    if (ref.watch(selectedUserProviderReport)['role'] == 'User') {
       users = await collection
-          .where('uid', isEqualTo: ref.watch(currentUserProvider)['uid'])
+          .where('uid', isEqualTo: ref.watch(selectedUserProviderReport)['uid'])
           .get();
     }
     if (users.docs.isNotEmpty) {
+      bool isUserId = false;
       var customer = FirebaseFirestore.instance.collection('users');
       var orders = FirebaseFirestore.instance.collection('orders').where(
           'play_date',
@@ -84,19 +85,23 @@ class _SalesDetailReportState extends ConsumerState<SalesDetailReport> {
         orders =
             orders.where('ticket', isEqualTo: ref.watch(selectedTicketReport));
       }
+      if (ref.watch(selectedUserProviderReport)['uid'] > 0 &&
+          ref.watch(selectedUserProviderReport)['role'] == 'User') {
+        isUserId = true;
+        orders = orders.where('user_id',
+            isEqualTo: ref.watch(selectedUserProviderReport)['uid']);
+      }
+      Query<Map<String, dynamic>> ordTot;
       for (var item in users.docs) {
-        final c = await orders
-            .where('user_id', isEqualTo: item['uid'])
-            .aggregate(sum('count'))
-            .get()
-            .then((res) {
+        if (isUserId) {
+          ordTot = orders;
+        } else {
+          ordTot = orders.where('user_id', isEqualTo: item['uid']);
+        }
+        final c = await ordTot.aggregate(sum('count')).get().then((res) {
           return res.getSum('count');
         });
-        final s = await orders
-            .where('user_id', isEqualTo: item['uid'])
-            .aggregate(sum('total'))
-            .get()
-            .then((res) {
+        final s = await ordTot.aggregate(sum('total')).get().then((res) {
           return res.getSum('total');
         });
         final cust = await customer.doc(item.id).get();
@@ -198,6 +203,7 @@ class _SalesDetailReportState extends ConsumerState<SalesDetailReport> {
               shrinkWrap: true,
               itemCount: sales.length,
               itemExtent: 100.0,
+              physics: ClampingScrollPhysics(),
               itemBuilder: (BuildContext context, int index) {
                 return Card(
                   color: Theme.of(context).myBlueColorLight,
@@ -222,6 +228,8 @@ class _SalesDetailReportState extends ConsumerState<SalesDetailReport> {
                         builder: (ctx) => SalesDetailBillReport(
                           userId: sales[index]['uid'],
                           userName: sales[index]['uname'],
+                          count: sales[index]['count'],
+                          total: sales[index]['total'],
                         ),
                       ),
                     ),
