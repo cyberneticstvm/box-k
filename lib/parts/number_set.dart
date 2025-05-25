@@ -37,54 +37,52 @@ class _NumberSetState extends ConsumerState<NumberSet> {
   ];
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width * .9,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Row(
-              children: List.generate(
-                items.length,
-                (index) {
-                  return Wrap(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 13),
-                        child: Text(
-                          items[index]["title"],
-                          style: const TextStyle(
-                            fontSize: 15,
-                            color: Color(0xFF000000),
-                          ),
+    return Container(
+      color: Theme.of(context).myGrayColorLight,
+      height: MediaQuery.of(context).size.height * .050,
+      child: Column(
+        children: [
+          Row(
+            children: List.generate(
+              items.length,
+              (index) {
+                return Wrap(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 13),
+                      child: Text(
+                        items[index]["title"],
+                        style: const TextStyle(
+                          fontSize: 15,
+                          color: Color(0xFF000000),
                         ),
                       ),
-                      Checkbox(
-                        side: BorderSide(
-                          color: Theme.of(context).myBlueColorLight,
-                          width: 2,
-                        ),
-                        activeColor: Theme.of(context).myBlueColorDark,
-                        checkColor: Colors.white,
-                        value: items[index]['value'],
-                        onChanged: (value) {
-                          for (var element in items) {
-                            element["value"] = false;
-                          }
-                          ref.read(selectedNumberSet.notifier).update(
-                              (state) => (value!) ? items[index]['id'] : 0);
-                          setState(() {
-                            items[index]['value'] = value!;
-                          });
-                        },
+                    ),
+                    Checkbox(
+                      side: BorderSide(
+                        color: Theme.of(context).myBlueColorLight,
+                        width: 2,
                       ),
-                    ],
-                  );
-                },
-              ),
+                      activeColor: Theme.of(context).myBlueColorDark,
+                      checkColor: Colors.white,
+                      value: items[index]['value'],
+                      onChanged: (value) {
+                        for (var element in items) {
+                          element["value"] = false;
+                        }
+                        ref.read(selectedNumberSet.notifier).update(
+                            (state) => (value!) ? items[index]['id'] : 0);
+                        setState(() {
+                          items[index]['value'] = value!;
+                        });
+                      },
+                    ),
+                  ],
+                );
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -139,64 +139,68 @@ class _PlayDropdownState extends ConsumerState<PlayDropdownList> {
   @override
   Widget build(BuildContext context) {
     if (widget.isBlockedCheck) isPlayLocked();
-    return FutureBuilder(
-      future: FirebaseFirestore.instance
-          .collection('plays')
-          .where('name', isNotEqualTo: 'All')
-          .orderBy('id')
-          .get(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return Container();
-        return DropdownButtonFormField(
-          value: ref.watch(selectedPlayCode),
-          isExpanded: true,
-          items: snapshot.data!.docs.map((value) {
-            return DropdownMenuItem(
-              value: value['code'],
-              enabled: true,
+    return Container(
+      color: Theme.of(context).myGrayColorLight,
+      height: MediaQuery.of(context).size.height * .040,
+      child: FutureBuilder(
+        future: FirebaseFirestore.instance
+            .collection('plays')
+            .where('name', isNotEqualTo: 'All')
+            .orderBy('id')
+            .get(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) return Container();
+          return DropdownButtonFormField(
+            value: ref.watch(selectedPlayCode),
+            isExpanded: true,
+            items: snapshot.data!.docs.map((value) {
+              return DropdownMenuItem(
+                value: value['code'],
+                enabled: true,
+                child: Text(
+                  '${value['name']}',
+                  style: const TextStyle(color: Colors.black),
+                ),
+              );
+            }).toList(),
+            onChanged: (value) {
+              ref.read(selectedPlayCode.notifier).update(
+                    (state) => value.toString(),
+                  );
+            },
+            hint: const SizedBox(
               child: Text(
-                '${value['name']}',
-                style: const TextStyle(color: Colors.black),
-              ),
-            );
-          }).toList(),
-          onChanged: (value) {
-            ref.read(selectedPlayCode.notifier).update(
-                  (state) => value.toString(),
-                );
-          },
-          hint: const SizedBox(
-            child: Text(
-              "Select Play",
-              style: TextStyle(color: Colors.black),
-            ),
-          ),
-          icon: const Icon(
-            Icons.arrow_drop_down,
-            color: Color(0xff2c73e7),
-          ),
-          decoration: const InputDecoration(
-            contentPadding: EdgeInsets.symmetric(
-              vertical: 10.0,
-              horizontal: 10.0,
-            ),
-            border: OutlineInputBorder(),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Color(0xff2c73e7),
-                width: 1,
+                "Select Play",
+                style: TextStyle(color: Colors.black),
               ),
             ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Color(0xff2c73e7),
-                width: 1,
+            icon: const Icon(
+              Icons.arrow_drop_down,
+              color: Color(0xff2c73e7),
+            ),
+            decoration: const InputDecoration(
+              contentPadding: EdgeInsets.symmetric(
+                vertical: 10.0,
+                horizontal: 10.0,
+              ),
+              border: OutlineInputBorder(),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color(0xff2c73e7),
+                  width: 1,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color(0xff2c73e7),
+                  width: 1,
+                ),
               ),
             ),
-          ),
-          dropdownColor: Colors.white,
-        );
-      },
+            dropdownColor: Colors.white,
+          );
+        },
+      ),
     );
   }
 }

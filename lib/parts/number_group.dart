@@ -16,139 +16,138 @@ class NumberGroup extends ConsumerStatefulWidget {
 class _NumberGroupState extends ConsumerState<NumberGroup> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width * .9,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Column(
+    return Container(
+      color: Theme.of(context).myGrayColorLight,
+      height: MediaQuery.of(context).size.height * .050,
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Column(
+                children: [
+                  Text(
+                    'COUNT: ${ref.watch(itemCountProvider).toString()} | ',
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 15,
+                    ),
+                  ),
+                ],
+              ),
+              Expanded(
+                child: Text(
+                  ('₹${ref.watch(itemAmountProvider).toString()}'),
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 15,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                width: 25,
+              ),
+              Expanded(
+                child: Wrap(
                   children: [
-                    Text(
-                      'COUNT: ${ref.watch(itemCountProvider).toString()} | ',
-                      style: const TextStyle(
-                        color: Colors.black,
+                    const Padding(
+                      padding: EdgeInsets.only(top: 13),
+                      child: Text(
+                        '1',
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.black,
+                        ),
                       ),
+                    ),
+                    Radio(
+                      fillColor: WidgetStateProperty.resolveWith<Color>(
+                        (Set<WidgetState> states) {
+                          return (states.contains(WidgetState.selected))
+                              ? Theme.of(context).myBlueColorDark
+                              : Colors.black;
+                        },
+                      ),
+                      activeColor: Theme.of(context).myBlueColorDark,
+                      value: 1,
+                      groupValue: ref.watch(selectedNumberGroup),
+                      onChanged: (value) {
+                        ref
+                            .read(selectedNumberGroup.notifier)
+                            .update((state) => value!);
+                      },
                     ),
                   ],
                 ),
-                Expanded(
-                  child: Text(
-                    ('₹${ref.watch(itemAmountProvider).toString()}'),
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 14,
+              ),
+              Expanded(
+                child: Wrap(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(top: 13),
+                      child: Text(
+                        '2',
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.black,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                const SizedBox(
-                  width: 25,
-                ),
-                Expanded(
-                  child: Wrap(
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(top: 13),
-                        child: Text(
-                          '1',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                      Radio(
-                        fillColor: WidgetStateProperty.resolveWith<Color>(
-                          (Set<WidgetState> states) {
-                            return (states.contains(WidgetState.selected))
-                                ? const Color(0xff2c73e7)
-                                : Colors.black;
-                          },
-                        ),
-                        activeColor: Theme.of(context).myBlueColorDark,
-                        value: 1,
-                        groupValue: ref.watch(selectedNumberGroup),
-                        onChanged: (value) {
-                          ref
-                              .read(selectedNumberGroup.notifier)
-                              .update((state) => value!);
+                    Radio(
+                      fillColor: WidgetStateProperty.resolveWith<Color>(
+                        (Set<WidgetState> states) {
+                          return (states.contains(WidgetState.selected))
+                              ? Theme.of(context).myBlueColorDark
+                              : Colors.black;
                         },
                       ),
-                    ],
-                  ),
+                      activeColor: Theme.of(context).myBlueColorDark,
+                      value: 2,
+                      groupValue: ref.watch(selectedNumberGroup),
+                      onChanged: (value) {
+                        ref
+                            .read(selectedNumberGroup.notifier)
+                            .update((state) => value!);
+                      },
+                    ),
+                  ],
                 ),
-                Expanded(
-                  child: Wrap(
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(top: 13),
-                        child: Text(
-                          '2',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.black,
-                          ),
+              ),
+              Expanded(
+                child: Wrap(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(top: 13),
+                      child: Text(
+                        '3',
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.black,
                         ),
                       ),
-                      Radio(
-                        fillColor: WidgetStateProperty.resolveWith<Color>(
-                          (Set<WidgetState> states) {
-                            return (states.contains(WidgetState.selected))
-                                ? const Color(0xff2c73e7)
-                                : Colors.black;
-                          },
-                        ),
-                        activeColor: Theme.of(context).myBlueColorDark,
-                        value: 2,
-                        groupValue: ref.watch(selectedNumberGroup),
-                        onChanged: (value) {
-                          ref
-                              .read(selectedNumberGroup.notifier)
-                              .update((state) => value!);
+                    ),
+                    Radio(
+                      fillColor: WidgetStateProperty.resolveWith<Color>(
+                        (Set<WidgetState> states) {
+                          return (states.contains(WidgetState.selected))
+                              ? Theme.of(context).myBlueColorDark
+                              : Colors.black;
                         },
                       ),
-                    ],
-                  ),
+                      activeColor: Theme.of(context).myBlueColorDark,
+                      value: 3,
+                      groupValue: ref.watch(selectedNumberGroup),
+                      onChanged: (value) {
+                        ref
+                            .read(selectedNumberGroup.notifier)
+                            .update((state) => value!);
+                      },
+                    ),
+                  ],
                 ),
-                Expanded(
-                  child: Wrap(
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(top: 13),
-                        child: Text(
-                          '3',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                      Radio(
-                        fillColor: WidgetStateProperty.resolveWith<Color>(
-                          (Set<WidgetState> states) {
-                            return (states.contains(WidgetState.selected))
-                                ? const Color(0xff2c73e7)
-                                : Colors.black;
-                          },
-                        ),
-                        activeColor: Theme.of(context).myBlueColorDark,
-                        value: 3,
-                        groupValue: ref.watch(selectedNumberGroup),
-                        onChanged: (value) {
-                          ref
-                              .read(selectedNumberGroup.notifier)
-                              .update((state) => value!);
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            )
-          ],
-        ),
+              ),
+            ],
+          )
+        ],
       ),
     );
   }

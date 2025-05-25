@@ -1,3 +1,4 @@
+import 'package:boxk/colors/color.dart';
 import 'package:boxk/providers/order.dart';
 import 'package:boxk/providers/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -55,60 +56,64 @@ class _UserDropdownState extends ConsumerState<UserDropdownList> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _getUsers(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return Container();
-        return DropdownButtonFormField(
-          value: (ref.watch(currentUserProvider)['role'] == 'User')
-              ? ref.watch(currentUserProvider)['uid']
-              : null,
-          isExpanded: true,
-          items: snapshot.data!.docs.map((value) {
-            return DropdownMenuItem(
-              value: value['uid'],
-              enabled: true,
+    return Container(
+      color: Theme.of(context).myGrayColorLight,
+      height: MediaQuery.of(context).size.height * .040,
+      child: FutureBuilder(
+        future: _getUsers(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) return Container();
+          return DropdownButtonFormField(
+            value: (ref.watch(currentUserProvider)['role'] == 'User')
+                ? ref.watch(currentUserProvider)['uid']
+                : null,
+            isExpanded: true,
+            items: snapshot.data!.docs.map((value) {
+              return DropdownMenuItem(
+                value: value['uid'],
+                enabled: true,
+                child: Text(
+                  '${value['name']}',
+                  style: const TextStyle(color: Colors.black),
+                ),
+              );
+            }).toList(),
+            onChanged: (value) {
+              _update(int.parse(value.toString()));
+            },
+            hint: const SizedBox(
               child: Text(
-                '${value['name']}',
-                style: const TextStyle(color: Colors.black),
-              ),
-            );
-          }).toList(),
-          onChanged: (value) {
-            _update(int.parse(value.toString()));
-          },
-          hint: const SizedBox(
-            child: Text(
-              "Select Agent",
-              style: TextStyle(color: Colors.black),
-            ),
-          ),
-          icon: const Icon(
-            Icons.arrow_drop_down,
-            color: Color(0xff2c73e7),
-          ),
-          decoration: const InputDecoration(
-            contentPadding: EdgeInsets.symmetric(
-              vertical: 10.0,
-              horizontal: 10.0,
-            ),
-            border: OutlineInputBorder(),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Color(0xff2c73e7),
-                width: 1,
+                "Select Agent",
+                style: TextStyle(color: Colors.black),
               ),
             ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Color(0xff2c73e7),
-                width: 1,
+            icon: const Icon(
+              Icons.arrow_drop_down,
+              color: Color(0xff2c73e7),
+            ),
+            decoration: const InputDecoration(
+              contentPadding: EdgeInsets.symmetric(
+                vertical: 10.0,
+                horizontal: 10.0,
+              ),
+              border: OutlineInputBorder(),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color(0xff2c73e7),
+                  width: 1,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color(0xff2c73e7),
+                  width: 1,
+                ),
               ),
             ),
-          ),
-          dropdownColor: Colors.white,
-        );
-      },
+            dropdownColor: Colors.white,
+          );
+        },
+      ),
     );
   }
 }

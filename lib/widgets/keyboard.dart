@@ -180,7 +180,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
       } else {
         ticketList = [ref.watch(selectedTicket)];
       }
-      //final btc = FirebaseFirestore.instance.collection('blocked_numbers');
+      final btc = FirebaseFirestore.instance.collection('blocked_numbers');
       // Blocked Ticket Count
       final btco = FirebaseFirestore.instance
           .collection('orders')
@@ -218,7 +218,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
           throw Exception("Limit exceeds for ticket $tname");
         }
       }
-      /*for (var n in number) {
+      for (var n in number) {
         final bcount = await btc
             .where('number', isEqualTo: n)
             .aggregate(sum("count"))
@@ -238,16 +238,16 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
         if (count + ocount! >= bcount! && bcount > 0) {
           throw Exception("Limit exceeds for number $n");
         }
-      }*/
-      /*double ticketRate = double.parse(item['user_rate']);
-      if (ref.watch(selectedUserProvider)['role'] == 'Admin') {
-        ticketRate = double.parse(item['admin_rate']);
       }
-      if (ref.watch(selectedUserProvider)['role'] == 'Leader') {
-        ticketRate = double.parse(item['leader_rate']);
-      }*/
       number.sort((b, a) => a.compareTo(b)); // Sorting descending
       for (var item in rate) {
+        double ticketRate = double.parse(item['user_rate'].toString());
+        if (ref.watch(selectedUserProvider)['role'] == 'Admin') {
+          ticketRate = double.parse(item['admin_rate'].toString());
+        }
+        if (ref.watch(selectedUserProvider)['role'] == 'Leader') {
+          ticketRate = double.parse(item['leader_rate'].toString());
+        }
         var tname = (ref.watch(selectedNumberGroup) == 3 &&
                     ref.watch(selectedTicket) != 'box-k' &&
                     ref.watch(selectedTicket) != 'all' ||
@@ -261,7 +261,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
                 ref.watch(selectedPlayCode),
                 n,
                 count,
-                double.parse(item['user_rate'].toString()),
+                ticketRate,
                 double.parse((count * item['user_rate']).toStringAsFixed(2)),
                 0,
                 0,
@@ -439,12 +439,12 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.432,
+      height: MediaQuery.of(context).size.height * 0.45,
       color: Theme.of(context).myBlueColorLight,
       child: Padding(
         padding: EdgeInsets.only(
-          left: 10,
-          right: 10,
+          left: 5,
+          right: 5,
         ),
         child: Column(
           children: [
@@ -470,7 +470,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
                       child: Text(
                         ref.watch(selectedPlayCode).toUpperCase(),
                         style: TextStyle(
-                          fontSize: 25,
+                          fontSize: 20,
                           color: Colors.white,
                         ),
                       ),
@@ -498,7 +498,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
                       child: const Text(
                         'BOX-K',
                         style: TextStyle(
-                          fontSize: 25,
+                          fontSize: 20,
                           color: Colors.white,
                         ),
                       ),
@@ -526,7 +526,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
                       child: const Text(
                         'ALL',
                         style: TextStyle(
-                          fontSize: 25,
+                          fontSize: 20,
                           color: Colors.white,
                         ),
                       ),
@@ -556,7 +556,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
                       child: const Text(
                         'AB',
                         style: TextStyle(
-                          fontSize: 25,
+                          fontSize: 20,
                           color: Colors.white,
                         ),
                       ),
@@ -584,7 +584,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
                       child: const Text(
                         'BC',
                         style: TextStyle(
-                          fontSize: 25,
+                          fontSize: 20,
                           color: Colors.white,
                         ),
                       ),
@@ -612,7 +612,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
                       child: const Text(
                         'AC',
                         style: TextStyle(
-                          fontSize: 25,
+                          fontSize: 20,
                           color: Colors.white,
                         ),
                       ),
@@ -640,7 +640,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
                       child: const Text(
                         'ALL',
                         style: TextStyle(
-                          fontSize: 25,
+                          fontSize: 20,
                           color: Colors.white,
                         ),
                       ),
@@ -670,7 +670,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
                       child: const Text(
                         'A',
                         style: TextStyle(
-                          fontSize: 25,
+                          fontSize: 20,
                           color: Colors.white,
                         ),
                       ),
@@ -698,7 +698,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
                       child: const Text(
                         'B',
                         style: TextStyle(
-                          fontSize: 25,
+                          fontSize: 20,
                           color: Colors.white,
                         ),
                       ),
@@ -726,7 +726,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
                       child: const Text(
                         'C',
                         style: TextStyle(
-                          fontSize: 25,
+                          fontSize: 20,
                           color: Colors.white,
                         ),
                       ),
@@ -754,7 +754,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
                       child: const Text(
                         'ALL',
                         style: TextStyle(
-                          fontSize: 25,
+                          fontSize: 20,
                           color: Colors.white,
                         ),
                       ),
@@ -885,7 +885,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
               children: [
                 Expanded(
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.06,
+                    height: MediaQuery.of(context).size.height * 0.075,
                     child: OutlinedButton(
                       onPressed: () {
                         _buttonPressed(1);
@@ -912,7 +912,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
                 ),
                 Expanded(
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.06,
+                    height: MediaQuery.of(context).size.height * 0.075,
                     child: OutlinedButton(
                       onPressed: () {
                         _buttonPressed(2);
@@ -939,7 +939,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
                 ),
                 Expanded(
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.06,
+                    height: MediaQuery.of(context).size.height * 0.075,
                     child: OutlinedButton(
                       onPressed: () {
                         _buttonPressed(3);
@@ -966,7 +966,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
                 ),
                 Expanded(
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.06,
+                    height: MediaQuery.of(context).size.height * 0.075,
                     child: TextButton(
                       onPressed: () {
                         if (activeController.text.isNotEmpty) {
@@ -993,7 +993,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
               children: [
                 Expanded(
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.06,
+                    height: MediaQuery.of(context).size.height * 0.075,
                     child: OutlinedButton(
                       onPressed: () {
                         _buttonPressed(4);
@@ -1020,7 +1020,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
                 ),
                 Expanded(
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.06,
+                    height: MediaQuery.of(context).size.height * 0.075,
                     child: OutlinedButton(
                       onPressed: () {
                         _buttonPressed(5);
@@ -1047,7 +1047,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
                 ),
                 Expanded(
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.06,
+                    height: MediaQuery.of(context).size.height * 0.075,
                     child: OutlinedButton(
                       onPressed: () {
                         _buttonPressed(6);
@@ -1071,7 +1071,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
                 ),
                 Expanded(
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.06,
+                    height: MediaQuery.of(context).size.height * 0.075,
                     child: TextButton(
                       onPressed: () async {
                         final result = await showDialog(
@@ -1128,7 +1128,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
               children: [
                 Expanded(
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.06,
+                    height: MediaQuery.of(context).size.height * 0.075,
                     child: OutlinedButton(
                       onPressed: () {
                         _buttonPressed(7);
@@ -1155,7 +1155,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
                 ),
                 Expanded(
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.06,
+                    height: MediaQuery.of(context).size.height * 0.075,
                     child: OutlinedButton(
                       onPressed: () {
                         _buttonPressed(8);
@@ -1182,7 +1182,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
                 ),
                 Expanded(
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.06,
+                    height: MediaQuery.of(context).size.height * 0.075,
                     child: OutlinedButton(
                       onPressed: () {
                         _buttonPressed(9);
@@ -1206,7 +1206,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
                 ),
                 Expanded(
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.06,
+                    height: MediaQuery.of(context).size.height * 0.075,
                     child: TextButton(
                       onPressed: () {},
                       child: const Icon(
@@ -1226,7 +1226,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
               children: [
                 Expanded(
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.06,
+                    height: MediaQuery.of(context).size.height * 0.075,
                     child: TextButton(
                       onPressed: () {
                         ref.read(selectedPage.notifier).update((state) => 4);
@@ -1254,7 +1254,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
                 ),
                 Expanded(
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.06,
+                    height: MediaQuery.of(context).size.height * 0.075,
                     child: OutlinedButton(
                       onPressed: () {
                         _buttonPressed(0);
@@ -1278,7 +1278,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
                 ),
                 Expanded(
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.06,
+                    height: MediaQuery.of(context).size.height * 0.075,
                     child: IconButton(
                       onPressed: () {
                         //
@@ -1292,7 +1292,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
                 ),
                 Expanded(
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.06,
+                    height: MediaQuery.of(context).size.height * 0.075,
                     child: ElevatedButton(
                       onPressed: () {
                         _save();

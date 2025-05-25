@@ -21,7 +21,6 @@ class _OrderWidgetState extends ConsumerState<OrderWidget> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: EdgeInsets.all(10),
       child: Column(
         children: [
           const NumberGroup(),
@@ -34,7 +33,7 @@ class _OrderWidgetState extends ConsumerState<OrderWidget> {
               ),
               if (ref.watch(currentUserProvider)['role'] != 'User')
                 const SizedBox(
-                  width: 10,
+                  width: 2,
                 ),
               if (ref.watch(currentUserProvider)['role'] != 'User')
                 const Expanded(
