@@ -141,7 +141,7 @@ class _PlayDropdownState extends ConsumerState<PlayDropdownList> {
     if (widget.isBlockedCheck) isPlayLocked();
     return Container(
       color: Theme.of(context).myGrayColorLight,
-      height: MediaQuery.of(context).size.height * .040,
+      height: MediaQuery.of(context).size.height * .05,
       child: FutureBuilder(
         future: FirebaseFirestore.instance
             .collection('plays')

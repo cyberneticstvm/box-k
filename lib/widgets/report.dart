@@ -2,6 +2,7 @@ import 'package:boxk/colors/color.dart';
 import 'package:boxk/reports/number.dart';
 import 'package:boxk/reports/prize.dart';
 import 'package:boxk/reports/sales.dart';
+import 'package:boxk/reports/winning.dart';
 import 'package:boxk/screens/scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -82,25 +83,31 @@ class _ReportWidgetState extends ConsumerState<ReportWidget> {
                 borderRadius: BorderRadius.circular(15),
               ),
               child: ListTile(
-                  leading: const Icon(
-                    Icons.article,
-                    color: Colors.white,
-                    size: 35,
-                  ),
-                  title: const Padding(
-                    padding: EdgeInsets.all(15.0),
-                    child: Text(
-                      'Winning Report',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                leading: const Icon(
+                  Icons.article,
+                  color: Colors.white,
+                  size: 35,
+                ),
+                title: const Padding(
+                  padding: EdgeInsets.all(15.0),
+                  child: Text(
+                    'Winning Report',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  onTap: () {
-                    //
-                  }),
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (ctx) => const WinningReportScreen(),
+                    ),
+                  );
+                },
+              ),
             ),
             const SizedBox(
               height: 15,

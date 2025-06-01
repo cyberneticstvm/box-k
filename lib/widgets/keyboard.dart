@@ -339,19 +339,12 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
         });
 
         final collection = FirebaseFirestore.instance.collection('orders');
-        var schemes = FirebaseFirestore.instance.collection('schemes');
         for (var item in items) {
           var tkt = (item.ticket == 'd1' ||
                   item.ticket == 'd6' ||
                   item.ticket == 'd8')
               ? 'king'
               : item.ticket;
-          var scheme = await schemes
-              .where('ticket', isEqualTo: tkt)
-              .get()
-              .then((snapshot) {
-            return snapshot.docs[0];
-          });
           final Map<String, dynamic> itemMap = {
             "bill_number": billNo,
             "ticket": tkt,
@@ -362,8 +355,6 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
             "count": item.count,
             "rate": item.rate,
             "total": item.total,
-            "super": scheme['super'],
-            "position": scheme['position'],
             "play_date": item.playDate,
             "created_at": item.createdAt,
           };
@@ -439,7 +430,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.45,
+      height: MediaQuery.of(context).size.height * 0.442,
       color: Theme.of(context).myBlueColorLight,
       child: Padding(
         padding: EdgeInsets.only(

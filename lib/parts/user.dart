@@ -58,7 +58,7 @@ class _UserDropdownState extends ConsumerState<UserDropdownList> {
   Widget build(BuildContext context) {
     return Container(
       color: Theme.of(context).myGrayColorLight,
-      height: MediaQuery.of(context).size.height * .040,
+      height: MediaQuery.of(context).size.height * .05,
       child: FutureBuilder(
         future: _getUsers(),
         builder: (context, snapshot) {
