@@ -42,3 +42,27 @@ final reportSalesCount = StateProvider<double>((ref) {
 final reportSalesTotal = StateProvider<double>((ref) {
   return 0;
 });
+
+final reportWinningTotal = StateProvider<double>((ref) {
+  return 0;
+});
+
+final reportWinningCount = StateProvider<double>((ref) {
+  return 0;
+});
+
+final reportWinningSuper = StateProvider<double>((ref) {
+  return 0;
+});
+
+final reportWinningTotalUser = StateProvider<double>((ref) {
+  return 0;
+});
+
+final reportWinningCountUser = StateProvider<double>((ref) {
+  return 0;
+});
+
+final reportWinningSuperUser = StateProvider<double>((ref) {
+  return 0;
+});
