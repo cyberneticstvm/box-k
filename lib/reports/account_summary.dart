@@ -233,7 +233,7 @@ class _AccountSummaryReportDetailState
                     winTotal += order['count'] * scheme['amount'];
                     orderTotal += order['total'];
                     superr += order['count'] * scheme['super'];
-                    commission += ticket['leader_rate'] - ticket['user_rate'];
+                    commission += ticket['user_rate'] - ticket['leader_rate'];
                   }
                   if (res['p$i'] == order['number'] &&
                       order['ticket'] == 'box-k') {
@@ -254,7 +254,7 @@ class _AccountSummaryReportDetailState
                       winTotal += order['count'] * scheme['amount'];
                       orderTotal += order['total'];
                       superr += order['count'] * scheme['super'];
-                      commission += ticket['leader_rate'] - ticket['user_rate'];
+                      commission += ticket['user_rate'] - ticket['leader_rate'];
                     }
                   }
                   if (res['p1'].toString().substring(0, 2) == order['number'] &&
@@ -276,7 +276,7 @@ class _AccountSummaryReportDetailState
                     winTotal += order['count'] * scheme['amount'];
                     orderTotal += order['total'];
                     superr += order['count'] * scheme['super'];
-                    commission += ticket['leader_rate'] - ticket['user_rate'];
+                    commission += ticket['user_rate'] - ticket['leader_rate'];
                   }
                   if (res['p1'].toString().substring(1, 3) == order['number'] &&
                       order['ticket'] == 'bc' &&
@@ -297,7 +297,7 @@ class _AccountSummaryReportDetailState
                     winTotal += order['count'] * scheme['amount'];
                     orderTotal += order['total'];
                     superr += order['count'] * scheme['super'];
-                    commission += ticket['leader_rate'] - ticket['user_rate'];
+                    commission += ticket['user_rate'] - ticket['leader_rate'];
                   }
                   if ('${res['p1'].toString().substring(0, 1)}${res['p$i'].toString().substring(2, 3)}' ==
                           order['number'] &&
@@ -319,7 +319,7 @@ class _AccountSummaryReportDetailState
                     winTotal += order['count'] * scheme['amount'];
                     orderTotal += order['total'];
                     superr += order['count'] * scheme['super'];
-                    commission += ticket['leader_rate'] - ticket['user_rate'];
+                    commission += ticket['user_rate'] - ticket['leader_rate'];
                   }
                   if (res['p1'].toString().substring(0, 1) == order['number'] &&
                       order['ticket'] == 'a' &&
@@ -340,7 +340,7 @@ class _AccountSummaryReportDetailState
                     winTotal += order['count'] * scheme['amount'];
                     orderTotal += order['total'];
                     superr += order['count'] * scheme['super'];
-                    commission += ticket['leader_rate'] - ticket['user_rate'];
+                    commission += ticket['user_rate'] - ticket['leader_rate'];
                   }
                   if (res['p1'].toString().substring(1, 2) == order['number'] &&
                       order['ticket'] == 'b' &&
@@ -361,7 +361,7 @@ class _AccountSummaryReportDetailState
                     winTotal += order['count'] * scheme['amount'];
                     orderTotal += order['total'];
                     superr += order['count'] * scheme['super'];
-                    commission += ticket['leader_rate'] - ticket['user_rate'];
+                    commission += ticket['user_rate'] - ticket['leader_rate'];
                   }
                   if (res['p1'].toString().substring(2, 3) == order['number'] &&
                       order['ticket'] == 'c' &&
@@ -382,7 +382,7 @@ class _AccountSummaryReportDetailState
                     winTotal += order['count'] * scheme['amount'];
                     orderTotal += order['total'];
                     superr += order['count'] * scheme['super'];
-                    commission += ticket['leader_rate'] - ticket['user_rate'];
+                    commission += ticket['user_rate'] - ticket['leader_rate'];
                   }
                 }
               }
@@ -390,7 +390,7 @@ class _AccountSummaryReportDetailState
           }
         });
         var ord = {
-          'date': DateFormat.yMMMMd()
+          'date': DateFormat("dd/MM/yyyy")
               .format(ref.watch(selectedDateFrom))
               .toString(),
           'uname': item['name'],
