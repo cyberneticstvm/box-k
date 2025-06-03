@@ -1,4 +1,5 @@
 import 'package:boxk/colors/color.dart';
+import 'package:boxk/reports/account_summary.dart';
 import 'package:boxk/reports/number.dart';
 import 'package:boxk/reports/prize.dart';
 import 'package:boxk/reports/sales.dart';
@@ -183,9 +184,12 @@ class _ReportWidgetState extends ConsumerState<ReportWidget> {
                     ),
                   ),
                 ),
-                onTap: () {
-                  //
-                },
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (ctx) => AccountSummaryReportScreen(),
+                  ),
+                ),
               ),
             ),
             const SizedBox(
