@@ -18,7 +18,7 @@ class _NumberGroupState extends ConsumerState<NumberGroup> {
   Widget build(BuildContext context) {
     return Container(
       color: Theme.of(context).myGrayColorLight,
-      height: MediaQuery.of(context).size.height * .050,
+      height: MediaQuery.of(context).size.height * .060,
       child: Column(
         children: [
           Row(

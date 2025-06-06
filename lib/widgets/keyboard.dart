@@ -1217,7 +1217,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
               children: [
                 Expanded(
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.075,
+                    height: MediaQuery.of(context).size.height * 0.070,
                     child: TextButton(
                       onPressed: () {
                         ref.read(selectedPage.notifier).update((state) => 4);
@@ -1245,7 +1245,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
                 ),
                 Expanded(
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.075,
+                    height: MediaQuery.of(context).size.height * 0.070,
                     child: OutlinedButton(
                       onPressed: () {
                         _buttonPressed(0);
@@ -1269,7 +1269,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
                 ),
                 Expanded(
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.075,
+                    height: MediaQuery.of(context).size.height * 0.070,
                     child: IconButton(
                       onPressed: () {
                         //
@@ -1283,7 +1283,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
                 ),
                 Expanded(
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.075,
+                    height: MediaQuery.of(context).size.height * 0.070,
                     child: ElevatedButton(
                       onPressed: () {
                         _save();

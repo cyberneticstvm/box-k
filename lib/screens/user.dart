@@ -1,6 +1,7 @@
 import 'package:boxk/app_config.dart';
 import 'package:boxk/colors/color.dart';
 import 'package:boxk/providers/order.dart';
+import 'package:boxk/providers/page.dart';
 import 'package:boxk/providers/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -84,7 +85,10 @@ class _UserManagementScreenState extends ConsumerState<UserManagementScreen> {
         ref.invalidate(selectedUserProvider);
         ref.invalidate(selectedNumberSet);
         ref.invalidate(selectedNumberGroup);
-        _firebase.signOut();
+        ref.invalidate(selectedPage);
+        setState(() {
+          _firebase.signOut();
+        });
       });
       /*     
       _message('User created successfully!', Colors.white, Colors.green);*/

@@ -1,6 +1,8 @@
 import 'package:boxk/colors/color.dart';
 import 'package:boxk/providers/order.dart';
+import 'package:boxk/providers/page.dart';
 import 'package:boxk/providers/user.dart';
+import 'package:boxk/reports/prize.dart';
 import 'package:boxk/screens/bill_delete.dart';
 import 'package:boxk/screens/blocked_numbers.dart';
 import 'package:boxk/screens/play.dart';
@@ -67,252 +69,296 @@ class _DrawerWidgetState extends ConsumerState<DrawerWidget> {
                     ),
                   ),
                 ),
-                ExpansionTile(
-                  trailing: const Icon(
-                    Icons.keyboard_arrow_down,
-                    color: Colors.white,
-                  ),
-                  leading: const Icon(
-                    Icons.person,
-                    color: Colors.white,
-                  ),
-                  shape: const Border(),
-                  title: const Text(
-                    'User',
-                    style: TextStyle(
+                if ((ref.watch(currentUserProvider)['role'] == 'Admin'))
+                  ExpansionTile(
+                    trailing: const Icon(
+                      Icons.keyboard_arrow_down,
                       color: Colors.white,
-                      fontSize: 17,
                     ),
-                  ),
-                  children: [
-                    ListTile(
-                      leading: Icon(
-                        Icons.radio_button_checked,
-                        color: Theme.of(context).myAmberColorDark,
-                      ),
-                      title: const Text(
-                        'Manage User',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (ctx) => const UserManagementScreen(),
-                          ),
-                        );
-                      },
+                    leading: const Icon(
+                      Icons.person,
+                      color: Colors.white,
                     ),
-                    ListTile(
-                      leading: Icon(
-                        Icons.radio_button_checked,
-                        color: Theme.of(context).myAmberColorDark,
+                    shape: const Border(),
+                    title: const Text(
+                      'User',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 17,
                       ),
-                      title: const Text(
-                        'Update Password',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (ctx) => UserEditScreen(
-                              userId: _firebase.currentUser!.uid,
+                    ),
+                    children: [
+                      ListTile(
+                        leading: Icon(
+                          Icons.radio_button_checked,
+                          color: Theme.of(context).myAmberColorDark,
+                        ),
+                        title: const Text(
+                          'Manage User',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (ctx) => const UserManagementScreen(),
                             ),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-                ExpansionTile(
-                  trailing: const Icon(
-                    Icons.keyboard_arrow_down,
-                    color: Colors.white,
+                          );
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(
+                          Icons.radio_button_checked,
+                          color: Theme.of(context).myAmberColorDark,
+                        ),
+                        title: const Text(
+                          'Update Password',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (ctx) => UserEditScreen(
+                                userId: _firebase.currentUser!.uid,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
                   ),
-                  leading: const Icon(
-                    Icons.abc,
-                    color: Colors.white,
-                  ),
-                  shape: const Border(),
-                  title: const Text(
-                    'Block Number',
-                    style: TextStyle(
+                if ((ref.watch(currentUserProvider)['role'] == 'Admin'))
+                  ExpansionTile(
+                    trailing: const Icon(
+                      Icons.keyboard_arrow_down,
                       color: Colors.white,
-                      fontSize: 17,
                     ),
-                  ),
-                  children: [
-                    ListTile(
-                      leading: Icon(
-                        Icons.radio_button_checked,
-                        color: Theme.of(context).myAmberColorDark,
-                      ),
-                      title: const Text(
-                        'Manage Blocked Numbers',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (ctx) => const BlockedNumberScreen(),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-                ExpansionTile(
-                  trailing: const Icon(
-                    Icons.keyboard_arrow_down,
-                    color: Colors.white,
-                  ),
-                  leading: const Icon(
-                    Icons.admin_panel_settings,
-                    color: Colors.white,
-                  ),
-                  shape: const Border(),
-                  title: const Text(
-                    'Manage',
-                    style: TextStyle(
+                    leading: const Icon(
+                      Icons.abc,
                       color: Colors.white,
-                      fontSize: 17,
                     ),
+                    shape: const Border(),
+                    title: const Text(
+                      'Block Number',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 17,
+                      ),
+                    ),
+                    children: [
+                      ListTile(
+                        leading: Icon(
+                          Icons.radio_button_checked,
+                          color: Theme.of(context).myAmberColorDark,
+                        ),
+                        title: const Text(
+                          'Manage Blocked Numbers',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (ctx) => const BlockedNumberScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
                   ),
-                  children: [
-                    ListTile(
-                      leading: Icon(
-                        Icons.radio_button_checked,
-                        color: Theme.of(context).myAmberColorDark,
-                      ),
-                      title: const Text(
-                        'Plays',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (ctx) => const PlayScreen(),
-                          ),
-                        );
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(
-                        Icons.radio_button_checked,
-                        color: Theme.of(context).myAmberColorDark,
-                      ),
-                      title: const Text(
-                        'Tickets',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (ctx) => const TicketScreen(),
-                          ),
-                        );
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(
-                        Icons.radio_button_checked,
-                        color: Theme.of(context).myAmberColorDark,
-                      ),
-                      title: const Text(
-                        'Schemes',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (ctx) => const SchemeScreen(),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-                ExpansionTile(
-                  trailing: const Icon(
-                    Icons.keyboard_arrow_down,
-                    color: Colors.white,
-                  ),
-                  leading: const Icon(
-                    Icons.insert_drive_file_outlined,
-                    color: Colors.white,
-                  ),
-                  shape: const Border(),
-                  title: const Text(
-                    'Bill',
-                    style: TextStyle(
+                if ((ref.watch(currentUserProvider)['role'] == 'Admin'))
+                  ExpansionTile(
+                    trailing: const Icon(
+                      Icons.keyboard_arrow_down,
                       color: Colors.white,
-                      fontSize: 17,
                     ),
-                  ),
-                  children: [
-                    ListTile(
-                      leading: Icon(
-                        Icons.radio_button_checked,
-                        color: Theme.of(context).myAmberColorDark,
-                      ),
-                      title: const Text(
-                        'Delete Bill',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (ctx) => const BillDeleteScreen(),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-                ExpansionTile(
-                  trailing: const Icon(
-                    Icons.keyboard_arrow_down,
-                    color: Colors.white,
-                  ),
-                  leading: const Icon(
-                    Icons.numbers,
-                    color: Colors.white,
-                  ),
-                  shape: const Border(),
-                  title: const Text(
-                    'Result',
-                    style: TextStyle(
+                    leading: const Icon(
+                      Icons.admin_panel_settings,
                       color: Colors.white,
-                      fontSize: 17,
                     ),
+                    shape: const Border(),
+                    title: const Text(
+                      'Manage',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 17,
+                      ),
+                    ),
+                    children: [
+                      ListTile(
+                        leading: Icon(
+                          Icons.radio_button_checked,
+                          color: Theme.of(context).myAmberColorDark,
+                        ),
+                        title: const Text(
+                          'Plays',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (ctx) => const PlayScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(
+                          Icons.radio_button_checked,
+                          color: Theme.of(context).myAmberColorDark,
+                        ),
+                        title: const Text(
+                          'Tickets',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (ctx) => const TicketScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(
+                          Icons.radio_button_checked,
+                          color: Theme.of(context).myAmberColorDark,
+                        ),
+                        title: const Text(
+                          'Schemes',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (ctx) => const SchemeScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
                   ),
-                  children: [
-                    ListTile(
-                      leading: Icon(
-                        Icons.radio_button_checked,
-                        color: Theme.of(context).myAmberColorDark,
-                      ),
-                      title: const Text(
-                        'Upadate Result',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (ctx) => const ResultScreen(),
-                          ),
-                        );
-                      },
+                if ((ref.watch(currentUserProvider)['role'] == 'Admin'))
+                  ExpansionTile(
+                    trailing: const Icon(
+                      Icons.keyboard_arrow_down,
+                      color: Colors.white,
                     ),
-                  ],
-                ),
+                    leading: const Icon(
+                      Icons.insert_drive_file_outlined,
+                      color: Colors.white,
+                    ),
+                    shape: const Border(),
+                    title: const Text(
+                      'Bill',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 17,
+                      ),
+                    ),
+                    children: [
+                      ListTile(
+                        leading: Icon(
+                          Icons.radio_button_checked,
+                          color: Theme.of(context).myAmberColorDark,
+                        ),
+                        title: const Text(
+                          'Delete Bill',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (ctx) => const BillDeleteScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                if ((ref.watch(currentUserProvider)['role'] == 'Admin'))
+                  ExpansionTile(
+                    trailing: const Icon(
+                      Icons.keyboard_arrow_down,
+                      color: Colors.white,
+                    ),
+                    leading: const Icon(
+                      Icons.numbers,
+                      color: Colors.white,
+                    ),
+                    shape: const Border(),
+                    title: const Text(
+                      'Result',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 17,
+                      ),
+                    ),
+                    children: [
+                      ListTile(
+                        leading: Icon(
+                          Icons.radio_button_checked,
+                          color: Theme.of(context).myAmberColorDark,
+                        ),
+                        title: const Text(
+                          'Upadate Result',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (ctx) => const ResultScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                if ((ref.watch(currentUserProvider)['role'] == 'User'))
+                  ExpansionTile(
+                    trailing: const Icon(
+                      Icons.keyboard_arrow_down,
+                      color: Colors.white,
+                    ),
+                    leading: const Icon(
+                      Icons.numbers,
+                      color: Colors.white,
+                    ),
+                    shape: const Border(),
+                    title: const Text(
+                      'Result',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 17,
+                      ),
+                    ),
+                    children: [
+                      ListTile(
+                        leading: Icon(
+                          Icons.radio_button_checked,
+                          color: Theme.of(context).myAmberColorDark,
+                        ),
+                        title: const Text(
+                          'Prize Result',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (ctx) => const PrizeResultReport(),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 SizedBox(
                   height: 15,
                 ),
@@ -322,6 +368,7 @@ class _DrawerWidgetState extends ConsumerState<DrawerWidget> {
                     ref.invalidate(selectedUserProvider);
                     ref.invalidate(selectedNumberSet);
                     ref.invalidate(selectedNumberGroup);
+                    ref.invalidate(selectedPage);
                     _firebase.signOut();
                     _message("User logged out successfully", Colors.green);
                   },

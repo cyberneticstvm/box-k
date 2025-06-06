@@ -1,4 +1,5 @@
 import 'package:boxk/colors/color.dart';
+import 'package:boxk/providers/user.dart';
 import 'package:boxk/reports/account_summary.dart';
 import 'package:boxk/reports/net_pay.dart';
 import 'package:boxk/reports/number.dart';
@@ -111,88 +112,92 @@ class _ReportWidgetState extends ConsumerState<ReportWidget> {
                 },
               ),
             ),
-            const SizedBox(
-              height: 15,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                // Create a gradient background
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Theme.of(context).myRedColorDark,
-                    Theme.of(context).myRedColorLight,
-                  ],
-                ),
-                borderRadius: BorderRadius.circular(15),
+            if ((ref.watch(currentUserProvider)['role'] == 'Admin'))
+              const SizedBox(
+                height: 15,
               ),
-              child: ListTile(
-                leading: const Icon(
-                  Icons.article,
-                  color: Colors.white,
-                  size: 35,
+            if ((ref.watch(currentUserProvider)['role'] == 'Admin'))
+              Container(
+                decoration: BoxDecoration(
+                  // Create a gradient background
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Theme.of(context).myRedColorDark,
+                      Theme.of(context).myRedColorLight,
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(15),
                 ),
-                title: const Padding(
-                  padding: EdgeInsets.all(15.0),
-                  child: Text(
-                    'Number Wise',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                child: ListTile(
+                  leading: const Icon(
+                    Icons.article,
+                    color: Colors.white,
+                    size: 35,
+                  ),
+                  title: const Padding(
+                    padding: EdgeInsets.all(15.0),
+                    child: Text(
+                      'Number Wise',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (ctx) => NumberWiseReport(),
                     ),
                   ),
                 ),
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (ctx) => NumberWiseReport(),
+              ),
+            if ((ref.watch(currentUserProvider)['role'] == 'Admin'))
+              const SizedBox(
+                height: 15,
+              ),
+            if ((ref.watch(currentUserProvider)['role'] == 'Admin'))
+              Container(
+                decoration: BoxDecoration(
+                  // Create a gradient background
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Theme.of(context).myAmberColorDark,
+                      Theme.of(context).myAmberColorlight,
+                    ],
                   ),
+                  borderRadius: BorderRadius.circular(15),
                 ),
-              ),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                // Create a gradient background
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Theme.of(context).myAmberColorDark,
-                    Theme.of(context).myAmberColorlight,
-                  ],
-                ),
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: ListTile(
-                leading: const Icon(
-                  Icons.menu,
-                  color: Colors.white,
-                  size: 35,
-                ),
-                title: const Padding(
-                  padding: EdgeInsets.all(15.0),
-                  child: Text(
-                    'Account Summary',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                child: ListTile(
+                  leading: const Icon(
+                    Icons.menu,
+                    color: Colors.white,
+                    size: 35,
+                  ),
+                  title: const Padding(
+                    padding: EdgeInsets.all(15.0),
+                    child: Text(
+                      'Account Summary',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (ctx) => AccountSummaryReportScreen(),
                     ),
                   ),
                 ),
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (ctx) => AccountSummaryReportScreen(),
-                  ),
-                ),
               ),
-            ),
             const SizedBox(
               height: 15,
             ),
@@ -275,49 +280,51 @@ class _ReportWidgetState extends ConsumerState<ReportWidget> {
                 ),
               ),
             ),
-            const SizedBox(
-              height: 15,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                // Create a gradient background
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Theme.of(context).myGreenColorDark,
-                    Theme.of(context).myGreenColorLight,
-                  ],
-                ),
-                borderRadius: BorderRadius.circular(15),
+            if ((ref.watch(currentUserProvider)['role'] == 'Admin'))
+              const SizedBox(
+                height: 15,
               ),
-              child: ListTile(
-                leading: const Icon(
-                  Icons.article,
-                  color: Colors.white,
-                  size: 35,
+            if ((ref.watch(currentUserProvider)['role'] == 'Admin'))
+              Container(
+                decoration: BoxDecoration(
+                  // Create a gradient background
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Theme.of(context).myGreenColorDark,
+                      Theme.of(context).myGreenColorLight,
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(15),
                 ),
-                title: const Padding(
-                  padding: EdgeInsets.all(15.0),
-                  child: Text(
-                    'Rate & Schemes',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                child: ListTile(
+                  leading: const Icon(
+                    Icons.article,
+                    color: Colors.white,
+                    size: 35,
+                  ),
+                  title: const Padding(
+                    padding: EdgeInsets.all(15.0),
+                    child: Text(
+                      'Rate & Schemes',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (ctx) => const SchemeScreen(),
+                      ),
+                    );
+                  },
                 ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (ctx) => const SchemeScreen(),
-                    ),
-                  );
-                },
               ),
-            ),
           ],
         ),
       ),

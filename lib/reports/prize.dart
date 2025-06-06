@@ -69,7 +69,7 @@ class _PrizeResultReportState extends ConsumerState<PrizeResultReport> {
           output += "${i + 1} : ${prize[i]}\n";
         }
       }
-      output += "\nCOMPLEMENTS\n";
+      output += "COMPLEMENTS\n";
       List<dynamic> second = [];
       for (int i = 5; i <= 34; i++) {
         second.add(prize[i]);
@@ -245,14 +245,17 @@ class _PrizeResultReportState extends ConsumerState<PrizeResultReport> {
               shrinkWrap: true,
               itemCount: ticketList.length,
               itemBuilder: (context, index) {
-                return Card(
-                  color: Theme.of(context).myBlueColorLight,
-                  child: ListTile(
-                    title: Center(
-                      child: Text(
-                        '${index + 1}\t:\t${ticketList[index].toString()}',
-                        style: TextStyle(
-                          color: Colors.white,
+                return SizedBox(
+                  height: 50,
+                  child: Card(
+                    color: Theme.of(context).myBlueColorLight,
+                    child: ListTile(
+                      title: Center(
+                        child: Text(
+                          '${index + 1}\t:\t${ticketList[index].toString()}',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
@@ -267,7 +270,7 @@ class _PrizeResultReportState extends ConsumerState<PrizeResultReport> {
                   Text(
                     shareResult('show'),
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 18,
                     ),
                   ),
                 ],
