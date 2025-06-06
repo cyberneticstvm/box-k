@@ -4,6 +4,7 @@ import 'package:boxk/reports/widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
 
 class PrizeResultReport extends ConsumerStatefulWidget {
@@ -65,6 +66,10 @@ class _PrizeResultReportState extends ConsumerState<PrizeResultReport> {
     String output = '';
     if (prize.isNotEmpty) {
       if (type == 'share') {
+        output +=
+            "Date: ${DateFormat('dd.MM.yyyy').format(ref.watch(selectedDateFrom))}\n";
+        output += "Ticket: ${ref.watch(selectedTicketReport)}\n";
+        output += "Play: ${ref.watch(selectedPlayCodeReport)}\n\n";
         for (int i = 0; i <= 4; i++) {
           output += "${i + 1} : ${prize[i]}\n";
         }

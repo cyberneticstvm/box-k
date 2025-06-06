@@ -1,3 +1,4 @@
+import 'package:boxk/providers/item.dart';
 import 'package:boxk/providers/order.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -139,6 +140,7 @@ class _PlayDropdownState extends ConsumerState<PlayDropdownList> {
   @override
   Widget build(BuildContext context) {
     if (widget.isBlockedCheck) isPlayLocked();
+    final items = ref.watch(itemAddProvider);
     return Container(
       color: Theme.of(context).myGrayColorLight,
       height: MediaQuery.of(context).size.height * .05,
@@ -156,7 +158,7 @@ class _PlayDropdownState extends ConsumerState<PlayDropdownList> {
             items: snapshot.data!.docs.map((value) {
               return DropdownMenuItem(
                 value: value['code'],
-                enabled: true,
+                enabled: (items.isEmpty) ? true : false,
                 child: Text(
                   '${value['name']}',
                   style: const TextStyle(color: Colors.black),
