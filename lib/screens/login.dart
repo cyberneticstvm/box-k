@@ -45,9 +45,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       });
       _userName = _userName.toLowerCase() +
           AppConfig.config['email']!['domain'].toString();
+      final pwd = '$_password${AppConfig.config['email']!['pwd'].toString()}';
       await _firebase.signInWithEmailAndPassword(
         email: _userName,
-        password: _password,
+        password: pwd,
       );
       setState(() {
         _isLogin = false;

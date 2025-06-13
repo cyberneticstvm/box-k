@@ -55,8 +55,9 @@ class _UserManagementScreenState extends ConsumerState<UserManagementScreen> {
       });
       final email =
           '$_userName${AppConfig.config['email']!['domain'].toString()}';
+      final pwd = '$_password${AppConfig.config['email']!['pwd'].toString()}';
       await _firebase
-          .createUserWithEmailAndPassword(email: email, password: _password)
+          .createUserWithEmailAndPassword(email: email, password: pwd)
           .then((userCredential) async {
         await FirebaseFirestore.instance
             .collection('users')
@@ -71,7 +72,7 @@ class _UserManagementScreenState extends ConsumerState<UserManagementScreen> {
             'uid': collectionRef.docs[0]['uid'] + 1,
             'name': _userName,
             'email': email,
-            'password': _password,
+            'password': pwd,
             'parent': parent,
             'role': role,
             'status': 'Active'
@@ -86,12 +87,9 @@ class _UserManagementScreenState extends ConsumerState<UserManagementScreen> {
         ref.invalidate(selectedNumberSet);
         ref.invalidate(selectedNumberGroup);
         ref.invalidate(selectedPage);
-        setState(() {
-          _firebase.signOut();
-        });
       });
-      /*     
-      _message('User created successfully!', Colors.white, Colors.green);*/
+      _message('User created successfully!', Colors.white, Colors.green);
+      _firebase.signOut();
     } catch (err) {
       setState(() {
         _isSaving = false;

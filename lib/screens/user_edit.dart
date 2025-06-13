@@ -1,3 +1,4 @@
+import 'package:boxk/app_config.dart';
 import 'package:boxk/colors/color.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -46,7 +47,8 @@ class _UserScreenState extends ConsumerState<UserEditScreen> {
       setState(() {
         _isUpdating = true;
       });
-      await FirebaseAuth.instance.currentUser!.updatePassword(_password);
+      final pwd = '$_password${AppConfig.config['email']!['pwd'].toString()}';
+      await FirebaseAuth.instance.currentUser!.updatePassword(pwd);
       setState(() {
         _isUpdating = false;
       });
