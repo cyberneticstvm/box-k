@@ -430,7 +430,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.442,
+      height: MediaQuery.of(context).size.height * 0.425,
       color: Theme.of(context).myBlueColorLight,
       child: Padding(
         padding: EdgeInsets.only(
