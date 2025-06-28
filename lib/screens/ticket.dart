@@ -1,4 +1,5 @@
 import 'package:boxk/colors/color.dart';
+import 'package:boxk/providers/user.dart';
 import 'package:boxk/screens/ticket_edit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -65,22 +66,24 @@ class _TicketScreenState extends ConsumerState<TicketScreen> {
                         DataCell(Text(item['leader_rate'].toString())),
                         DataCell(Text(item['user_rate'].toString())),
                         DataCell(Text(item['max_count'].toString())),
-                        DataCell(
-                          Icon(
-                            Icons.edit,
-                            color: Theme.of(context).myAmberColorDark,
-                          ),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (ctx) => TicketEditScreen(
-                                  docId: item.id,
+                        (ref.watch(currentUserProvider)['role'] == 'Admin')
+                            ? DataCell(
+                                Icon(
+                                  Icons.edit,
+                                  color: Theme.of(context).myAmberColorDark,
                                 ),
-                              ),
-                            );
-                          },
-                        ),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (ctx) => TicketEditScreen(
+                                        docId: item.id,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              )
+                            : DataCell(Text('')),
                       ],
                     ),
                   )

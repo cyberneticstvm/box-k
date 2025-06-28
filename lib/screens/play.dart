@@ -1,4 +1,5 @@
 import 'package:boxk/colors/color.dart';
+import 'package:boxk/providers/user.dart';
 import 'package:boxk/screens/play_edit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -71,22 +72,24 @@ class _PlayScreenState extends ConsumerState<PlayScreen> {
                                   DateFormat('HH:mm:ss')
                                       .parse(item['locked_to']))
                               .format(context))),
-                          DataCell(
-                            Icon(
-                              Icons.edit,
-                              color: Theme.of(context).myAmberColorDark,
-                            ),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (ctx) => PlayEditScreen(
-                                    playId: item['id'],
+                          (ref.watch(currentUserProvider)['role'] == 'Admin')
+                              ? DataCell(
+                                  Icon(
+                                    Icons.edit,
+                                    color: Theme.of(context).myAmberColorDark,
                                   ),
-                                ),
-                              );
-                            },
-                          ),
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (ctx) => PlayEditScreen(
+                                          playId: item['id'],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                )
+                              : DataCell(Text('')),
                         ],
                       ),
                     )

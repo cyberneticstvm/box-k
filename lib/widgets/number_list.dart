@@ -18,7 +18,7 @@ class _NumberListWidgetState extends ConsumerState<NumberListWidget> {
     final items = ref.watch(itemAddProvider);
     if (items.isEmpty) {
       return SizedBox(
-        height: MediaQuery.of(context).size.height * .295,
+        height: MediaQuery.of(context).size.height * .280,
         child: Center(
           child: Text(
             'No items added yet!',
@@ -28,7 +28,7 @@ class _NumberListWidgetState extends ConsumerState<NumberListWidget> {
       );
     }
     return SizedBox(
-      height: MediaQuery.of(context).size.height * .300,
+      height: MediaQuery.of(context).size.height * .280,
       child: ListView.builder(
         shrinkWrap: true,
         itemCount: items.length,

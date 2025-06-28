@@ -262,7 +262,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
                 n,
                 count,
                 ticketRate,
-                double.parse((count * item['user_rate']).toStringAsFixed(2)),
+                double.parse((count * ticketRate).toStringAsFixed(2)),
                 0,
                 0,
                 ref.watch(playDate),
@@ -430,7 +430,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.425,
+      height: MediaQuery.of(context).size.height * 0.430,
       color: Theme.of(context).myBlueColorLight,
       child: Padding(
         padding: EdgeInsets.only(

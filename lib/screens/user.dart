@@ -126,12 +126,15 @@ class _UserManagementScreenState extends ConsumerState<UserManagementScreen> {
         );
       },
     );
-    if (result) {
+    if (result && ref.watch(currentUserProvider)['role'] == 'Admin') {
       await FirebaseFirestore.instance
           .collection('users')
           .doc(uid)
           .update({'status': "Inactive"});
       _message("User deleted successfully!", Colors.white, Colors.green);
+    } else {
+      _message("User does not have permission to perform this action",
+          Colors.white, Colors.red);
     }
   }
 
