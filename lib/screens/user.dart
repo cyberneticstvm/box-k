@@ -2,6 +2,7 @@ import 'package:boxk/app_config.dart';
 import 'package:boxk/colors/color.dart';
 import 'package:boxk/providers/order.dart';
 import 'package:boxk/providers/page.dart';
+import 'package:boxk/providers/report.dart';
 import 'package:boxk/providers/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -126,7 +127,7 @@ class _UserManagementScreenState extends ConsumerState<UserManagementScreen> {
         );
       },
     );
-    if (result && ref.watch(currentUserProvider)['role'] == 'Admin') {
+    if (result && ref.watch(currentUserProvider)['role'] != 'User') {
       await FirebaseFirestore.instance
           .collection('users')
           .doc(uid)
@@ -136,6 +137,25 @@ class _UserManagementScreenState extends ConsumerState<UserManagementScreen> {
       _message("User does not have permission to perform this action",
           Colors.white, Colors.red);
     }
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>>? _getUsers() async {
+    final collection = FirebaseFirestore.instance
+        .collection('users')
+        .where('name', isNotEqualTo: 'All')
+        .where('status', isEqualTo: 'Active');
+    var users = await collection.where('role', isEqualTo: 'User').get();
+    if (ref.watch(currentUserProvider)['role'] == 'Leader') {
+      users = await collection
+          .where('parent', isEqualTo: ref.watch(currentUserProvider)['uid'])
+          .get();
+    }
+    if (ref.watch(currentUserProvider)['role'] == 'User') {
+      users = await collection
+          .where('uid', isEqualTo: ref.watch(currentUserProvider)['uid'])
+          .get();
+    }
+    return users;
   }
 
   @override
@@ -285,11 +305,7 @@ class _UserManagementScreenState extends ConsumerState<UserManagementScreen> {
                     height: 25,
                   ),
                   FutureBuilder(
-                    future: FirebaseFirestore.instance
-                        .collection('users')
-                        .where('name', isNotEqualTo: 'All')
-                        .where('status', isEqualTo: 'Active')
-                        .get(),
+                    future: _getUsers(),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                         return const Center(

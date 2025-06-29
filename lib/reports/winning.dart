@@ -63,6 +63,7 @@ class _WinningReportScreenState extends ConsumerState<WinningReportScreen> {
           ref.invalidate(enteredBillNumber);
           ref.invalidate(enteredTicketNumber);
           ref.invalidate(selectedUserProviderReport);
+          ref.invalidate(selectedUserFlag);
         }
       },
       child: Scaffold(
