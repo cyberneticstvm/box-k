@@ -425,8 +425,11 @@ class _UserDropdownReportState extends ConsumerState<UserDropdownListReport> {
     var users = await collection.where('role', isEqualTo: 'User').get();
     if (ref.watch(currentUserProvider)['role'] == 'Leader') {
       users = await collection
-          .where('role', isEqualTo: 'User')
-          .where('parent', isEqualTo: ref.watch(currentUserProvider)['uid'])
+          .where(Filter.or(
+              Filter('uid',
+                  isEqualTo: ref.watch(selectedUserProviderReport)['uid']),
+              Filter('parent',
+                  isEqualTo: ref.watch(selectedUserProviderReport)['uid'])))
           .get();
     }
     if (ref.watch(currentUserProvider)['role'] == 'User') {
@@ -450,6 +453,11 @@ class _UserDropdownReportState extends ConsumerState<UserDropdownListReport> {
       ref
           .read(selectedUserProviderReport.notifier)
           .update((state) => snapshot.data() as Map<String, dynamic>);
+      if (u.docs[0]['role'] != 'User') {
+        ref.read(selectedUserFlag.notifier).update((state) => uid);
+      } else {
+        ref.read(selectedUserFlag.notifier).update((state) => 0);
+      }
     });
   }
 

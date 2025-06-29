@@ -44,6 +44,7 @@ class _SalesReportScreenState extends ConsumerState<SalesReportScreen> {
           ref.invalidate(enteredBillNumber);
           ref.invalidate(enteredTicketNumber);
           ref.invalidate(selectedUserProviderReport);
+          ref.invalidate(selectedUserFlag);
         }
       },
       child: Scaffold(

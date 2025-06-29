@@ -66,3 +66,7 @@ final reportWinningCountUser = StateProvider<double>((ref) {
 final reportWinningSuperUser = StateProvider<double>((ref) {
   return 0;
 });
+
+final selectedUserFlag = StateProvider<int>((ref) {
+  return 0;
+});

@@ -50,17 +50,32 @@ class _SalesDetailReportState extends ConsumerState<SalesDetailReport> {
         .where('name', isNotEqualTo: 'All')
         .where('status', isEqualTo: 'Active');
     var users = await collection.where('role', isEqualTo: 'User').get();
-    if (ref.watch(selectedUserProviderReport)['role'] == 'Leader') {
+    /*if (ref.watch(selectedUserProviderReport)['role'] == 'Leader') {
       users = await collection
           .where('role', isEqualTo: 'User')
           .where('parent',
               isEqualTo: ref.watch(selectedUserProviderReport)['uid'])
           .get();
-    }
+    }*/
     if (ref.watch(selectedUserProviderReport)['role'] == 'User') {
       users = await collection
           .where('uid', isEqualTo: ref.watch(selectedUserProviderReport)['uid'])
           .get();
+    } else {
+      if (ref.watch(selectedUserFlag) > 0) {
+        users = await collection
+            .where('uid',
+                isEqualTo: ref.watch(selectedUserProviderReport)['uid'])
+            .get();
+      } else {
+        users = await collection
+            .where(Filter.or(
+                Filter('uid',
+                    isEqualTo: ref.watch(selectedUserProviderReport)['uid']),
+                Filter('parent',
+                    isEqualTo: ref.watch(selectedUserProviderReport)['uid'])))
+            .get();
+      }
     }
     if (users.docs.isNotEmpty) {
       bool isUserId = false;
@@ -90,6 +105,12 @@ class _SalesDetailReportState extends ConsumerState<SalesDetailReport> {
         isUserId = true;
         orders = orders.where('user_id',
             isEqualTo: ref.watch(selectedUserProviderReport)['uid']);
+      } else {
+        orders = orders.where(Filter.or(
+            Filter('user_id',
+                isEqualTo: ref.watch(selectedUserProviderReport)['uid']),
+            Filter('parent',
+                isEqualTo: ref.watch(selectedUserProviderReport)['uid'])));
       }
       Query<Map<String, dynamic>> ordTot;
       for (var item in users.docs) {

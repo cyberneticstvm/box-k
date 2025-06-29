@@ -63,13 +63,24 @@ class _SalesSummaryReportState extends ConsumerState<SalesSummaryReport> {
       collection = collection.where('ticket',
           isEqualTo: ref.watch(selectedTicketReport));
     }
-    if (ref.watch(selectedUserProviderReport)['role'] == 'Leader') {
+    /*if (ref.watch(selectedUserProviderReport)['role'] == 'Leader') {
       collection = collection.where('parent',
           isEqualTo: ref.watch(selectedUserProviderReport)['uid']);
-    }
+    }*/
     if (ref.watch(selectedUserProviderReport)['role'] == 'User') {
       collection = collection.where('user_id',
           isEqualTo: ref.watch(selectedUserProviderReport)['uid']);
+    } else {
+      if (ref.watch(selectedUserFlag) > 0) {
+        collection = collection.where('user_id',
+            isEqualTo: ref.watch(selectedUserProviderReport)['uid']);
+      } else {
+        collection = collection.where(Filter.or(
+            Filter('user_id',
+                isEqualTo: ref.watch(selectedUserProviderReport)['uid']),
+            Filter('parent',
+                isEqualTo: ref.watch(selectedUserProviderReport)['uid'])));
+      }
     }
     final c = await collection.aggregate(sum('count')).get().then((res) {
       return res.getSum('count');
