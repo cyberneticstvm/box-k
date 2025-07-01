@@ -953,7 +953,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
                   ),
                 ),
                 const SizedBox(
-                  width: 5,
+                  width: 1,
                 ),
                 Expanded(
                   child: SizedBox(
@@ -1217,7 +1217,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
               children: [
                 Expanded(
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.070,
+                    height: MediaQuery.of(context).size.height * 0.065,
                     child: TextButton(
                       onPressed: () {
                         ref.read(selectedPage.notifier).update((state) => 4);
@@ -1245,7 +1245,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
                 ),
                 Expanded(
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.070,
+                    height: MediaQuery.of(context).size.height * 0.065,
                     child: OutlinedButton(
                       onPressed: () {
                         _buttonPressed(0);
@@ -1269,7 +1269,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
                 ),
                 Expanded(
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.070,
+                    height: MediaQuery.of(context).size.height * 0.065,
                     child: IconButton(
                       onPressed: () {
                         //
@@ -1283,7 +1283,7 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
                 ),
                 Expanded(
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.070,
+                    height: MediaQuery.of(context).size.height * 0.065,
                     child: ElevatedButton(
                       onPressed: () {
                         _save();

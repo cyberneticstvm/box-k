@@ -1,9 +1,56 @@
 import 'package:boxk/app_config.dart';
+import 'package:boxk/screens/dashboard.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 final _firebase = FirebaseAuth.instance;
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late WebViewController controller;
+  @override
+  void initState() {
+    super.initState();
+    controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..loadRequest(
+        Uri.parse('https://instagram.com'),
+      );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const LoginScreen()),
+            );
+          },
+          icon: Ink.image(
+            image: const AssetImage('assets/images/insta.png'),
+            height: 75,
+            width: 75,
+          ),
+        ),
+        title: const Text('instagram'),
+        centerTitle: true,
+      ),
+      body: WebViewWidget(
+        controller: controller,
+      ),
+    );
+  }
+}
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -52,6 +99,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       );
       setState(() {
         _isLogin = false;
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (ctx) => const DashboardScreen(),
+          ),
+        );
       });
       _message("User logged in successfully", Colors.green);
     } on FirebaseAuthException catch (err) {

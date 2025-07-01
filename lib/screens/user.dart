@@ -2,7 +2,6 @@ import 'package:boxk/app_config.dart';
 import 'package:boxk/colors/color.dart';
 import 'package:boxk/providers/order.dart';
 import 'package:boxk/providers/page.dart';
-import 'package:boxk/providers/report.dart';
 import 'package:boxk/providers/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

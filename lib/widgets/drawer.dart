@@ -5,6 +5,7 @@ import 'package:boxk/providers/user.dart';
 import 'package:boxk/reports/prize.dart';
 import 'package:boxk/screens/bill_delete.dart';
 import 'package:boxk/screens/blocked_numbers.dart';
+import 'package:boxk/screens/login.dart';
 import 'package:boxk/screens/play.dart';
 import 'package:boxk/screens/result.dart';
 import 'package:boxk/screens/scheme.dart';
@@ -412,6 +413,14 @@ class _DrawerWidgetState extends ConsumerState<DrawerWidget> {
                     ref.invalidate(selectedNumberGroup);
                     ref.invalidate(selectedPage);
                     _firebase.signOut();
+                    setState(() {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (ctx) => const LoginScreen(),
+                        ),
+                      );
+                    });
                     _message("User logged out successfully", Colors.green);
                   },
                   child: Wrap(
