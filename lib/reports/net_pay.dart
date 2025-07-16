@@ -174,31 +174,18 @@ class _NetPayReportDetailState extends ConsumerState<NetPayReportDetail> {
     await orders.get().then((snapshot) async {
       if (snapshot.docs.isNotEmpty) {
         for (var order in snapshot.docs) {
-          for (var res in result.docs) {
-            for (int i = 1; i <= 35; i++) {
-              if (res['p$i'] == order['number'] && order['ticket'] == 'king') {
-                var scheme = await schemes
-                    .where('position', isEqualTo: (i <= 5) ? i : 6)
-                    .where('ticket', isEqualTo: order['ticket'])
-                    .get()
-                    .then((snapshot) {
-                  return snapshot.docs[0];
-                });
-                var ticket = await tickets
-                    .where('name', isEqualTo: order['ticket'])
-                    .get()
-                    .then((snapshot) {
-                  return snapshot.docs[0];
-                });
-                winTotal += order['count'] * scheme['amount'];
-                orderTotal += order['total'];
-                superr += order['count'] * scheme['super'];
-                commission += ticket['user_rate'] - ticket['leader_rate'];
-              }
-              if (res['p$i'] == order['number'] && order['ticket'] == 'box-k') {
-                if (i <= 5) {
+          if (result.docs.isEmpty) {
+            winTotal = 0;
+            orderTotal += order['total'];
+            superr = 0;
+            commission = 0;
+          } else {
+            for (var res in result.docs) {
+              for (int i = 1; i <= 35; i++) {
+                if (res['p$i'] == order['number'] &&
+                    order['ticket'] == 'king') {
                   var scheme = await schemes
-                      .where('position', isEqualTo: (i <= 2) ? i : 2)
+                      .where('position', isEqualTo: (i <= 5) ? i : 6)
                       .where('ticket', isEqualTo: order['ticket'])
                       .get()
                       .then((snapshot) {
@@ -215,133 +202,155 @@ class _NetPayReportDetailState extends ConsumerState<NetPayReportDetail> {
                   superr += order['count'] * scheme['super'];
                   commission += ticket['user_rate'] - ticket['leader_rate'];
                 }
-              }
-              if (res['p1'].toString().substring(0, 2) == order['number'] &&
-                  order['ticket'] == 'ab' &&
-                  i == 1) {
-                var scheme = await schemes
-                    .where('position', isEqualTo: i)
-                    .where('ticket', isEqualTo: order['ticket'])
-                    .get()
-                    .then((snapshot) {
-                  return snapshot.docs[0];
-                });
-                var ticket = await tickets
-                    .where('name', isEqualTo: order['ticket'])
-                    .get()
-                    .then((snapshot) {
-                  return snapshot.docs[0];
-                });
-                winTotal += order['count'] * scheme['amount'];
-                orderTotal += order['total'];
-                superr += order['count'] * scheme['super'];
-                commission += ticket['user_rate'] - ticket['leader_rate'];
-              }
-              if (res['p1'].toString().substring(1, 3) == order['number'] &&
-                  order['ticket'] == 'bc' &&
-                  i == 1) {
-                var scheme = await schemes
-                    .where('position', isEqualTo: i)
-                    .where('ticket', isEqualTo: order['ticket'])
-                    .get()
-                    .then((snapshot) {
-                  return snapshot.docs[0];
-                });
-                var ticket = await tickets
-                    .where('name', isEqualTo: order['ticket'])
-                    .get()
-                    .then((snapshot) {
-                  return snapshot.docs[0];
-                });
-                winTotal += order['count'] * scheme['amount'];
-                orderTotal += order['total'];
-                superr += order['count'] * scheme['super'];
-                commission += ticket['user_rate'] - ticket['leader_rate'];
-              }
-              if ('${res['p1'].toString().substring(0, 1)}${res['p$i'].toString().substring(2, 3)}' ==
-                      order['number'] &&
-                  order['ticket'] == 'ac' &&
-                  i == 1) {
-                var scheme = await schemes
-                    .where('position', isEqualTo: i)
-                    .where('ticket', isEqualTo: order['ticket'])
-                    .get()
-                    .then((snapshot) {
-                  return snapshot.docs[0];
-                });
-                var ticket = await tickets
-                    .where('name', isEqualTo: order['ticket'])
-                    .get()
-                    .then((snapshot) {
-                  return snapshot.docs[0];
-                });
-                winTotal += order['count'] * scheme['amount'];
-                orderTotal += order['total'];
-                superr += order['count'] * scheme['super'];
-                commission += ticket['user_rate'] - ticket['leader_rate'];
-              }
-              if (res['p1'].toString().substring(0, 1) == order['number'] &&
-                  order['ticket'] == 'a' &&
-                  i == 1) {
-                var scheme = await schemes
-                    .where('position', isEqualTo: i)
-                    .where('ticket', isEqualTo: order['ticket'])
-                    .get()
-                    .then((snapshot) {
-                  return snapshot.docs[0];
-                });
-                var ticket = await tickets
-                    .where('name', isEqualTo: order['ticket'])
-                    .get()
-                    .then((snapshot) {
-                  return snapshot.docs[0];
-                });
-                winTotal += order['count'] * scheme['amount'];
-                orderTotal += order['total'];
-                superr += order['count'] * scheme['super'];
-                commission += ticket['user_rate'] - ticket['leader_rate'];
-              }
-              if (res['p1'].toString().substring(1, 2) == order['number'] &&
-                  order['ticket'] == 'b' &&
-                  i == 1) {
-                var scheme = await schemes
-                    .where('position', isEqualTo: i)
-                    .where('ticket', isEqualTo: order['ticket'])
-                    .get()
-                    .then((snapshot) {
-                  return snapshot.docs[0];
-                });
-                var ticket = await tickets
-                    .where('name', isEqualTo: order['ticket'])
-                    .get()
-                    .then((snapshot) {
-                  return snapshot.docs[0];
-                });
-                winTotal += order['count'] * scheme['amount'];
-                orderTotal += order['total'];
-                superr += order['count'] * scheme['super'];
-                commission += ticket['user_rate'] - ticket['leader_rate'];
-              }
-              if (res['p1'].toString().substring(2, 3) == order['number'] &&
-                  order['ticket'] == 'c' &&
-                  i == 1) {
-                var scheme = await schemes
-                    .where('position', isEqualTo: i)
-                    .where('ticket', isEqualTo: order['ticket'])
-                    .get()
-                    .then((snapshot) {
-                  return snapshot.docs[0];
-                });
-                var ticket = await tickets
-                    .where('name', isEqualTo: order['ticket'])
-                    .get()
-                    .then((snapshot) {
-                  return snapshot.docs[0];
-                });
-                winTotal += order['count'] * scheme['amount'];
-                orderTotal += order['total'];
-                superr += order['count'] * scheme['super'];
-                commission += ticket['user_rate'] - ticket['leader_rate'];
+                if (res['p$i'] == order['number'] &&
+                    order['ticket'] == 'box-k') {
+                  if (i <= 5) {
+                    var scheme = await schemes
+                        .where('position', isEqualTo: (i <= 2) ? i : 2)
+                        .where('ticket', isEqualTo: order['ticket'])
+                        .get()
+                        .then((snapshot) {
+                      return snapshot.docs[0];
+                    });
+                    var ticket = await tickets
+                        .where('name', isEqualTo: order['ticket'])
+                        .get()
+                        .then((snapshot) {
+                      return snapshot.docs[0];
+                    });
+                    winTotal += order['count'] * scheme['amount'];
+                    orderTotal += order['total'];
+                    superr += order['count'] * scheme['super'];
+                    commission += ticket['user_rate'] - ticket['leader_rate'];
+                  }
+                }
+                if (res['p1'].toString().substring(0, 2) == order['number'] &&
+                    order['ticket'] == 'ab' &&
+                    i == 1) {
+                  var scheme = await schemes
+                      .where('position', isEqualTo: i)
+                      .where('ticket', isEqualTo: order['ticket'])
+                      .get()
+                      .then((snapshot) {
+                    return snapshot.docs[0];
+                  });
+                  var ticket = await tickets
+                      .where('name', isEqualTo: order['ticket'])
+                      .get()
+                      .then((snapshot) {
+                    return snapshot.docs[0];
+                  });
+                  winTotal += order['count'] * scheme['amount'];
+                  orderTotal += order['total'];
+                  superr += order['count'] * scheme['super'];
+                  commission += ticket['user_rate'] - ticket['leader_rate'];
+                }
+                if (res['p1'].toString().substring(1, 3) == order['number'] &&
+                    order['ticket'] == 'bc' &&
+                    i == 1) {
+                  var scheme = await schemes
+                      .where('position', isEqualTo: i)
+                      .where('ticket', isEqualTo: order['ticket'])
+                      .get()
+                      .then((snapshot) {
+                    return snapshot.docs[0];
+                  });
+                  var ticket = await tickets
+                      .where('name', isEqualTo: order['ticket'])
+                      .get()
+                      .then((snapshot) {
+                    return snapshot.docs[0];
+                  });
+                  winTotal += order['count'] * scheme['amount'];
+                  orderTotal += order['total'];
+                  superr += order['count'] * scheme['super'];
+                  commission += ticket['user_rate'] - ticket['leader_rate'];
+                }
+                if ('${res['p1'].toString().substring(0, 1)}${res['p$i'].toString().substring(2, 3)}' ==
+                        order['number'] &&
+                    order['ticket'] == 'ac' &&
+                    i == 1) {
+                  var scheme = await schemes
+                      .where('position', isEqualTo: i)
+                      .where('ticket', isEqualTo: order['ticket'])
+                      .get()
+                      .then((snapshot) {
+                    return snapshot.docs[0];
+                  });
+                  var ticket = await tickets
+                      .where('name', isEqualTo: order['ticket'])
+                      .get()
+                      .then((snapshot) {
+                    return snapshot.docs[0];
+                  });
+                  winTotal += order['count'] * scheme['amount'];
+                  orderTotal += order['total'];
+                  superr += order['count'] * scheme['super'];
+                  commission += ticket['user_rate'] - ticket['leader_rate'];
+                }
+                if (res['p1'].toString().substring(0, 1) == order['number'] &&
+                    order['ticket'] == 'a' &&
+                    i == 1) {
+                  var scheme = await schemes
+                      .where('position', isEqualTo: i)
+                      .where('ticket', isEqualTo: order['ticket'])
+                      .get()
+                      .then((snapshot) {
+                    return snapshot.docs[0];
+                  });
+                  var ticket = await tickets
+                      .where('name', isEqualTo: order['ticket'])
+                      .get()
+                      .then((snapshot) {
+                    return snapshot.docs[0];
+                  });
+                  winTotal += order['count'] * scheme['amount'];
+                  orderTotal += order['total'];
+                  superr += order['count'] * scheme['super'];
+                  commission += ticket['user_rate'] - ticket['leader_rate'];
+                }
+                if (res['p1'].toString().substring(1, 2) == order['number'] &&
+                    order['ticket'] == 'b' &&
+                    i == 1) {
+                  var scheme = await schemes
+                      .where('position', isEqualTo: i)
+                      .where('ticket', isEqualTo: order['ticket'])
+                      .get()
+                      .then((snapshot) {
+                    return snapshot.docs[0];
+                  });
+                  var ticket = await tickets
+                      .where('name', isEqualTo: order['ticket'])
+                      .get()
+                      .then((snapshot) {
+                    return snapshot.docs[0];
+                  });
+                  winTotal += order['count'] * scheme['amount'];
+                  orderTotal += order['total'];
+                  superr += order['count'] * scheme['super'];
+                  commission += ticket['user_rate'] - ticket['leader_rate'];
+                }
+                if (res['p1'].toString().substring(2, 3) == order['number'] &&
+                    order['ticket'] == 'c' &&
+                    i == 1) {
+                  var scheme = await schemes
+                      .where('position', isEqualTo: i)
+                      .where('ticket', isEqualTo: order['ticket'])
+                      .get()
+                      .then((snapshot) {
+                    return snapshot.docs[0];
+                  });
+                  var ticket = await tickets
+                      .where('name', isEqualTo: order['ticket'])
+                      .get()
+                      .then((snapshot) {
+                    return snapshot.docs[0];
+                  });
+                  winTotal += order['count'] * scheme['amount'];
+                  orderTotal += order['total'];
+                  superr += order['count'] * scheme['super'];
+                  commission += ticket['user_rate'] - ticket['leader_rate'];
+                }
               }
             }
           }
