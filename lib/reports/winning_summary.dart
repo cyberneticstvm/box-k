@@ -858,11 +858,12 @@ class _WinningDetailsReportState extends ConsumerState<WinningDetailsReport> {
                 sales.add({
                   'bill_number': order['bill_number'],
                   'ticket': order['ticket'],
-                  'prize': order['number'],
+                  'number': order['number'],
                   'count': order['count'],
                   'position': scheme['position'],
                   'super': scheme['super'],
                   'amount': scheme['super'] * order['count'],
+                  'prize': scheme['amount'] * order['count'],
                 });
               }
               if (res['p$i'] == order['number'] && order['ticket'] == 'box-k') {
@@ -877,11 +878,12 @@ class _WinningDetailsReportState extends ConsumerState<WinningDetailsReport> {
                   sales.add({
                     'bill_number': order['bill_number'],
                     'ticket': order['ticket'],
-                    'prize': order['number'],
+                    'number': order['number'],
                     'count': order['count'],
                     'position': scheme['position'],
                     'super': scheme['super'],
                     'amount': scheme['super'] * order['count'],
+                    'prize': scheme['amount'] * order['count'],
                   });
                 }
               }
@@ -898,11 +900,12 @@ class _WinningDetailsReportState extends ConsumerState<WinningDetailsReport> {
                 sales.add({
                   'bill_number': order['bill_number'],
                   'ticket': order['ticket'],
-                  'prize': order['number'],
+                  'number': order['number'],
                   'count': order['count'],
                   'position': scheme['position'],
                   'super': scheme['super'],
                   'amount': scheme['super'] * order['count'],
+                  'prize': scheme['amount'] * order['count'],
                 });
               }
               if (res['p1'].toString().substring(1, 3) == order['number'] &&
@@ -918,11 +921,12 @@ class _WinningDetailsReportState extends ConsumerState<WinningDetailsReport> {
                 sales.add({
                   'bill_number': order['bill_number'],
                   'ticket': order['ticket'],
-                  'prize': order['number'],
+                  'number': order['number'],
                   'count': order['count'],
                   'position': scheme['position'],
                   'super': scheme['super'],
                   'amount': scheme['super'] * order['count'],
+                  'prize': scheme['amount'] * order['count'],
                 });
               }
               if ('${res['p1'].toString().substring(0, 1)}${res['p$i'].toString().substring(2, 3)}' ==
@@ -939,11 +943,12 @@ class _WinningDetailsReportState extends ConsumerState<WinningDetailsReport> {
                 sales.add({
                   'bill_number': order['bill_number'],
                   'ticket': order['ticket'],
-                  'prize': order['number'],
+                  'number': order['number'],
                   'count': order['count'],
                   'position': scheme['position'],
                   'super': scheme['super'],
                   'amount': scheme['super'] * order['count'],
+                  'prize': scheme['amount'] * order['count'],
                 });
               }
               if (res['p1'].toString().substring(0, 1) == order['number'] &&
@@ -959,11 +964,12 @@ class _WinningDetailsReportState extends ConsumerState<WinningDetailsReport> {
                 sales.add({
                   'bill_number': order['bill_number'],
                   'ticket': order['ticket'],
-                  'prize': order['number'],
+                  'number': order['number'],
                   'count': order['count'],
                   'position': scheme['position'],
                   'super': scheme['super'],
                   'amount': scheme['super'] * order['count'],
+                  'prize': scheme['amount'] * order['count'],
                 });
               }
               if (res['p1'].toString().substring(1, 2) == order['number'] &&
@@ -979,11 +985,12 @@ class _WinningDetailsReportState extends ConsumerState<WinningDetailsReport> {
                 sales.add({
                   'bill_number': order['bill_number'],
                   'ticket': order['ticket'],
-                  'prize': order['number'],
+                  'number': order['number'],
                   'count': order['count'],
                   'position': scheme['position'],
                   'super': scheme['super'],
                   'amount': scheme['super'] * order['count'],
+                  'prize': scheme['amount'] * order['count'],
                 });
               }
               if (res['p1'].toString().substring(2, 3) == order['number'] &&
@@ -999,11 +1006,12 @@ class _WinningDetailsReportState extends ConsumerState<WinningDetailsReport> {
                 sales.add({
                   'bill_number': order['bill_number'],
                   'ticket': order['ticket'],
-                  'prize': order['number'],
+                  'number': order['number'],
                   'count': order['count'],
                   'position': scheme['position'],
                   'super': scheme['super'],
                   'amount': scheme['super'] * order['count'],
+                  'prize': scheme['amount'] * order['count'],
                 });
               }
               setState(() {
@@ -1138,46 +1146,117 @@ class _WinningDetailsReportState extends ConsumerState<WinningDetailsReport> {
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: DataTable(
-                columnSpacing: 25,
                 headingTextStyle: TextStyle(fontSize: 13),
                 dataTextStyle: TextStyle(fontSize: 13),
                 columns: [
-                  DataColumn(label: Text('Bill')),
-                  DataColumn(label: Text('Ticket')),
-                  DataColumn(label: Text('Prize')),
-                  DataColumn(label: Text('Count')),
-                  DataColumn(label: Text('Position')),
-                  DataColumn(label: Text('Super')),
-                  DataColumn(label: Text('Amount')),
-                  DataColumn(label: Text('Agent')),
-                  DataColumn(label: Text('Stockist')),
+                  DataColumn(
+                      label: Text(
+                    'Bill',
+                    style: TextStyle(fontSize: 15),
+                  )),
+                  DataColumn(
+                      label: Text(
+                    'Ticket',
+                    style: TextStyle(fontSize: 15),
+                  )),
+                  DataColumn(
+                      label: Text(
+                    'Prize',
+                    style: TextStyle(fontSize: 15),
+                  )),
+                  DataColumn(
+                      label: Text(
+                    'Count',
+                    style: TextStyle(fontSize: 15),
+                  )),
+                  DataColumn(
+                      label: Text(
+                    'Position',
+                    style: TextStyle(fontSize: 15),
+                  )),
+                  DataColumn(
+                      label: Text(
+                    'Super',
+                    style: TextStyle(fontSize: 15),
+                  )),
+                  DataColumn(
+                      label: Text(
+                    'Amount',
+                    style: TextStyle(fontSize: 15),
+                  )),
+                  DataColumn(
+                      label: Text(
+                    'Agent',
+                    style: TextStyle(fontSize: 15),
+                  )),
+                  DataColumn(
+                      label: Text(
+                    'Stockist',
+                    style: TextStyle(fontSize: 15),
+                  )),
                 ],
                 rows: sales
                     .map(
                       (item) => DataRow(
                         cells: [
-                          DataCell(Text(item['bill_number'].toString())),
-                          DataCell(Text(item['ticket'])),
+                          DataCell(Center(
+                              child: Text(
+                            item['bill_number'].toString(),
+                            style: TextStyle(fontSize: 15),
+                          ))),
+                          DataCell(Center(
+                              child: Text(
+                            item['ticket'],
+                            style: TextStyle(fontSize: 15),
+                          ))),
                           DataCell(
-                            Text(item['prize'].toString()),
+                            Center(
+                                child: Text(
+                              item['number'].toString(),
+                              style: TextStyle(fontSize: 15),
+                            )),
                           ),
                           DataCell(
-                            Text(item['count'].toString()),
+                            Center(
+                                child: Text(
+                              item['count'].toString(),
+                              style: TextStyle(fontSize: 15),
+                            )),
                           ),
                           DataCell(
-                            Text(item['position'].toString()),
+                            Center(
+                                child: Text(
+                              item['position'].toString(),
+                              style: TextStyle(fontSize: 15),
+                            )),
                           ),
                           DataCell(
-                            Text(item['super'].toString()),
+                            Center(
+                                child: Text(
+                              item['super'].toString(),
+                              style: TextStyle(fontSize: 15),
+                            )),
                           ),
                           DataCell(
-                            Text(item['amount'].toString()),
+                            Center(
+                                child: Text(
+                              item['prize'].toString(),
+                              style: TextStyle(fontSize: 15),
+                            )),
                           ),
                           DataCell(
-                            Text(widget.uname),
+                            Center(
+                                child: Text(
+                              widget.uname,
+                              style: TextStyle(fontSize: 15),
+                            )),
                           ),
                           DataCell(
-                            Text(stockist),
+                            Center(
+                                child: Text(
+                              stockist,
+                              style: TextStyle(fontSize: 15),
+                            )),
                           ),
                         ],
                       ),

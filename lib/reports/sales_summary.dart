@@ -88,12 +88,31 @@ class _SalesSummaryReportState extends ConsumerState<SalesSummaryReport> {
     final s = await collection.aggregate(sum('total')).get().then((res) {
       return res.getSum('total');
     });
+    var tickets = FirebaseFirestore.instance.collection('tickets');
+    double commission = 0;
+    await collection.get().then((snapshot) async {
+      for (var order in snapshot.docs) {
+        var ticket = await tickets
+            .where('name', isEqualTo: order['ticket'])
+            .get()
+            .then((snapshot) {
+          return snapshot.docs[0];
+        });
+        commission +=
+            (ticket['user_rate'] - ticket['leader_rate']) * order['count'];
+      }
+    });
+
     ref
         .read(reportSalesCount.notifier)
         .update((state) => double.parse(c.toString()));
     ref
         .read(reportSalesTotal.notifier)
         .update((state) => double.parse(s.toString()));
+    ref
+        .read(reportCommissionTotal.notifier)
+        .update((state) => double.parse(commission.toString()));
+
     hideLoadingIndicator();
   }
 
@@ -151,7 +170,7 @@ class _SalesSummaryReportState extends ConsumerState<SalesSummaryReport> {
                         child: Container(
                           alignment: Alignment.centerRight,
                           child: Text(
-                            'Amount: ${double.parse(ref.watch(reportSalesTotal).toString()).toStringAsFixed(2)}',
+                            'Amount: ${double.parse((ref.watch(reportSalesTotal) - ref.watch(reportCommissionTotal)).toString()).toStringAsFixed(2)}',
                             style: const TextStyle(
                                 color: Colors.white, fontSize: 17),
                           ),
