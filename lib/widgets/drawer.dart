@@ -245,45 +245,45 @@ class _DrawerWidgetState extends ConsumerState<DrawerWidget> {
                       ),
                     ],
                   ),
-                if ((ref.watch(currentUserProvider)['role'] == 'Admin'))
-                  ExpansionTile(
-                    trailing: const Icon(
-                      Icons.keyboard_arrow_down,
-                      color: Colors.white,
-                    ),
-                    leading: const Icon(
-                      Icons.insert_drive_file_outlined,
-                      color: Colors.white,
-                    ),
-                    shape: const Border(),
-                    title: const Text(
-                      'Bill',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 17,
-                      ),
-                    ),
-                    children: [
-                      ListTile(
-                        leading: Icon(
-                          Icons.radio_button_checked,
-                          color: Theme.of(context).myAmberColorDark,
-                        ),
-                        title: const Text(
-                          'Delete Bill',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (ctx) => const BillDeleteScreen(),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
+                //if ((ref.watch(currentUserProvider)['role'] == 'Admin'))
+                ExpansionTile(
+                  trailing: const Icon(
+                    Icons.keyboard_arrow_down,
+                    color: Colors.white,
                   ),
+                  leading: const Icon(
+                    Icons.insert_drive_file_outlined,
+                    color: Colors.white,
+                  ),
+                  shape: const Border(),
+                  title: const Text(
+                    'Bill',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 17,
+                    ),
+                  ),
+                  children: [
+                    ListTile(
+                      leading: Icon(
+                        Icons.radio_button_checked,
+                        color: Theme.of(context).myAmberColorDark,
+                      ),
+                      title: const Text(
+                        'Delete Bill',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (ctx) => const BillDeleteScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
                 if ((ref.watch(currentUserProvider)['role'] == 'Admin'))
                   ExpansionTile(
                     trailing: const Icon(

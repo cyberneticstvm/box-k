@@ -1,4 +1,5 @@
 import 'package:boxk/colors/color.dart';
+import 'package:boxk/providers/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -28,12 +29,19 @@ class _BillScreenState extends ConsumerState<BillDeleteScreen> {
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>>? _getBills() async {
-    final collection = FirebaseFirestore.instance.collection('orders').where(
+    var collection = FirebaseFirestore.instance.collection('orders').where(
         'play_date',
         isGreaterThanOrEqualTo: DateTime(
             DateTime.now().year, DateTime.now().month, DateTime.now().day));
-    var bills = await collection.get();
-    return bills;
+    if (ref.watch(currentUserProvider)['role'] == 'User') {
+      collection = collection.where('user_id',
+          isEqualTo: ref.watch(currentUserProvider)['uid']);
+    }
+    if (ref.watch(currentUserProvider)['role'] == 'Leader') {
+      collection = collection.where('parent',
+          isEqualTo: ref.watch(currentUserProvider)['uid']);
+    }
+    return collection.get();
   }
 
   void _delete(String docId) async {
