@@ -858,7 +858,7 @@ class _WinningDetailsReportState extends ConsumerState<WinningDetailsReport> {
                 sales.add({
                   'bill_number': order['bill_number'],
                   'ticket': order['ticket'],
-                  'prize': scheme['amount'] * order['count'],
+                  'prize': order['number'],
                   'count': order['count'],
                   'position': scheme['position'],
                   'super': scheme['super'],
@@ -877,7 +877,7 @@ class _WinningDetailsReportState extends ConsumerState<WinningDetailsReport> {
                   sales.add({
                     'bill_number': order['bill_number'],
                     'ticket': order['ticket'],
-                    'prize': scheme['amount'] * order['count'],
+                    'prize': order['number'],
                     'count': order['count'],
                     'position': scheme['position'],
                     'super': scheme['super'],
@@ -898,7 +898,7 @@ class _WinningDetailsReportState extends ConsumerState<WinningDetailsReport> {
                 sales.add({
                   'bill_number': order['bill_number'],
                   'ticket': order['ticket'],
-                  'prize': scheme['amount'] * order['count'],
+                  'prize': order['number'],
                   'count': order['count'],
                   'position': scheme['position'],
                   'super': scheme['super'],
@@ -918,7 +918,7 @@ class _WinningDetailsReportState extends ConsumerState<WinningDetailsReport> {
                 sales.add({
                   'bill_number': order['bill_number'],
                   'ticket': order['ticket'],
-                  'prize': scheme['amount'] * order['count'],
+                  'prize': order['number'],
                   'count': order['count'],
                   'position': scheme['position'],
                   'super': scheme['super'],
@@ -939,7 +939,7 @@ class _WinningDetailsReportState extends ConsumerState<WinningDetailsReport> {
                 sales.add({
                   'bill_number': order['bill_number'],
                   'ticket': order['ticket'],
-                  'prize': scheme['amount'] * order['count'],
+                  'prize': order['number'],
                   'count': order['count'],
                   'position': scheme['position'],
                   'super': scheme['super'],
@@ -959,7 +959,7 @@ class _WinningDetailsReportState extends ConsumerState<WinningDetailsReport> {
                 sales.add({
                   'bill_number': order['bill_number'],
                   'ticket': order['ticket'],
-                  'prize': scheme['amount'] * order['count'],
+                  'prize': order['number'],
                   'count': order['count'],
                   'position': scheme['position'],
                   'super': scheme['super'],
@@ -979,7 +979,7 @@ class _WinningDetailsReportState extends ConsumerState<WinningDetailsReport> {
                 sales.add({
                   'bill_number': order['bill_number'],
                   'ticket': order['ticket'],
-                  'prize': scheme['amount'] * order['count'],
+                  'prize': order['number'],
                   'count': order['count'],
                   'position': scheme['position'],
                   'super': scheme['super'],
@@ -999,7 +999,7 @@ class _WinningDetailsReportState extends ConsumerState<WinningDetailsReport> {
                 sales.add({
                   'bill_number': order['bill_number'],
                   'ticket': order['ticket'],
-                  'prize': scheme['amount'] * order['count'],
+                  'prize': order['number'],
                   'count': order['count'],
                   'position': scheme['position'],
                   'super': scheme['super'],
@@ -1138,7 +1138,6 @@ class _WinningDetailsReportState extends ConsumerState<WinningDetailsReport> {
             SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: DataTable(
-                columnSpacing: 7,
                 headingTextStyle: TextStyle(fontSize: 13),
                 dataTextStyle: TextStyle(fontSize: 13),
                 columns: [
