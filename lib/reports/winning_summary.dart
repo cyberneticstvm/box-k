@@ -1136,8 +1136,9 @@ class _WinningDetailsReportState extends ConsumerState<WinningDetailsReport> {
               height: 5,
             ),
             SingleChildScrollView(
-              scrollDirection: Axis.vertical,
+              scrollDirection: Axis.horizontal,
               child: DataTable(
+                columnSpacing: 25,
                 headingTextStyle: TextStyle(fontSize: 13),
                 dataTextStyle: TextStyle(fontSize: 13),
                 columns: [
