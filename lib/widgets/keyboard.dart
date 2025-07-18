@@ -337,7 +337,6 @@ class _KeyboardWidgetState extends ConsumerState<KeyboardWidget> {
             return 0;
           }
         });
-
         final collection = FirebaseFirestore.instance.collection('orders');
         for (var item in items) {
           var tkt = (item.ticket == 'd1' ||

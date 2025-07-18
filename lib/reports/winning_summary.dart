@@ -43,6 +43,23 @@ class _WinningSummaryReportState extends ConsumerState<WinningSummaryReport> {
     Navigator.of(context).pop();
   }
 
+  List<String> _getPermutation(String s) {
+    if (s.length <= 1) {
+      return [s];
+    }
+
+    List<String> permutations = [];
+    for (int i = 0; i < s.length; i++) {
+      String firstChar = s[i];
+      String remaining = s.substring(0, i) + s.substring(i + 1);
+      List<String> subPermutations = _getPermutation(remaining);
+      for (String subPermutation in subPermutations) {
+        permutations.add(firstChar + subPermutation);
+      }
+    }
+    return permutations.toList();
+  }
+
   Future<void> getData() async {
     showLoadingIndicator();
     var orders = FirebaseFirestore.instance
@@ -110,18 +127,22 @@ class _WinningSummaryReportState extends ConsumerState<WinningSummaryReport> {
                   superr += order['count'] * scheme['super'];
                 }
               }
-              if (res['p$i'] == order['number'] && order['ticket'] == 'box-k') {
-                if (i <= 5) {
-                  var scheme = await schemes
-                      .where('position', isEqualTo: (i <= 2) ? i : 2)
-                      .where('ticket', isEqualTo: order['ticket'])
-                      .get()
-                      .then((snapshot) {
-                    return snapshot.docs[0];
-                  });
-                  tot += order['count'] * scheme['amount'];
-                  count += order['count'];
-                  superr += order['count'] * scheme['super'];
+              if (order['ticket'] == 'box-k') {
+                var ticketList = _getPermutation(order['number']);
+                for (var t = 0; t < ticketList.length; t++) {
+                  if (i <= 5 && ticketList[t] == res['p$i']) {
+                    var scheme = await schemes
+                        .where('position',
+                            isEqualTo: (order['number'] == res['p$i']) ? 1 : 2)
+                        .where('ticket', isEqualTo: order['ticket'])
+                        .get()
+                        .then((snapshot) {
+                      return snapshot.docs[0];
+                    });
+                    tot += order['count'] * scheme['amount'];
+                    count += order['count'];
+                    superr += order['count'] * scheme['super'];
+                  }
                 }
               }
               if (res['p1'].toString().substring(0, 2) == order['number'] &&
@@ -401,6 +422,23 @@ class _WinningSummaryDetailReportState
     Navigator.of(context).pop();
   }
 
+  List<String> _getPermutation(String s) {
+    if (s.length <= 1) {
+      return [s];
+    }
+
+    List<String> permutations = [];
+    for (int i = 0; i < s.length; i++) {
+      String firstChar = s[i];
+      String remaining = s.substring(0, i) + s.substring(i + 1);
+      List<String> subPermutations = _getPermutation(remaining);
+      for (String subPermutation in subPermutations) {
+        permutations.add(firstChar + subPermutation);
+      }
+    }
+    return permutations.toList();
+  }
+
   Future<void> getData() async {
     showLoadingIndicator();
     bool isUserId = false;
@@ -506,7 +544,26 @@ class _WinningSummaryDetailReportState
                     c += order['count'];
                     superr += order['count'] * scheme['super'];
                   }
-                  if (res['p$i'] == order['number'] &&
+                  if (order['ticket'] == 'box-k') {
+                    var ticketList = _getPermutation(order['number']);
+                    for (var t = 0; t < ticketList.length; t++) {
+                      if (i <= 5 && ticketList[t] == res['p$i']) {
+                        var scheme = await schemes
+                            .where('position',
+                                isEqualTo:
+                                    (order['number'] == res['p$i']) ? 1 : 2)
+                            .where('ticket', isEqualTo: order['ticket'])
+                            .get()
+                            .then((snapshot) {
+                          return snapshot.docs[0];
+                        });
+                        tot += order['count'] * scheme['amount'];
+                        c += order['count'];
+                        superr += order['count'] * scheme['super'];
+                      }
+                    }
+                  }
+                  /*if (res['p$i'] == order['number'] &&
                       order['ticket'] == 'box-k') {
                     if (i <= 5) {
                       var scheme = await schemes
@@ -521,7 +578,7 @@ class _WinningSummaryDetailReportState
                       c += order['count'];
                       superr += order['count'] * scheme['super'];
                     }
-                  }
+                  }*/
                   if (res['p1'].toString().substring(0, 2) == order['number'] &&
                       order['ticket'] == 'ab' &&
                       i == 1) {
@@ -813,6 +870,25 @@ class _WinningDetailsReportState extends ConsumerState<WinningDetailsReport> {
     Navigator.of(context).pop();
   }
 
+  List<String> _getPermutation(String s) {
+    if (s.length <= 1) {
+      return [s];
+    }
+
+    List<String> permutations = [];
+    for (int i = 0; i < s.length; i++) {
+      String firstChar = s[i];
+      String remaining = s.substring(0, i) + s.substring(i + 1);
+      List<String> subPermutations = _getPermutation(remaining);
+      for (String subPermutation in subPermutations) {
+        permutations.add(firstChar + subPermutation);
+      }
+    }
+    /*var list = permutations.toList();
+    list.sort((a, b) => a.compareTo(b));*/
+    return permutations.toList();
+  }
+
   Future<void> getData() async {
     showLoadingIndicator();
     var orders = FirebaseFirestore.instance
@@ -866,7 +942,32 @@ class _WinningDetailsReportState extends ConsumerState<WinningDetailsReport> {
                   'prize': scheme['amount'] * order['count'],
                 });
               }
-              if (res['p$i'] == order['number'] && order['ticket'] == 'box-k') {
+              if (order['ticket'] == 'box-k') {
+                var ticketList = _getPermutation(order['number']);
+                for (var t = 0; t < ticketList.length; t++) {
+                  if (i <= 5 && ticketList[t] == res['p$i']) {
+                    var scheme = await schemes
+                        .where('position',
+                            isEqualTo: (order['number'] == res['p$i']) ? 1 : 2)
+                        .where('ticket', isEqualTo: order['ticket'])
+                        .get()
+                        .then((snapshot) {
+                      return snapshot.docs[0];
+                    });
+                    sales.add({
+                      'bill_number': order['bill_number'],
+                      'ticket': order['ticket'],
+                      'number': order['number'],
+                      'count': order['count'],
+                      'position': scheme['position'],
+                      'super': scheme['super'],
+                      'amount': scheme['super'] * order['count'],
+                      'prize': scheme['amount'] * order['count'],
+                    });
+                  }
+                }
+              }
+              /*if (res['p$i'] == order['number'] && order['ticket'] == 'box-k') {
                 if (i <= 5) {
                   var scheme = await schemes
                       .where('position', isEqualTo: (i <= 2) ? i : 2)
@@ -886,7 +987,7 @@ class _WinningDetailsReportState extends ConsumerState<WinningDetailsReport> {
                     'prize': scheme['amount'] * order['count'],
                   });
                 }
-              }
+              }*/
               if (res['p1'].toString().substring(0, 2) == order['number'] &&
                   order['ticket'] == 'ab' &&
                   i == 1) {
@@ -1233,7 +1334,7 @@ class _WinningDetailsReportState extends ConsumerState<WinningDetailsReport> {
                           DataCell(
                             Center(
                                 child: Text(
-                              item['super'].toString(),
+                              (item['super'] * item['count']).toString(),
                               style: TextStyle(fontSize: 15),
                             )),
                           ),
