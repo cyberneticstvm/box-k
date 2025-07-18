@@ -18,6 +18,7 @@ class _WinningSummaryReportState extends ConsumerState<WinningSummaryReport> {
   double tot = 0;
   double count = 0;
   double superr = 0;
+  double commission = 0;
   void showLoadingIndicator() {
     showDialog(
       context: context,
@@ -103,7 +104,7 @@ class _WinningSummaryReportState extends ConsumerState<WinningSummaryReport> {
         .where('play', isEqualTo: ref.watch(selectedPlayCodeReport))
         .get();
     var schemes = FirebaseFirestore.instance.collection('schemes');
-
+    var tickets = FirebaseFirestore.instance.collection('tickets');
     await orders.get().then((snapshot) async {
       if (snapshot.docs.isNotEmpty) {
         for (var order in snapshot.docs) {
@@ -117,6 +118,14 @@ class _WinningSummaryReportState extends ConsumerState<WinningSummaryReport> {
                     .then((snapshot) {
                   return snapshot.docs[0];
                 });
+                var ticket = await tickets
+                    .where('name', isEqualTo: order['ticket'])
+                    .get()
+                    .then((snapshot) {
+                  return snapshot.docs[0];
+                });
+                commission += (ticket['user_rate'] - ticket['leader_rate']) *
+                    order['count'];
                 if (i <= 5) {
                   tot += order['count'] * scheme['amount'];
                   count += order['count'];
@@ -142,6 +151,15 @@ class _WinningSummaryReportState extends ConsumerState<WinningSummaryReport> {
                     tot += order['count'] * scheme['amount'];
                     count += order['count'];
                     superr += order['count'] * scheme['super'];
+                    var ticket = await tickets
+                        .where('name', isEqualTo: order['ticket'])
+                        .get()
+                        .then((snapshot) {
+                      return snapshot.docs[0];
+                    });
+                    commission +=
+                        (ticket['user_rate'] - ticket['leader_rate']) *
+                            order['count'];
                   }
                 }
               }
@@ -155,6 +173,14 @@ class _WinningSummaryReportState extends ConsumerState<WinningSummaryReport> {
                     .then((snapshot) {
                   return snapshot.docs[0];
                 });
+                var ticket = await tickets
+                    .where('name', isEqualTo: order['ticket'])
+                    .get()
+                    .then((snapshot) {
+                  return snapshot.docs[0];
+                });
+                commission += (ticket['user_rate'] - ticket['leader_rate']) *
+                    order['count'];
                 tot += order['count'] * scheme['amount'];
                 count += order['count'];
                 superr += order['count'] * scheme['super'];
@@ -169,6 +195,14 @@ class _WinningSummaryReportState extends ConsumerState<WinningSummaryReport> {
                     .then((snapshot) {
                   return snapshot.docs[0];
                 });
+                var ticket = await tickets
+                    .where('name', isEqualTo: order['ticket'])
+                    .get()
+                    .then((snapshot) {
+                  return snapshot.docs[0];
+                });
+                commission += (ticket['user_rate'] - ticket['leader_rate']) *
+                    order['count'];
                 tot += order['count'] * scheme['amount'];
                 count += order['count'];
                 superr += order['count'] * scheme['super'];
@@ -184,6 +218,14 @@ class _WinningSummaryReportState extends ConsumerState<WinningSummaryReport> {
                     .then((snapshot) {
                   return snapshot.docs[0];
                 });
+                var ticket = await tickets
+                    .where('name', isEqualTo: order['ticket'])
+                    .get()
+                    .then((snapshot) {
+                  return snapshot.docs[0];
+                });
+                commission += (ticket['user_rate'] - ticket['leader_rate']) *
+                    order['count'];
                 tot += order['count'] * scheme['amount'];
                 count += order['count'];
                 superr += order['count'] * scheme['super'];
@@ -198,6 +240,14 @@ class _WinningSummaryReportState extends ConsumerState<WinningSummaryReport> {
                     .then((snapshot) {
                   return snapshot.docs[0];
                 });
+                var ticket = await tickets
+                    .where('name', isEqualTo: order['ticket'])
+                    .get()
+                    .then((snapshot) {
+                  return snapshot.docs[0];
+                });
+                commission += (ticket['user_rate'] - ticket['leader_rate']) *
+                    order['count'];
                 tot += order['count'] * scheme['amount'] -
                     order['count'] * scheme['super'];
                 count += order['count'];
@@ -213,6 +263,14 @@ class _WinningSummaryReportState extends ConsumerState<WinningSummaryReport> {
                     .then((snapshot) {
                   return snapshot.docs[0];
                 });
+                var ticket = await tickets
+                    .where('name', isEqualTo: order['ticket'])
+                    .get()
+                    .then((snapshot) {
+                  return snapshot.docs[0];
+                });
+                commission += (ticket['user_rate'] - ticket['leader_rate']) *
+                    order['count'];
                 tot += order['count'] * scheme['amount'] -
                     order['count'] * scheme['super'];
                 count += order['count'];
@@ -228,6 +286,14 @@ class _WinningSummaryReportState extends ConsumerState<WinningSummaryReport> {
                     .then((snapshot) {
                   return snapshot.docs[0];
                 });
+                var ticket = await tickets
+                    .where('name', isEqualTo: order['ticket'])
+                    .get()
+                    .then((snapshot) {
+                  return snapshot.docs[0];
+                });
+                commission += (ticket['user_rate'] - ticket['leader_rate']) *
+                    order['count'];
                 tot += order['count'] * scheme['amount'] -
                     order['count'] * scheme['super'];
                 count += order['count'];
@@ -240,6 +306,9 @@ class _WinningSummaryReportState extends ConsumerState<WinningSummaryReport> {
       ref.read(reportWinningTotal.notifier).update((state) => tot - superr);
       ref.read(reportWinningCount.notifier).update((state) => count);
       ref.read(reportWinningSuper.notifier).update((state) => superr);
+      ref
+          .read(reportCommissionTotalWinning.notifier)
+          .update((state) => commission);
       setState(() {});
     });
 
@@ -299,7 +368,7 @@ class _WinningSummaryReportState extends ConsumerState<WinningSummaryReport> {
                       children: [
                         Expanded(
                           child: Text(
-                            'Grand Amount: ${(ref.watch(reportWinningTotal) + ref.watch(reportWinningSuper)).toStringAsFixed(2)}',
+                            'Grand Amount: ${(ref.watch(reportWinningTotal) + ref.watch(reportWinningSuper) + ref.watch(reportCommissionTotalWinning)).toStringAsFixed(2)}',
                             style: const TextStyle(
                                 color: Colors.white, fontSize: 17),
                           ),
@@ -738,7 +807,7 @@ class _WinningSummaryDetailReportState
                     children: [
                       Expanded(
                         child: Text(
-                          'Total Amount: ${ref.watch(reportWinningTotal).toStringAsFixed(2)}',
+                          'Total Amount: ${(ref.watch(reportWinningTotal) + ref.watch(reportWinningSuper) + ref.watch(reportCommissionTotalWinning)).toStringAsFixed(2)}',
                           style: const TextStyle(
                               color: Colors.white, fontSize: 17),
                         ),
@@ -785,7 +854,7 @@ class _WinningSummaryDetailReportState
                   color: Theme.of(context).myBlueColorLight,
                   child: ListTile(
                     trailing: Text(
-                      '₹ ${sales[index]['amount']} \n ${double.parse(sales[index]['count'].toString()).toStringAsFixed(0)}',
+                      '₹ ${sales[index]['amount'] + sales[index]['super']} \n ${double.parse(sales[index]['count'].toString()).toStringAsFixed(0)}',
                       style: TextStyle(
                         fontSize: 15,
                         color: Colors.white,

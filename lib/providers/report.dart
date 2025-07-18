@@ -43,6 +43,10 @@ final reportSalesTotal = StateProvider<double>((ref) {
   return 0;
 });
 
+final reportCommissionTotalWinning = StateProvider<double>((ref) {
+  return 0;
+});
+
 final reportCommissionTotal = StateProvider<double>((ref) {
   return 0;
 });
