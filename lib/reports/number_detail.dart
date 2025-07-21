@@ -103,7 +103,7 @@ class _NumberWiseDetailReportState
         count = count + double.parse(c.toString());
       });
     }
-    sales.sort((b, a) => a['ticket'].compareTo(b['ticket']));
+    sales.sort((b, a) => a['count'].compareTo(b['count']));
     hideLoadingIndicator();
   }
 

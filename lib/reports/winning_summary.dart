@@ -212,8 +212,7 @@ class _WinningSummaryReportState extends ConsumerState<WinningSummaryReport> {
                     .then((snapshot) {
                   return snapshot.docs[0];
                 });
-                tot += order['count'] * scheme['amount'] -
-                    order['count'] * scheme['super'];
+                tot += order['count'] * scheme['amount'];
                 count += order['count'];
                 superr += order['count'] * scheme['super'];
               }
@@ -227,8 +226,7 @@ class _WinningSummaryReportState extends ConsumerState<WinningSummaryReport> {
                     .then((snapshot) {
                   return snapshot.docs[0];
                 });
-                tot += order['count'] * scheme['amount'] -
-                    order['count'] * scheme['super'];
+                tot += order['count'] * scheme['amount'];
                 count += order['count'];
                 superr += order['count'] * scheme['super'];
               }
@@ -242,8 +240,7 @@ class _WinningSummaryReportState extends ConsumerState<WinningSummaryReport> {
                     .then((snapshot) {
                   return snapshot.docs[0];
                 });
-                tot += order['count'] * scheme['amount'] -
-                    order['count'] * scheme['super'];
+                tot += order['count'] * scheme['amount'];
                 count += order['count'];
                 superr += order['count'] * scheme['super'];
               }
@@ -254,7 +251,7 @@ class _WinningSummaryReportState extends ConsumerState<WinningSummaryReport> {
               : 0;
         }
       }
-      ref.read(reportWinningTotal.notifier).update((state) => tot - superr);
+      ref.read(reportWinningTotal.notifier).update((state) => tot);
       ref.read(reportWinningCount.notifier).update((state) => count);
       ref.read(reportWinningSuper.notifier).update((state) => superr);
       ref
@@ -320,7 +317,7 @@ class _WinningSummaryReportState extends ConsumerState<WinningSummaryReport> {
                       children: [
                         Expanded(
                           child: Text(
-                            'Grand Amount: ${(ref.watch(reportWinningTotal) + ref.watch(reportWinningSuper) + ref.watch(reportCommissionTotal)).toStringAsFixed(2)}',
+                            'Grand Amount: ${(ref.watch(reportWinningTotal) + ref.watch(reportWinningSuper)).toStringAsFixed(2)}',
                             style: const TextStyle(
                                 color: Colors.white, fontSize: 17),
                           ),
@@ -329,7 +326,7 @@ class _WinningSummaryReportState extends ConsumerState<WinningSummaryReport> {
                           child: Container(
                             alignment: Alignment.centerRight,
                             child: Text(
-                              'Total Amount: ${(ref.watch(reportWinningTotal) + ref.watch(reportWinningSuper)).toStringAsFixed(2)}',
+                              'Total Amount: ${(ref.watch(reportWinningTotal)).toStringAsFixed(2)}',
                               style: const TextStyle(
                                   color: Colors.white, fontSize: 17),
                             ),
@@ -759,7 +756,7 @@ class _WinningSummaryDetailReportState
                     children: [
                       Expanded(
                         child: Text(
-                          'Total Amount: ${(ref.watch(reportWinningTotal) + ref.watch(reportWinningSuper)).toStringAsFixed(2)}',
+                          'Total Amount: ${(ref.watch(reportWinningTotal)).toStringAsFixed(2)}',
                           style: const TextStyle(
                               color: Colors.white, fontSize: 17),
                         ),
