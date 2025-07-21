@@ -89,6 +89,7 @@ class _SalesSummaryReportState extends ConsumerState<SalesSummaryReport> {
       return res.getSum('total');
     });
     var tickets = FirebaseFirestore.instance.collection('tickets');
+    var users = FirebaseFirestore.instance.collection('users');
     double commission = 0;
     await collection.get().then((snapshot) async {
       for (var order in snapshot.docs) {
@@ -98,8 +99,15 @@ class _SalesSummaryReportState extends ConsumerState<SalesSummaryReport> {
             .then((snapshot) {
           return snapshot.docs[0];
         });
-        commission +=
-            (ticket['user_rate'] - ticket['leader_rate']) * order['count'];
+        var u = await users
+            .where('uid', isEqualTo: order['user_id'])
+            .get()
+            .then((snapshot) {
+          return snapshot.docs[0];
+        });
+        commission += (u['role'] == 'User')
+            ? (ticket['user_rate'] - ticket['leader_rate']) * order['count']
+            : 0;
       }
     });
 

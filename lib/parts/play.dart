@@ -8,9 +8,11 @@ import 'package:intl/intl.dart';
 import 'package:boxk/colors/color.dart';
 
 class PlayDropdownList extends ConsumerStatefulWidget {
-  const PlayDropdownList({super.key, required this.isBlockedCheck});
+  const PlayDropdownList(
+      {super.key, required this.isBlockedCheck, required this.defaultValue});
 
   final bool isBlockedCheck;
+  final String defaultValue;
 
   @override
   ConsumerState<PlayDropdownList> createState() {
@@ -153,7 +155,7 @@ class _PlayDropdownState extends ConsumerState<PlayDropdownList> {
         builder: (context, snapshot) {
           if (!snapshot.hasData) return Container();
           return DropdownButtonFormField(
-            value: ref.watch(selectedPlayCode),
+            value: widget.defaultValue,
             isExpanded: true,
             items: snapshot.data!.docs.map((value) {
               return DropdownMenuItem(

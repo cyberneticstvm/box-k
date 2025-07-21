@@ -29,6 +29,7 @@ class _OrderWidgetState extends ConsumerState<OrderWidget> {
               const Expanded(
                 child: PlayDropdownList(
                   isBlockedCheck: true,
+                  defaultValue: 'king',
                 ),
               ),
               if (ref.watch(currentUserProvider)['role'] != 'User')

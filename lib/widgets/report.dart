@@ -112,11 +112,11 @@ class _ReportWidgetState extends ConsumerState<ReportWidget> {
                 },
               ),
             ),
-            if ((ref.watch(currentUserProvider)['role'] == 'Admin'))
+            if ((ref.watch(currentUserProvider)['role'] != 'User'))
               const SizedBox(
                 height: 15,
               ),
-            if ((ref.watch(currentUserProvider)['role'] == 'Admin'))
+            if ((ref.watch(currentUserProvider)['role'] != 'User'))
               Container(
                 decoration: BoxDecoration(
                   // Create a gradient background
@@ -155,11 +155,11 @@ class _ReportWidgetState extends ConsumerState<ReportWidget> {
                   ),
                 ),
               ),
-            if ((ref.watch(currentUserProvider)['role'] == 'Admin'))
+            if ((ref.watch(currentUserProvider)['role'] != 'User'))
               const SizedBox(
                 height: 15,
               ),
-            if ((ref.watch(currentUserProvider)['role'] == 'Admin'))
+            if ((ref.watch(currentUserProvider)['role'] != 'User'))
               Container(
                 decoration: BoxDecoration(
                   // Create a gradient background

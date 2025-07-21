@@ -166,6 +166,7 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                 children: [
                   PlayDropdownList(
                     isBlockedCheck: false,
+                    defaultValue: 'king',
                   ),
                   SizedBox(
                     height: 10,

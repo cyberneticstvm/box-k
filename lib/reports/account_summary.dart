@@ -148,6 +148,23 @@ class _AccountSummaryReportDetailState
     Navigator.of(context).pop();
   }
 
+  List<String> _getPermutation(String s) {
+    if (s.length <= 1) {
+      return [s];
+    }
+
+    List<String> permutations = [];
+    for (int i = 0; i < s.length; i++) {
+      String firstChar = s[i];
+      String remaining = s.substring(0, i) + s.substring(i + 1);
+      List<String> subPermutations = _getPermutation(remaining);
+      for (String subPermutation in subPermutations) {
+        permutations.add(firstChar + subPermutation);
+      }
+    }
+    return permutations.toList();
+  }
+
   Future<void> getData() async {
     showLoadingIndicator();
     bool isUserId = false;
@@ -161,34 +178,37 @@ class _AccountSummaryReportDetailState
           orders.where('play', isEqualTo: ref.watch(selectedPlayCodeReport));
     }
 
-    if (ref.watch(selectedUserProviderReport)['role'] == 'Leader') {
-      orders = orders.where('parent',
-          isEqualTo: ref.watch(selectedUserProviderReport)['uid']);
-    }
-    if (ref.watch(selectedUserProviderReport)['role'] == 'User' &&
-        ref.watch(selectedUserProviderReport)['uid'] > 0) {
-      isUserId = true;
+    if (ref.watch(selectedUserProviderReport)['role'] == 'User' ||
+        ref.watch(selectedUserFlag) > 0) {
       orders = orders.where('user_id',
           isEqualTo: ref.watch(selectedUserProviderReport)['uid']);
+      isUserId = true;
+    } else {
+      orders = orders.where(Filter.or(
+          Filter('user_id',
+              isEqualTo: ref.watch(selectedUserProviderReport)['uid']),
+          Filter('parent',
+              isEqualTo: ref.watch(selectedUserProviderReport)['uid'])));
     }
-    final collection = FirebaseFirestore.instance
+    var users = FirebaseFirestore.instance
         .collection('users')
         .where('name', isNotEqualTo: 'All')
         .where('status', isEqualTo: 'Active');
-    var users = await collection.where('role', isEqualTo: 'User').get();
+    //var users = await collection.where('role', isEqualTo: 'User').get();
     if (ref.watch(selectedUserProviderReport)['role'] == 'Leader') {
-      users = await collection
-          .where('role', isEqualTo: 'User')
-          .where('parent',
-              isEqualTo: ref.watch(selectedUserProviderReport)['uid'])
-          .get();
+      users = users.where(Filter.or(
+          Filter('uid',
+              isEqualTo: ref.watch(selectedUserProviderReport)['uid']),
+          Filter('parent',
+              isEqualTo: ref.watch(selectedUserProviderReport)['uid'])));
     }
     if (ref.watch(selectedUserProviderReport)['role'] == 'User') {
-      users = await collection
-          .where('uid', isEqualTo: ref.watch(selectedUserProviderReport)['uid'])
-          .get();
+      users = users.where('uid',
+          isEqualTo: ref.watch(selectedUserProviderReport)['uid']);
+      isUserId = true;
     }
-    if (users.docs.isNotEmpty) {
+    var usr = await users.get();
+    if (usr.docs.isNotEmpty) {
       var result1 = FirebaseFirestore.instance.collection('result').where(
           'play_date',
           isGreaterThanOrEqualTo: ref.watch(selectedDateFrom),
@@ -201,18 +221,31 @@ class _AccountSummaryReportDetailState
       var result = await result1.get();
       var schemes = FirebaseFirestore.instance.collection('schemes');
       var tickets = FirebaseFirestore.instance.collection('tickets');
-      for (var item in users.docs) {
+      for (var item in usr.docs) {
         var orders1 = orders;
         if (!isUserId) {
           orders1 = orders.where('user_id', isEqualTo: item['uid']);
         }
-        double orderTotal = 0;
+        final orderTotal =
+            await orders1.aggregate(sum('total')).get().then((res) {
+          return res.getSum('total');
+        });
         double winTotal = 0;
         double superr = 0;
         double commission = 0;
         await orders1.get().then((snapshot) async {
           if (snapshot.docs.isNotEmpty) {
             for (var order in snapshot.docs) {
+              var ticket = await tickets
+                  .where('name', isEqualTo: order['ticket'])
+                  .get()
+                  .then((snapshot) {
+                return snapshot.docs[0];
+              });
+              commission += (item['role'] == 'User')
+                  ? (ticket['user_rate'] - ticket['leader_rate']) *
+                      order['count']
+                  : 0;
               for (var res in result.docs) {
                 for (int i = 1; i <= 35; i++) {
                   if (res['p$i'] == order['number'] &&
@@ -224,18 +257,28 @@ class _AccountSummaryReportDetailState
                         .then((snapshot) {
                       return snapshot.docs[0];
                     });
-                    var ticket = await tickets
-                        .where('name', isEqualTo: order['ticket'])
-                        .get()
-                        .then((snapshot) {
-                      return snapshot.docs[0];
-                    });
                     winTotal += order['count'] * scheme['amount'];
-                    orderTotal += order['total'];
                     superr += order['count'] * scheme['super'];
-                    commission += ticket['user_rate'] - ticket['leader_rate'];
                   }
-                  if (res['p$i'] == order['number'] &&
+                  if (order['ticket'] == 'box-k') {
+                    var ticketList = _getPermutation(order['number']);
+                    for (var t = 0; t < ticketList.length; t++) {
+                      if (i <= 5 && ticketList[t] == res['p$i']) {
+                        var scheme = await schemes
+                            .where('position',
+                                isEqualTo:
+                                    (order['number'] == res['p$i']) ? 1 : 2)
+                            .where('ticket', isEqualTo: order['ticket'])
+                            .get()
+                            .then((snapshot) {
+                          return snapshot.docs[0];
+                        });
+                        winTotal += order['count'] * scheme['amount'];
+                        superr += order['count'] * scheme['super'];
+                      }
+                    }
+                  }
+                  /*if (res['p$i'] == order['number'] &&
                       order['ticket'] == 'box-k') {
                     if (i <= 5) {
                       var scheme = await schemes
@@ -256,7 +299,7 @@ class _AccountSummaryReportDetailState
                       superr += order['count'] * scheme['super'];
                       commission += ticket['user_rate'] - ticket['leader_rate'];
                     }
-                  }
+                  }*/
                   if (res['p1'].toString().substring(0, 2) == order['number'] &&
                       order['ticket'] == 'ab' &&
                       i == 1) {
@@ -267,16 +310,8 @@ class _AccountSummaryReportDetailState
                         .then((snapshot) {
                       return snapshot.docs[0];
                     });
-                    var ticket = await tickets
-                        .where('name', isEqualTo: order['ticket'])
-                        .get()
-                        .then((snapshot) {
-                      return snapshot.docs[0];
-                    });
                     winTotal += order['count'] * scheme['amount'];
-                    orderTotal += order['total'];
                     superr += order['count'] * scheme['super'];
-                    commission += ticket['user_rate'] - ticket['leader_rate'];
                   }
                   if (res['p1'].toString().substring(1, 3) == order['number'] &&
                       order['ticket'] == 'bc' &&
@@ -288,16 +323,8 @@ class _AccountSummaryReportDetailState
                         .then((snapshot) {
                       return snapshot.docs[0];
                     });
-                    var ticket = await tickets
-                        .where('name', isEqualTo: order['ticket'])
-                        .get()
-                        .then((snapshot) {
-                      return snapshot.docs[0];
-                    });
                     winTotal += order['count'] * scheme['amount'];
-                    orderTotal += order['total'];
                     superr += order['count'] * scheme['super'];
-                    commission += ticket['user_rate'] - ticket['leader_rate'];
                   }
                   if ('${res['p1'].toString().substring(0, 1)}${res['p$i'].toString().substring(2, 3)}' ==
                           order['number'] &&
@@ -310,16 +337,8 @@ class _AccountSummaryReportDetailState
                         .then((snapshot) {
                       return snapshot.docs[0];
                     });
-                    var ticket = await tickets
-                        .where('name', isEqualTo: order['ticket'])
-                        .get()
-                        .then((snapshot) {
-                      return snapshot.docs[0];
-                    });
                     winTotal += order['count'] * scheme['amount'];
-                    orderTotal += order['total'];
                     superr += order['count'] * scheme['super'];
-                    commission += ticket['user_rate'] - ticket['leader_rate'];
                   }
                   if (res['p1'].toString().substring(0, 1) == order['number'] &&
                       order['ticket'] == 'a' &&
@@ -331,16 +350,8 @@ class _AccountSummaryReportDetailState
                         .then((snapshot) {
                       return snapshot.docs[0];
                     });
-                    var ticket = await tickets
-                        .where('name', isEqualTo: order['ticket'])
-                        .get()
-                        .then((snapshot) {
-                      return snapshot.docs[0];
-                    });
                     winTotal += order['count'] * scheme['amount'];
-                    orderTotal += order['total'];
                     superr += order['count'] * scheme['super'];
-                    commission += ticket['user_rate'] - ticket['leader_rate'];
                   }
                   if (res['p1'].toString().substring(1, 2) == order['number'] &&
                       order['ticket'] == 'b' &&
@@ -352,16 +363,8 @@ class _AccountSummaryReportDetailState
                         .then((snapshot) {
                       return snapshot.docs[0];
                     });
-                    var ticket = await tickets
-                        .where('name', isEqualTo: order['ticket'])
-                        .get()
-                        .then((snapshot) {
-                      return snapshot.docs[0];
-                    });
                     winTotal += order['count'] * scheme['amount'];
-                    orderTotal += order['total'];
                     superr += order['count'] * scheme['super'];
-                    commission += ticket['user_rate'] - ticket['leader_rate'];
                   }
                   if (res['p1'].toString().substring(2, 3) == order['number'] &&
                       order['ticket'] == 'c' &&
@@ -373,16 +376,8 @@ class _AccountSummaryReportDetailState
                         .then((snapshot) {
                       return snapshot.docs[0];
                     });
-                    var ticket = await tickets
-                        .where('name', isEqualTo: order['ticket'])
-                        .get()
-                        .then((snapshot) {
-                      return snapshot.docs[0];
-                    });
                     winTotal += order['count'] * scheme['amount'];
-                    orderTotal += order['total'];
                     superr += order['count'] * scheme['super'];
-                    commission += ticket['user_rate'] - ticket['leader_rate'];
                   }
                 }
               }
@@ -396,14 +391,16 @@ class _AccountSummaryReportDetailState
           'uname': item['name'],
           'uid': item['uid'],
           'ordTot': orderTotal,
-          'winTot': winTotal,
+          'winTot': winTotal + superr,
           'super': superr,
           'commission': commission,
-          'balance': orderTotal - winTotal,
+          'balance': orderTotal! - (winTotal + superr),
         };
-        setState(() {
-          sales.add(ord);
-        });
+        if (ord['ordTot'] > 0) {
+          setState(() {
+            sales.add(ord);
+          });
+        }
       }
       setState(() {
         balTot = sales.fold(0, (s, item) => s + item['balance']);
@@ -441,8 +438,9 @@ class _AccountSummaryReportDetailState
                 fontSize: 18, color: Theme.of(context).myBlueColorDark)),
       ),
       body: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
         child: DataTable(
-          columnSpacing: 35,
+          columnSpacing: 25,
           columns: [
             DataColumn(label: Text('User')),
             DataColumn(label: Text('Date')),
@@ -457,13 +455,16 @@ class _AccountSummaryReportDetailState
                     DataCell(Text(item['uname'])),
                     DataCell(Text(item['date'])),
                     DataCell(
-                      Text(item['ordTot'].toString()),
+                      Text(double.tryParse((item['ordTot'].toString()))!
+                          .toStringAsFixed(2)),
                     ),
                     DataCell(
-                      Text(item['winTot'].toString()),
+                      Text(double.tryParse(item['winTot'].toString())!
+                          .toStringAsFixed(2)),
                     ),
                     DataCell(
-                      Text(item['balance'].toString()),
+                      Text(double.tryParse(item['balance'].toString())!
+                          .toStringAsFixed(2)),
                     ),
                   ],
                 ),

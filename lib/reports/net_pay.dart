@@ -162,9 +162,20 @@ class _NetPayReportDetailState extends ConsumerState<NetPayReportDetail> {
         'play_date',
         isGreaterThanOrEqualTo: ref.watch(selectedDateFrom),
         isLessThanOrEqualTo: ref.watch(selectedDateTo));
-    if (ref.watch(selectedUserProviderReport)['role'] == 'Leader') {
-      orders = orders.where('parent',
+    if (ref.watch(selectedUserProviderReport)['role'] == 'User') {
+      orders = orders.where('user_id',
           isEqualTo: ref.watch(selectedUserProviderReport)['uid']);
+    } else {
+      if (ref.watch(selectedUserFlag) > 0) {
+        orders = orders.where('user_id',
+            isEqualTo: ref.watch(selectedUserProviderReport)['uid']);
+      } else {
+        orders = orders.where(Filter.or(
+            Filter('user_id',
+                isEqualTo: ref.watch(selectedUserProviderReport)['uid']),
+            Filter('parent',
+                isEqualTo: ref.watch(selectedUserProviderReport)['uid'])));
+      }
     }
     if (ref.watch(selectedPlayCodeReport) != 'All') {
       orders =
@@ -183,17 +194,33 @@ class _NetPayReportDetailState extends ConsumerState<NetPayReportDetail> {
     var result = await result1.get();
     var schemes = FirebaseFirestore.instance.collection('schemes');
     var tickets = FirebaseFirestore.instance.collection('tickets');
-
-    double orderTotal = 0;
+    var users = FirebaseFirestore.instance.collection('users');
+    final orderTotal = await orders.aggregate(sum('total')).get().then((res) {
+      return res.getSum('total');
+    });
     double winTotal = 0;
     double superr = 0;
     double commission = 0;
     await orders.get().then((snapshot) async {
       if (snapshot.docs.isNotEmpty) {
         for (var order in snapshot.docs) {
+          var u = await users
+              .where('uid', isEqualTo: order['user_id'])
+              .get()
+              .then((snapshot) {
+            return snapshot.docs[0];
+          });
+          var ticket = await tickets
+              .where('name', isEqualTo: order['ticket'])
+              .get()
+              .then((snapshot) {
+            return snapshot.docs[0];
+          });
+          commission += (u['role'] == 'User')
+              ? (ticket['user_rate'] - ticket['leader_rate']) * order['count']
+              : 0;
           if (result.docs.isEmpty) {
             winTotal = 0;
-            orderTotal += order['total'];
             superr = 0;
             commission = 0;
           } else {
@@ -208,17 +235,8 @@ class _NetPayReportDetailState extends ConsumerState<NetPayReportDetail> {
                       .then((snapshot) {
                     return snapshot.docs[0];
                   });
-                  var ticket = await tickets
-                      .where('name', isEqualTo: order['ticket'])
-                      .get()
-                      .then((snapshot) {
-                    return snapshot.docs[0];
-                  });
                   winTotal += order['count'] * scheme['amount'];
-                  orderTotal += order['total'];
                   superr += order['count'] * scheme['super'];
-                  commission += (ticket['user_rate'] - ticket['leader_rate']) *
-                      order['count'];
                 }
                 if (order['ticket'] == 'box-k') {
                   var ticketList = _getPermutation(order['number']);
@@ -233,18 +251,8 @@ class _NetPayReportDetailState extends ConsumerState<NetPayReportDetail> {
                           .then((snapshot) {
                         return snapshot.docs[0];
                       });
-                      var ticket = await tickets
-                          .where('name', isEqualTo: order['ticket'])
-                          .get()
-                          .then((snapshot) {
-                        return snapshot.docs[0];
-                      });
                       winTotal += order['count'] * scheme['amount'];
-                      orderTotal += order['total'];
                       superr += order['count'] * scheme['super'];
-                      commission +=
-                          (ticket['user_rate'] - ticket['leader_rate']) *
-                              order['count'];
                     }
                   }
                 }
@@ -281,17 +289,8 @@ class _NetPayReportDetailState extends ConsumerState<NetPayReportDetail> {
                       .then((snapshot) {
                     return snapshot.docs[0];
                   });
-                  var ticket = await tickets
-                      .where('name', isEqualTo: order['ticket'])
-                      .get()
-                      .then((snapshot) {
-                    return snapshot.docs[0];
-                  });
                   winTotal += order['count'] * scheme['amount'];
-                  orderTotal += order['total'];
                   superr += order['count'] * scheme['super'];
-                  commission += (ticket['user_rate'] - ticket['leader_rate']) *
-                      order['count'];
                 }
                 if (res['p1'].toString().substring(1, 3) == order['number'] &&
                     order['ticket'] == 'bc' &&
@@ -303,17 +302,8 @@ class _NetPayReportDetailState extends ConsumerState<NetPayReportDetail> {
                       .then((snapshot) {
                     return snapshot.docs[0];
                   });
-                  var ticket = await tickets
-                      .where('name', isEqualTo: order['ticket'])
-                      .get()
-                      .then((snapshot) {
-                    return snapshot.docs[0];
-                  });
                   winTotal += order['count'] * scheme['amount'];
-                  orderTotal += order['total'];
                   superr += order['count'] * scheme['super'];
-                  commission += (ticket['user_rate'] - ticket['leader_rate']) *
-                      order['count'];
                 }
                 if ('${res['p1'].toString().substring(0, 1)}${res['p$i'].toString().substring(2, 3)}' ==
                         order['number'] &&
@@ -326,17 +316,8 @@ class _NetPayReportDetailState extends ConsumerState<NetPayReportDetail> {
                       .then((snapshot) {
                     return snapshot.docs[0];
                   });
-                  var ticket = await tickets
-                      .where('name', isEqualTo: order['ticket'])
-                      .get()
-                      .then((snapshot) {
-                    return snapshot.docs[0];
-                  });
                   winTotal += order['count'] * scheme['amount'];
-                  orderTotal += order['total'];
                   superr += order['count'] * scheme['super'];
-                  commission += (ticket['user_rate'] - ticket['leader_rate']) *
-                      order['count'];
                 }
                 if (res['p1'].toString().substring(0, 1) == order['number'] &&
                     order['ticket'] == 'a' &&
@@ -348,17 +329,8 @@ class _NetPayReportDetailState extends ConsumerState<NetPayReportDetail> {
                       .then((snapshot) {
                     return snapshot.docs[0];
                   });
-                  var ticket = await tickets
-                      .where('name', isEqualTo: order['ticket'])
-                      .get()
-                      .then((snapshot) {
-                    return snapshot.docs[0];
-                  });
                   winTotal += order['count'] * scheme['amount'];
-                  orderTotal += order['total'];
                   superr += order['count'] * scheme['super'];
-                  commission += (ticket['user_rate'] - ticket['leader_rate']) *
-                      order['count'];
                 }
                 if (res['p1'].toString().substring(1, 2) == order['number'] &&
                     order['ticket'] == 'b' &&
@@ -370,17 +342,8 @@ class _NetPayReportDetailState extends ConsumerState<NetPayReportDetail> {
                       .then((snapshot) {
                     return snapshot.docs[0];
                   });
-                  var ticket = await tickets
-                      .where('name', isEqualTo: order['ticket'])
-                      .get()
-                      .then((snapshot) {
-                    return snapshot.docs[0];
-                  });
                   winTotal += order['count'] * scheme['amount'];
-                  orderTotal += order['total'];
                   superr += order['count'] * scheme['super'];
-                  commission += (ticket['user_rate'] - ticket['leader_rate']) *
-                      order['count'];
                 }
                 if (res['p1'].toString().substring(2, 3) == order['number'] &&
                     order['ticket'] == 'c' &&
@@ -392,17 +355,8 @@ class _NetPayReportDetailState extends ConsumerState<NetPayReportDetail> {
                       .then((snapshot) {
                     return snapshot.docs[0];
                   });
-                  var ticket = await tickets
-                      .where('name', isEqualTo: order['ticket'])
-                      .get()
-                      .then((snapshot) {
-                    return snapshot.docs[0];
-                  });
                   winTotal += order['count'] * scheme['amount'];
-                  orderTotal += order['total'];
                   superr += order['count'] * scheme['super'];
-                  commission += (ticket['user_rate'] - ticket['leader_rate']) *
-                      order['count'];
                 }
               }
             }
@@ -415,11 +369,11 @@ class _NetPayReportDetailState extends ConsumerState<NetPayReportDetail> {
       'date': DateFormat("dd/MM/yyyy")
           .format(ref.watch(selectedDateFrom))
           .toString(),
-      'ordTot': orderTotal,
-      'winTot': winTotal - commission,
+      'ordTot': orderTotal! - commission,
+      'winTot': winTotal + superr,
       'super': superr,
       'commission': commission,
-      'balance': orderTotal - (winTotal + commission),
+      'balance': orderTotal - (winTotal + superr + commission),
     };
     setState(() {
       sales.add(ord);
@@ -472,13 +426,16 @@ class _NetPayReportDetailState extends ConsumerState<NetPayReportDetail> {
                     DataCell(Text(item['uname'])),
                     DataCell(Text(item['date'])),
                     DataCell(
-                      Text(item['ordTot'].toString()),
+                      Text(double.tryParse((item['ordTot'].toString()))!
+                          .toStringAsFixed(2)),
                     ),
                     DataCell(
-                      Text(item['winTot'].toString()),
+                      Text(double.tryParse(item['winTot'].toString())!
+                          .toStringAsFixed(2)),
                     ),
                     DataCell(
-                      Text(item['balance'].toString()),
+                      Text(double.tryParse(item['balance'].toString())!
+                          .toStringAsFixed(2)),
                     ),
                   ],
                 ),
